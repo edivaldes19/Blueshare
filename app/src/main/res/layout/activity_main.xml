@@ -26,23 +26,23 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/colorPrimary" />
+                    android:background="@drawable/gradient_chat" />
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="25dp"
-                    android:src="@drawable/ic_icon_white" />
+                    android:src="@drawable/ic_icon_app" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
-                    android:text="Reciobook"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/app_name"
                     android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="24sp"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="34sp"
                     android:textStyle="bold" />
             </io.github.florent37.shapeofview.shapes.ArcView>
 
@@ -52,10 +52,9 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="25dp"
                 android:gravity="center"
-                android:text="Bienvenido(a)"
+                android:text="@string/welcome"
                 android:textColor="@color/colorPrimary"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textSize="20sp" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -63,7 +62,7 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="25dp"
                 android:layout_marginEnd="30dp"
-                android:hint="Correo electrónico"
+                android:hint="@string/email"
                 android:textColorHint="@color/black"
                 app:boxBackgroundColor="@color/white"
                 app:counterEnabled="true"
@@ -93,7 +92,7 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="30dp"
-                android:hint="Contraseña"
+                android:hint="@string/password"
                 android:textColorHint="@color/black"
                 app:boxBackgroundColor="@color/white"
                 app:counterEnabled="true"
@@ -116,6 +115,19 @@
                     android:textColorHint="@color/black" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/forgotPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="30dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:text="@string/forgotPassword"
+                android:textColor="@color/colorPrimary"
+                android:textSize="14sp" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnLogin"
                 android:layout_width="match_parent"
@@ -124,11 +136,11 @@
                 android:layout_marginTop="25dp"
                 android:layout_marginEnd="30dp"
                 android:backgroundTint="@color/colorPrimary"
-                android:text="Iniciar sesión"
+                android:text="@string/login"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
+                android:textColor="@color/colorAccent"
                 app:icon="@drawable/ic_login"
-                app:iconTint="@color/white" />
+                app:iconTint="@color/colorAccent" />
 
             <com.google.android.gms.common.SignInButton
                 android:id="@+id/btnLoginGoogle"
@@ -145,7 +157,8 @@
                 android:layout_marginTop="25dp"
                 android:layout_marginBottom="5dp"
                 android:gravity="center"
-                android:text="¿No tienes cuenta?"
+                android:text="@string/notAccount"
+                android:textColor="@color/black"
                 android:textSize="16sp" />
 
             <com.google.android.material.textview.MaterialTextView
@@ -155,11 +168,11 @@
                 android:layout_gravity="bottom|center"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="25dp"
+                android:background="?android:attr/selectableItemBackground"
                 android:gravity="center"
-                android:text="Registrate aquí"
+                android:text="@string/registerHere"
                 android:textColor="@color/colorPrimary"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textSize="14sp" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

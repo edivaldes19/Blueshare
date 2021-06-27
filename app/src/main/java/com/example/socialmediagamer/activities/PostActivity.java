@@ -271,8 +271,9 @@ public class PostActivity extends AppCompatActivity {
             Intent data = result.getData();
             try {
                 mPhotoFile = null;
-                assert data != null;
-                mImageFile = FileUtil.from(this, data.getData());
+                if (data != null) {
+                    mImageFile = FileUtil.from(this, data.getData());
+                }
                 mImageViewPost1.setImageBitmap(BitmapFactory.decodeFile(mImageFile.getAbsolutePath()));
             } catch (Exception e) {
                 Toast.makeText(this, "Error al mostrar la imagen" + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -291,8 +292,9 @@ public class PostActivity extends AppCompatActivity {
             Intent data = result.getData();
             try {
                 mPhotoFile2 = null;
-                assert data != null;
-                mImageFile2 = FileUtil.from(this, data.getData());
+                if (data != null) {
+                    mImageFile2 = FileUtil.from(this, data.getData());
+                }
                 mImageViewPost2.setImageBitmap(BitmapFactory.decodeFile(mImageFile2.getAbsolutePath()));
             } catch (Exception e) {
                 Toast.makeText(this, "Error al mostrar la imagen" + e.getMessage(), Toast.LENGTH_SHORT).show();

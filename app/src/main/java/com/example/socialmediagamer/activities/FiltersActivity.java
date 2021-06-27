@@ -34,14 +34,14 @@ public class FiltersActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filters);
+        mExtraCategory = getIntent().getStringExtra("category");
         mRecyclerView = findViewById(R.id.recyclerViewFilter);
         mTextViewNumberFilter = findViewById(R.id.textViewNumberFilter);
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        Objects.requireNonNull(getSupportActionBar()).setTitle("Categorías");
+        Objects.requireNonNull(getSupportActionBar()).setTitle(mExtraCategory);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mRecyclerView.setLayoutManager(new GridLayoutManager(FiltersActivity.this, 2));
-        mExtraCategory = getIntent().getStringExtra("category");
         mAuthProvider = new AuthProvider();
         mPostProvider = new PostProvider();
     }

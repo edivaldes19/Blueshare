@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+        android:background="@color/colorAccent"
         android:orientation="vertical">
 
         <com.mancj.materialsearchbar.MaterialSearchBar
@@ -18,18 +18,18 @@
             style="@style/MaterialSearchBarLight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:mt_backIconTint="@color/white"
-            app:mt_clearIconTint="@color/white"
+            app:mt_backIconTint="@color/colorPrimary"
+            app:mt_clearIconTint="@color/colorPrimary"
             app:mt_hint="Buscar publicaciones..."
-            app:mt_hintColor="@color/white"
-            app:mt_leftTextSelectorTint="@color/white"
+            app:mt_hintColor="@color/colorPrimary"
+            app:mt_leftTextSelectorTint="@color/colorPrimary"
             app:mt_maxSuggestionsCount="10"
-            app:mt_menuIconTint="@color/white"
+            app:mt_menuIconTint="@color/colorPrimary"
             app:mt_placeholder="Publicaciones"
-            app:mt_placeholderColor="@color/white"
-            app:mt_searchBarColor="@color/colorPrimary"
-            app:mt_searchIconTint="@color/white"
-            app:mt_textColor="@color/white" />
+            app:mt_placeholderColor="@color/colorPrimary"
+            app:mt_searchBarColor="@color/colorAccent"
+            app:mt_searchIconTint="@color/colorPrimary"
+            app:mt_textColor="@color/colorPrimary" />
     </LinearLayout>
 
     <LinearLayout
@@ -51,5 +51,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="20dp"
-        android:src="@drawable/ic_post_add" />
+        android:src="@drawable/ic_post_add"
+        tools:ignore="ContentDescription" />
 </FrameLayout>

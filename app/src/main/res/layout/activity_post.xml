@@ -19,17 +19,17 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="225dp"
-                android:background="@color/colorPrimary"
+                android:background="@color/colorAccent"
                 android:orientation="vertical"
                 tools:ignore="UselessParent">
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
-                    android:text="Crear publicación"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/newPost"
                     android:textAlignment="center"
-                    android:textColor="@color/white"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -46,7 +46,7 @@
                         android:layout_height="125dp"
                         android:layout_marginEnd="10dp"
                         android:layout_weight="1"
-                        app:cardBackgroundColor="@color/white"
+                        app:cardBackgroundColor="@color/grayLight"
                         app:cardCornerRadius="10dp">
 
                         <com.google.android.material.imageview.ShapeableImageView
@@ -62,7 +62,7 @@
                         android:layout_height="125dp"
                         android:layout_marginStart="10dp"
                         android:layout_weight="1"
-                        app:cardBackgroundColor="@color/white"
+                        app:cardBackgroundColor="@color/grayLight"
                         app:cardCornerRadius="10dp">
 
                         <com.google.android.material.imageview.ShapeableImageView
@@ -81,7 +81,7 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="25dp"
                 android:layout_marginRight="30dp"
-                android:hint="Título"
+                android:hint="@string/title"
                 android:textColorHint="@color/black"
                 app:boxBackgroundColor="@color/white"
                 app:counterEnabled="true"
@@ -109,7 +109,7 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="30dp"
-                android:hint="Descripción"
+                android:hint="@string/description"
                 android:textColorHint="@color/black"
                 app:boxBackgroundColor="@color/white"
                 app:counterEnabled="true"
@@ -136,7 +136,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:text="Seleccione una categoría:"
+                android:text="@string/selectCategory"
                 android:textAlignment="center"
                 android:textSize="20sp" />
 
@@ -159,7 +159,7 @@
                     android:layout_gravity="center">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:orientation="horizontal">
@@ -187,7 +187,7 @@
                                 <com.google.android.material.textview.MaterialTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Cultura"
+                                    android:text="@string/culture"
                                     android:textColor="#A25918"
                                     android:textStyle="bold" />
                             </LinearLayout>
@@ -216,7 +216,7 @@
                                 <com.google.android.material.textview.MaterialTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Deporte"
+                                    android:text="@string/sports"
                                     android:textColor="@color/black"
                                     android:textStyle="bold" />
                             </LinearLayout>
@@ -245,7 +245,7 @@
                                 <com.google.android.material.textview.MaterialTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Estilo de vida"
+                                    android:text="@string/lifestyle"
                                     android:textColor="#A901DB"
                                     android:textStyle="bold" />
                             </LinearLayout>
@@ -259,7 +259,7 @@
                     android:layout_gravity="center">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:orientation="horizontal">
@@ -287,7 +287,7 @@
                                 <com.google.android.material.textview.MaterialTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Música"
+                                    android:text="@string/music"
                                     android:textColor="#FF0000"
                                     android:textStyle="bold" />
                             </LinearLayout>
@@ -316,7 +316,7 @@
                                 <com.google.android.material.textview.MaterialTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Programación"
+                                    android:text="@string/programation"
                                     android:textColor="#0000FF"
                                     android:textStyle="bold" />
                             </LinearLayout>
@@ -345,7 +345,7 @@
                                 <com.google.android.material.textview.MaterialTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Videojuegos"
+                                    android:text="@string/videogames"
                                     android:textColor="#008000"
                                     android:textStyle="bold" />
                             </LinearLayout>
@@ -360,12 +360,12 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
                 android:layout_margin="30dp"
-                android:text="Publicar"
+                android:text="@string/toPost"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
+                android:textColor="@color/colorAccent"
                 app:backgroundTint="@color/colorPrimary"
                 app:icon="@drawable/ic_publish"
-                app:iconTint="@color/white" />
+                app:iconTint="@color/colorAccent" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

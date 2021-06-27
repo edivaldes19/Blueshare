@@ -69,7 +69,7 @@ public class RegisterActivity extends AppCompatActivity {
                         Snackbar.make(v, "Las contraseñas no coinciden", Snackbar.LENGTH_SHORT).show();
                     }
                 } else {
-                    Snackbar.make(v, "Correo electrónico inválido", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(v, "Formato de correo electrónico inválido", Snackbar.LENGTH_SHORT).show();
                 }
             } else {
                 Snackbar.make(v, "Complete los campos", Snackbar.LENGTH_SHORT).show();
@@ -108,8 +108,8 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    public boolean isEmailValid(String email) {
-        String expression = "^[\\w.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+    private boolean isEmailValid(String email) {
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
         Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();

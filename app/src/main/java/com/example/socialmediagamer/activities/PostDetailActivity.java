@@ -162,12 +162,12 @@ public class PostDetailActivity extends AppCompatActivity {
 
     private void showDialogComment() {
         AlertDialog.Builder alert = new AlertDialog.Builder(PostDetailActivity.this);
-        alert.setTitle("Comentar...");
+        alert.setTitle("Nuevo comentario");
         alert.setIcon(R.drawable.ic_insert_comment);
         alert.setCancelable(false);
         TextInputEditText textInputEditText = new TextInputEditText(PostDetailActivity.this);
-        textInputEditText.setHint("Escribe aquí tu comentario...");
-        textInputEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(100)});
+        textInputEditText.setHint("Tu comentario...");
+        textInputEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50)});
         textInputEditText.setMaxLines(3);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.setMargins(50, 0, 50, 50);
@@ -182,7 +182,7 @@ public class PostDetailActivity extends AppCompatActivity {
             if (!value.isEmpty()) {
                 createComment(value);
             } else {
-                Toast.makeText(this, "Campo vacío", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "No se pueden publicar comentarios vacíos", Toast.LENGTH_SHORT).show();
             }
         });
         alert.setNegativeButton("Cancelar", (dialog, which) -> {
@@ -260,8 +260,8 @@ public class PostDetailActivity extends AppCompatActivity {
         mSliderView.setIndicatorAnimation(IndicatorAnimationType.THIN_WORM);
         mSliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
         mSliderView.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_RIGHT);
-        mSliderView.setIndicatorSelectedColor(Color.WHITE);
-        mSliderView.setIndicatorUnselectedColor(Color.GRAY);
+        mSliderView.setIndicatorSelectedColor(Color.BLUE);
+        mSliderView.setIndicatorUnselectedColor(Color.WHITE);
         mSliderView.setScrollTimeInSec(5);
         mSliderView.setAutoCycle(true);
         mSliderView.startAutoCycle();
@@ -292,25 +292,33 @@ public class PostDetailActivity extends AppCompatActivity {
                 }
                 if (documentSnapshot.contains("category")) {
                     String category = documentSnapshot.getString("category");
-                    assert category != null;
-                    if (category.equals("Cultura")) {
-                        mTextViewCategory.setTextColor(Color.parseColor("#A25918"));
-                        mImageViewCategory.setImageResource(R.drawable.ic_category_culture);
-                    } else if (category.equals("Deporte")) {
-                        mTextViewCategory.setTextColor(Color.BLACK);
-                        mImageViewCategory.setImageResource(R.drawable.ic_category_sports);
-                    } else if (category.equals("Estilo de vida")) {
-                        mTextViewCategory.setTextColor(Color.parseColor("#A901DB"));
-                        mImageViewCategory.setImageResource(R.drawable.ic_category_lifestyle);
-                    } else if (category.equals("Música")) {
-                        mTextViewCategory.setTextColor(Color.parseColor("#FF0000"));
-                        mImageViewCategory.setImageResource(R.drawable.ic_category_music);
-                    } else if (category.equals("Programación")) {
-                        mTextViewCategory.setTextColor(Color.parseColor("#0000FF"));
-                        mImageViewCategory.setImageResource(R.drawable.ic_category_programation);
-                    } else if (category.equals("Videojuegos")) {
-                        mTextViewCategory.setTextColor(Color.parseColor("#008000"));
-                        mImageViewCategory.setImageResource(R.drawable.ic_category_videogames);
+                    if (category != null) {
+                        switch (category) {
+                            case "Cultura":
+                                mTextViewCategory.setTextColor(Color.parseColor("#A25918"));
+                                mImageViewCategory.setImageResource(R.drawable.ic_category_culture);
+                                break;
+                            case "Deporte":
+                                mTextViewCategory.setTextColor(Color.BLACK);
+                                mImageViewCategory.setImageResource(R.drawable.ic_category_sports);
+                                break;
+                            case "Estilo de vida":
+                                mTextViewCategory.setTextColor(Color.parseColor("#A901DB"));
+                                mImageViewCategory.setImageResource(R.drawable.ic_category_lifestyle);
+                                break;
+                            case "Música":
+                                mTextViewCategory.setTextColor(Color.RED);
+                                mImageViewCategory.setImageResource(R.drawable.ic_category_music);
+                                break;
+                            case "Programación":
+                                mTextViewCategory.setTextColor(Color.BLUE);
+                                mImageViewCategory.setImageResource(R.drawable.ic_category_programation);
+                                break;
+                            case "Videojuegos":
+                                mTextViewCategory.setTextColor(Color.GREEN);
+                                mImageViewCategory.setImageResource(R.drawable.ic_category_videogames);
+                                break;
+                        }
                     }
                     mTextViewCategory.setText(category);
                 }

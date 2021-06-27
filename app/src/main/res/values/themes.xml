@@ -15,8 +15,8 @@
     </style>
 
     <style name="ToolbarName" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
-        <item name="colorControlNormal">@color/white</item>
-        <item name="titleTextColor">@color/white</item>
+        <item name="colorControlNormal">@color/colorPrimary</item>
+        <item name="titleTextColor">@color/colorPrimary</item>
         <item name="android:textColor">@color/black</item>
     </style>
 </resources>

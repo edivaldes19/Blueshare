@@ -1,5 +1,6 @@
 package com.example.socialmediagamer.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -98,7 +99,7 @@ public class ChatActivity extends AppCompatActivity {
         mExtraIdUser1 = getIntent().getStringExtra("idUser1");
         mExtraIdUser2 = getIntent().getStringExtra("idUser2");
         mExtraIdChat = getIntent().getStringExtra("idChat");
-        showCustomToolbar(R.layout.custom_chat_toolbar);
+        showCustomToolbar();
         getMyInfoUser();
         mImageViewSendMessage.setOnClickListener(view -> sendMessage());
         checkIfChatExist();
@@ -135,10 +136,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private void getMessageChat() {
         Query query = mMessageProvider.getMessageByChat(mExtraIdChat);
-        FirestoreRecyclerOptions<Message> options =
-                new FirestoreRecyclerOptions.Builder<Message>()
-                        .setQuery(query, Message.class)
-                        .build();
+        FirestoreRecyclerOptions<Message> options = new FirestoreRecyclerOptions.Builder<Message>().setQuery(query, Message.class).build();
         mAdapter = new MessagesAdapter(options, ChatActivity.this);
         mRecyclerViewMessage.setAdapter(mAdapter);
         mAdapter.startListening();
@@ -174,7 +172,7 @@ public class ChatActivity extends AppCompatActivity {
             message.setMessage(textMessage);
             mMessageProvider.create(message).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    mEditTextMessage.setText("");
+                    mEditTextMessage.setText(null);
                     mAdapter.notifyDataSetChanged();
                     getToken(message);
                 } else {
@@ -184,15 +182,16 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    private void showCustomToolbar(int resource) {
+    @SuppressLint("InflateParams")
+    private void showCustomToolbar() {
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("");
+        actionBar.setTitle(null);
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayShowCustomEnabled(true);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mActionBarView = inflater.inflate(resource, null);
+        mActionBarView = inflater.inflate(R.layout.custom_chat_toolbar, null);
         actionBar.setCustomView(mActionBarView);
         mCircleImageProfile = mActionBarView.findViewById(R.id.circleImageProfile);
         mTextViewUsername = mActionBarView.findViewById(R.id.textViewUsername);
@@ -202,6 +201,7 @@ public class ChatActivity extends AppCompatActivity {
         getUserInfo();
     }
 
+    @SuppressLint("SetTextI18n")
     private void getUserInfo() {
         String idUserInfo;
         if (mAuthProvider.getUid().equals(mExtraIdUser1)) {
@@ -210,7 +210,7 @@ public class ChatActivity extends AppCompatActivity {
             idUserInfo = mExtraIdUser1;
         }
         mListener = mUsersProvider.getUserRealtime(idUserInfo).addSnapshotListener((documentSnapshot, e) -> {
-            if (documentSnapshot.exists()) {
+            if (documentSnapshot != null && documentSnapshot.exists()) {
                 if (documentSnapshot.contains("username")) {
                     mUsernameChat = documentSnapshot.getString("username");
                     mTextViewUsername.setText(mUsernameChat);
@@ -363,12 +363,12 @@ public class ChatActivity extends AppCompatActivity {
                 public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
                     if (response.body() != null) {
                         if (response.body().getSuccess() == 1) {
-                            //Mensaje enviado
+                            //Notificación enviada exitosamente
                         } else {
-                            Toast.makeText(ChatActivity.this, "La notificacion no se pudo enviar", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ChatActivity.this, "Error al enviar notificación", Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(ChatActivity.this, "La notificacion no se pudo enviar", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ChatActivity.this, "Error al enviar notificación, cuerpo nulo", Toast.LENGTH_SHORT).show();
                     }
                 }
 

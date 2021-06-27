@@ -26,17 +26,16 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/colorPrimary" />
+                    android:background="@drawable/gradient_chat" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
-                    android:text="Quejas y sugerencias"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/complaintsAndsuggestions"
                     android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="24sp" />
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:layout_width="150dp"
@@ -54,10 +53,10 @@
                 android:layout_marginEnd="30dp"
                 android:enabled="false"
                 android:focusable="false"
+                android:hint="@string/username"
                 android:textColorHint="@color/black"
                 app:boxBackgroundColor="@color/white"
                 app:counterTextColor="@color/black"
-                app:helperTextTextColor="@color/black"
                 app:placeholderTextColor="@color/black"
                 app:startIconDrawable="@drawable/ic_account">
 
@@ -81,6 +80,7 @@
                 android:layout_marginRight="30dp"
                 android:enabled="false"
                 android:focusable="false"
+                android:hint="@string/email"
                 android:textColorHint="@color/black"
                 app:boxBackgroundColor="@color/white"
                 app:counterTextColor="@color/black"
@@ -119,14 +119,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="25dp"
-                    android:text="Queja" />
+                    android:text="@string/complain" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
                     android:id="@+id/radioButtonSuggestion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="25dp"
-                    android:text="Sugerencia" />
+                    android:text="@string/suggestion" />
             </RadioGroup>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -136,11 +136,11 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="30dp"
-                android:hint="Escribe aquí tu mensaje..."
+                android:hint="@string/writeMessage"
                 android:textColorHint="@color/black"
                 app:boxBackgroundColor="@color/white"
                 app:counterEnabled="true"
-                app:counterMaxLength="200"
+                app:counterMaxLength="250"
                 app:counterTextColor="@color/black"
                 app:errorEnabled="true"
                 app:helperTextTextColor="@color/black"
@@ -153,7 +153,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine"
                     android:isScrollContainer="true"
-                    android:maxLength="200"
+                    android:maxLength="250"
                     android:maxLines="10"
                     android:textColor="@color/black"
                     android:textColorHint="@color/black" />
@@ -166,11 +166,11 @@
                 android:layout_gravity="bottom"
                 android:layout_margin="30dp"
                 android:backgroundTint="@color/colorPrimary"
-                android:text="Enviar formulario"
+                android:text="@string/sendForm"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
+                android:textColor="@color/colorAccent"
                 app:icon="@drawable/ic_send"
-                app:iconTint="@color/white" />
+                app:iconTint="@color/colorAccent" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
