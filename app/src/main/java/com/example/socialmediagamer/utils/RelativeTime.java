@@ -35,7 +35,7 @@ public class RelativeTime extends Application {
         } else if (diff < 48 * HOUR_MILLIS) {
             return "Ayer";
         } else {
-            return "Hace " + diff / DAY_MILLIS + " dias";
+            return "Hace " + diff / DAY_MILLIS + " días";
         }
     }
 
@@ -54,7 +54,7 @@ public class RelativeTime extends Application {
         } else if (diff < 48 * HOUR_MILLIS) {
             return "Ayer";
         } else {
-            return "Hace " + diff / DAY_MILLIS + " dias";
+            return "Hace " + diff / DAY_MILLIS + " días";
         }
     }
 }

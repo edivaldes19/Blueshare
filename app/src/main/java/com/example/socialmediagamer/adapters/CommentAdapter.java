@@ -13,7 +13,6 @@ import com.example.socialmediagamer.models.Comment;
 import com.example.socialmediagamer.providers.UsersProvider;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.squareup.picasso.Picasso;
@@ -39,20 +38,17 @@ public class CommentAdapter extends FirestoreRecyclerAdapter<Comment, CommentAda
     }
 
     private void getUserInfo(String idUser, final ViewHolder holder) {
-        mUsersProvider.getUser(idUser).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()) {
-                    if (documentSnapshot.contains("username")) {
-                        String username = documentSnapshot.getString("username");
-                        holder.textViewUsername.setText(username);
-                    }
-                    if (documentSnapshot.contains("image_profile")) {
-                        String imageProfile = documentSnapshot.getString("image_profile");
-                        if (imageProfile != null) {
-                            if (!imageProfile.isEmpty()) {
-                                Picasso.with(context).load(imageProfile).into(holder.imageViewComment);
-                            }
+        mUsersProvider.getUser(idUser).addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                if (documentSnapshot.contains("username")) {
+                    String username = documentSnapshot.getString("username");
+                    holder.textViewUsername.setText(username);
+                }
+                if (documentSnapshot.contains("image_profile")) {
+                    String imageProfile = documentSnapshot.getString("image_profile");
+                    if (imageProfile != null) {
+                        if (!imageProfile.isEmpty()) {
+                            Picasso.with(context).load(imageProfile).into(holder.imageViewComment);
                         }
                     }
                 }

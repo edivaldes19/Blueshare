@@ -29,7 +29,7 @@ public class LikesProvider {
         return mCollection.whereEqualTo("idPost", idPost).whereEqualTo("idUser", idUser);
     }
 
-    public Task<Void> delete(String id) {
-        return mCollection.document(id).delete();
+    public void delete(String id) {
+        mCollection.document(id).delete();
     }
 }

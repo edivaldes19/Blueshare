@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,7 +34,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserProfileActivity extends AppCompatActivity {
     MaterialToolbar mToolbar;
-    LinearLayout mLinearLayoutEditProfile;
     ShapeableImageView mImageViewCover;
     CircleImageView mCircleImageProfile;
     MaterialTextView mTextViewUsername, mTextViewEmail, mTextViewPhone, mTextViewPostNumber, mTextViewPostExist;
@@ -52,7 +50,6 @@ public class UserProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
-        mLinearLayoutEditProfile = findViewById(R.id.linearLayoutEditProfile);
         mTextViewUsername = findViewById(R.id.textViewUsername);
         mTextViewEmail = findViewById(R.id.textViewEmail);
         mTextViewPhone = findViewById(R.id.textViewPhone);

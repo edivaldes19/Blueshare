@@ -13,66 +13,90 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="225dp"
-                android:background="@color/colorAccent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/gradient_main"
                 android:orientation="vertical"
                 tools:ignore="UselessParent">
 
-                <com.google.android.material.textview.MaterialTextView
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="@string/newPost"
-                    android:textAlignment="center"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:layout_gravity="top|center"
+                    android:layout_margin="20dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="40dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginEnd="40dp"
-                    android:orientation="horizontal">
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/circleImageBack"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:src="@drawable/ic_arrow_left"
+                        app:layout_constraintBottom_toBottomOf="@+id/textViewNuevaPublicacion"
+                        app:layout_constraintEnd_toStartOf="@id/textViewNuevaPublicacion"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                    <com.google.android.material.card.MaterialCardView
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/textViewNuevaPublicacion"
                         android:layout_width="0dp"
-                        android:layout_height="125dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_weight="1"
-                        app:cardBackgroundColor="@color/grayLight"
-                        app:cardCornerRadius="10dp">
+                        android:layout_height="wrap_content"
+                        android:text="@string/newPost"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="24sp"
+                        app:layout_constraintBottom_toTopOf="@id/linearLayoutImagenes"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/circleImageBack"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                        <com.google.android.material.imageview.ShapeableImageView
-                            android:id="@+id/imageViewPost1"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="centerInside"
-                            android:src="@drawable/ic_insert_photo" />
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <com.google.android.material.card.MaterialCardView
+                    <LinearLayout
+                        android:id="@+id/linearLayoutImagenes"
                         android:layout_width="0dp"
-                        android:layout_height="125dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_weight="1"
-                        app:cardBackgroundColor="@color/grayLight"
-                        app:cardCornerRadius="10dp">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textViewNuevaPublicacion">
 
-                        <com.google.android.material.imageview.ShapeableImageView
-                            android:id="@+id/imageViewPost2"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="centerInside"
-                            android:src="@drawable/ic_insert_photo" />
-                    </com.google.android.material.card.MaterialCardView>
-                </LinearLayout>
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="0dp"
+                            android:layout_height="125dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_weight="1"
+                            app:cardBackgroundColor="@color/colorAccent"
+                            app:cardCornerRadius="10dp">
+
+                            <com.google.android.material.imageview.ShapeableImageView
+                                android:id="@+id/imageViewPost1"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="centerInside"
+                                android:src="@drawable/ic_insert_photo" />
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="0dp"
+                            android:layout_height="125dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="1"
+                            app:cardBackgroundColor="@color/colorAccent"
+                            app:cardCornerRadius="10dp">
+
+                            <com.google.android.material.imageview.ShapeableImageView
+                                android:id="@+id/imageViewPost2"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="centerInside"
+                                android:src="@drawable/ic_insert_photo" />
+                        </com.google.android.material.card.MaterialCardView>
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -368,13 +392,4 @@
                 app:iconTint="@color/colorAccent" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/circleImageBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:background="?android:attr/selectableItemBackground"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_arrow_left" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

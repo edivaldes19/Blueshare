@@ -18,7 +18,7 @@
 
             <io.github.florent37.shapeofview.shapes.ArcView
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="wrap_content"
                 android:elevation="4dp"
                 app:shape_arc_height="20dp"
                 app:shape_arc_position="bottom">
@@ -26,23 +26,39 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/gradient_chat" />
+                    android:background="@drawable/gradient_main" />
 
-                <com.google.android.material.textview.MaterialTextView
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="@string/completeInfo"
-                    android:textAlignment="center"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="24sp" />
+                    android:layout_gravity="top|center"
+                    android:layout_margin="20dp">
 
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="35dp"
-                    android:src="@drawable/ic_verified_user" />
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/textViewComplete"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/completeInfo"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="24sp"
+                        app:layout_constraintBottom_toTopOf="@id/imageViewVerifiedUser"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/imageViewVerifiedUser"
+                        android:layout_width="0dp"
+                        android:layout_height="150dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:src="@drawable/ic_verified_user"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textViewComplete" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </io.github.florent37.shapeofview.shapes.ArcView>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -88,9 +104,6 @@
                 app:counterEnabled="true"
                 app:counterMaxLength="10"
                 app:counterTextColor="@color/black"
-                app:helperText="Ej. 4521314122"
-                app:helperTextEnabled="true"
-                app:helperTextTextColor="@color/black"
                 app:placeholderTextColor="@color/black"
                 app:startIconDrawable="@drawable/ic_contact_phone">
 

@@ -70,14 +70,7 @@ public class MyPostsAdapter extends FirestoreRecyclerAdapter<Post, MyPostsAdapte
     }
 
     private void showConfirmDelete(String postId) {
-        new AlertDialog.Builder(context)
-                .setIcon(android.R.drawable.ic_menu_delete)
-                .setTitle("Eliminar publicación")
-                .setMessage("¿Está seguro de realizar esta acción?")
-                .setCancelable(false)
-                .setPositiveButton("Sí", (dialog, which) -> deletePost(postId))
-                .setNegativeButton("No", null)
-                .show();
+        new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_menu_delete).setTitle("Eliminar publicación").setMessage("¿Está seguro de realizar esta acción?").setCancelable(false).setPositiveButton("Eliminar", (dialog, which) -> deletePost(postId)).setNegativeButton("Cancelar", null).show();
     }
 
     private void deletePost(String postId) {

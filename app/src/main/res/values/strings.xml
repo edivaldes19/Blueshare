@@ -17,8 +17,8 @@
     <string name="username">Nombre de usuario</string>
     <string name="completeInfo">Completa tu información</string>
     <string name="confirmInfo">Confirmar</string>
-    <string name="forgotPassword">Olvidé mi contraseña</string>
-    <string name="complaintsAndsuggestions">Quejas y sugerencias</string>
+    <string name="forgotPassword">¿Olvidaste tu contraseña?</string>
+    <string name="contactMe">Contáctame</string>
     <string name="sendForm">Enviar formulario</string>
     <string name="complain">Queja</string>
     <string name="suggestion">Sugerencia</string>
@@ -39,4 +39,10 @@
     <string name="editProfile">Editar perfil</string>
     <string name="totalResults">Total de resultados:</string>
     <string name="zero">0</string>
+    <string name="signOut">Cerrar sesión</string>
+    <string name="about">Acerca de</string>
+    <string name="home">Inicio</string>
+    <string name="chats">Chats</string>
+    <string name="categories">Categorías</string>
+    <string name="myProfile">Mi perfil</string>
 </resources>

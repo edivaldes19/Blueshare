@@ -21,7 +21,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
-import com.google.firebase.firestore.DocumentSnapshot;
 
 public class MessagesAdapter extends FirestoreRecyclerAdapter<Message, MessagesAdapter.ViewHolder> {
     Context context;
@@ -38,16 +37,11 @@ public class MessagesAdapter extends FirestoreRecyclerAdapter<Message, MessagesA
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     protected void onBindViewHolder(@NonNull MessagesAdapter.ViewHolder holder, int position, @NonNull Message message) {
-        DocumentSnapshot document = getSnapshots().getSnapshot(position);
-        final String messageId = document.getId();
         holder.textViewMessage.setText(message.getMessage());
         String relativeTime = RelativeTime.timeFormatAMPM(message.getTimestamp(), context);
         holder.textViewDateMessage.setText(relativeTime);
         if (message.getIdSender().equals(mAuthProvider.getUid())) {
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                    RelativeLayout.LayoutParams.WRAP_CONTENT,
-                    RelativeLayout.LayoutParams.WRAP_CONTENT
-            );
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             params.addRule(RelativeLayout.ALIGN_PARENT_END);
             params.setMargins(150, 0, 0, 0);
             holder.linearLayoutMessage.setLayoutParams(params);
@@ -57,10 +51,7 @@ public class MessagesAdapter extends FirestoreRecyclerAdapter<Message, MessagesA
             holder.textViewMessage.setTextColor(Color.WHITE);
             holder.textViewDateMessage.setTextColor(Color.LTGRAY);
         } else {
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                    RelativeLayout.LayoutParams.WRAP_CONTENT,
-                    RelativeLayout.LayoutParams.WRAP_CONTENT
-            );
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             params.addRule(RelativeLayout.ALIGN_PARENT_START);
             params.setMargins(0, 0, 150, 0);
             holder.linearLayoutMessage.setLayoutParams(params);

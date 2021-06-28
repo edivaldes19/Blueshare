@@ -2,13 +2,11 @@ package com.example.socialmediagamer.activities;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Patterns;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -24,7 +22,6 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Objects;
 import java.util.Properties;
-import java.util.regex.Pattern;
 
 import javax.mail.Authenticator;
 import javax.mail.Message;
@@ -37,14 +34,16 @@ import javax.mail.internet.MimeMessage;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.example.socialmediagamer.utils.ValidateEmail.isEmailValid;
+
 public class ContactanosActivity extends AppCompatActivity {
-    CircleImageView mcircleImageViewBack;
+    CircleImageView mCircleImageViewBack;
     TextInputEditText textInputUsernameForm, textInputEmailForm, textInputMessageForm;
     RadioGroup radioGroup;
-    MaterialRadioButton materialRadioButton, materialRadioButton_queja, materialRadioButton_sugerencia;
-    final String correoProyecto = "proyectosmariorecio@gmail.com", contrasenaProyecto = "MR1704002053CV";
-    String nombre, correo, mensaje, mUsername = "", mEmail = "";
-    static String asunto;
+    MaterialRadioButton materialRadioButton, materialRadioButtonComplain, materialRadioButtonSuggestion;
+    final String emailProject = "proyectosmariorecio@gmail.com", passwordProject = "MR1704002053CV";
+    static String affair;
+    String name, email, message, mUsername = "", mEmail = "";
     Session session;
     UsersProvider mUsersProvider;
     AuthProvider mAuthProvider;
@@ -54,12 +53,12 @@ public class ContactanosActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contactanos);
-        mcircleImageViewBack = findViewById(R.id.circleImageBack);
+        mCircleImageViewBack = findViewById(R.id.circleImageBack);
         textInputUsernameForm = findViewById(R.id.textInputUsernameForm);
         textInputEmailForm = findViewById(R.id.textInputEmailForm);
         textInputMessageForm = findViewById(R.id.textInputMessageForm);
-        materialRadioButton_queja = findViewById(R.id.radioButtonComplain);
-        materialRadioButton_sugerencia = findViewById(R.id.radioButtonSuggestion);
+        materialRadioButtonComplain = findViewById(R.id.radioButtonComplain);
+        materialRadioButtonSuggestion = findViewById(R.id.radioButtonSuggestion);
         radioGroup = findViewById(R.id.radioGroup);
         mUsersProvider = new UsersProvider();
         mAuthProvider = new AuthProvider();
@@ -68,17 +67,17 @@ public class ContactanosActivity extends AppCompatActivity {
         materialButton_enviar.setOnClickListener(view -> {
             int radioID = radioGroup.getCheckedRadioButtonId();
             materialRadioButton = findViewById(radioID);
-            nombre = Objects.requireNonNull(textInputUsernameForm.getText()).toString().trim();
-            correo = Objects.requireNonNull(textInputEmailForm.getText()).toString().trim();
-            mensaje = Objects.requireNonNull(textInputMessageForm.getText()).toString().trim();
-            if (!evaluarCampos(nombre) && !validarEmail(correo) && !evaluarCampos(mensaje) && (!materialRadioButton_queja.isChecked() || !materialRadioButton_sugerencia.isChecked())) {
+            name = Objects.requireNonNull(textInputUsernameForm.getText()).toString().trim();
+            email = Objects.requireNonNull(textInputEmailForm.getText()).toString().trim();
+            message = Objects.requireNonNull(textInputMessageForm.getText()).toString().trim();
+            if (!evaluarCampos(name) && !isEmailValid(email) && !evaluarCampos(message) && (!materialRadioButtonComplain.isChecked() || !materialRadioButtonSuggestion.isChecked())) {
                 Snackbar.make(view, "Complete los campos", Snackbar.LENGTH_SHORT).show();
             } else {
-                if (evaluarCampos(nombre)) {
-                    if (validarEmail(correo)) {
-                        if (evaluarCampos(mensaje)) {
-                            if (materialRadioButton_queja.isChecked() || materialRadioButton_sugerencia.isChecked()) {
-                                asunto = materialRadioButton.getText().toString().trim();
+                if (evaluarCampos(name)) {
+                    if (isEmailValid(email)) {
+                        if (evaluarCampos(message)) {
+                            if (materialRadioButtonComplain.isChecked() || materialRadioButtonSuggestion.isChecked()) {
+                                affair = materialRadioButton.getText().toString().trim();
                                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                                 StrictMode.setThreadPolicy(policy);
                                 Properties properties = new Properties();
@@ -90,15 +89,15 @@ public class ContactanosActivity extends AppCompatActivity {
                                 session = Session.getDefaultInstance(properties, new Authenticator() {
                                     @Override
                                     protected PasswordAuthentication getPasswordAuthentication() {
-                                        return new PasswordAuthentication(correoProyecto, contrasenaProyecto);
+                                        return new PasswordAuthentication(emailProject, passwordProject);
                                     }
                                 });
                                 try {
                                     Message message = new MimeMessage(session);
-                                    message.setFrom(new InternetAddress(correo, nombre + " (" + correo + ")"));
-                                    message.setSubject(asunto + "s de Reciobook");
-                                    message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(correoProyecto));
-                                    message.setContent(mensaje, "text/html; charset=utf-8");
+                                    message.setFrom(new InternetAddress(email, name + " (" + email + ")"));
+                                    message.setSubject(affair + " de Blueshare");
+                                    message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailProject));
+                                    message.setContent(this.message, "text/html; charset=utf-8");
                                     new SendMail().execute(message);
                                 } catch (Exception e) {
                                     Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
@@ -117,7 +116,7 @@ public class ContactanosActivity extends AppCompatActivity {
                 }
             }
         });
-        mcircleImageViewBack.setOnClickListener(v -> finish());
+        mCircleImageViewBack.setOnClickListener(v -> finish());
         getUser();
     }
 
@@ -136,12 +135,7 @@ public class ContactanosActivity extends AppCompatActivity {
         });
     }
 
-    public boolean validarEmail(String email) {
-        Pattern pattern = Patterns.EMAIL_ADDRESS;
-        return pattern.matcher(email).matches();
-    }
-
-    public boolean evaluarCampos(String valor) {
+    private boolean evaluarCampos(String valor) {
         return !valor.equals("");
     }
 
@@ -192,13 +186,12 @@ public class ContactanosActivity extends AppCompatActivity {
             super.onPostExecute(s);
             progressDialog.dismiss();
             if (s.equals("Éxito")) {
-                if (ContactanosActivity.asunto.equals("Queja")) {
+                if (ContactanosActivity.affair.equals("Queja")) {
                     Toast.makeText(ContactanosActivity.this, "Gracias por su queja", Toast.LENGTH_SHORT).show();
-                } else if (ContactanosActivity.asunto.equals("Sugerencia")) {
+                } else if (ContactanosActivity.affair.equals("Sugerencia")) {
                     Toast.makeText(ContactanosActivity.this, "Gracias por su sugerencia", Toast.LENGTH_SHORT).show();
                 }
-                Intent intent = new Intent(ContactanosActivity.this, MainActivity.class);
-                startActivity(intent);
+                finish();
             } else {
                 Toast.makeText(ContactanosActivity.this, "Error", Toast.LENGTH_SHORT).show();
             }

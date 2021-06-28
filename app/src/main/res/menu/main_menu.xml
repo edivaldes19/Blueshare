@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/itemAcercaDe"
-        android:title="Acerca de"
+        android:title="@string/about"
         app:showAsAction="never" />
     <item
         android:id="@+id/itemContactanos"
-        android:title="Quejas y sugerencias"
+        android:title="@string/contactMe"
         app:showAsAction="never" />
     <item
         android:id="@+id/itemLogout"
-        android:title="Cerrar sesión"
+        android:title="@string/signOut"
         app:showAsAction="never" />
 </menu>

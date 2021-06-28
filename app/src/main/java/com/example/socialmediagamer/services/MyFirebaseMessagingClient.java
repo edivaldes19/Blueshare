@@ -71,45 +71,40 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
             showNotificationMessage(data);
             return;
         }
-        new Handler(Looper.getMainLooper())
-                .post(() -> Picasso.with(getApplicationContext())
-                        .load(imageSender)
-                        .into(new Target() {
-                            @Override
-                            public void onBitmapLoaded(final Bitmap bitmapSender, Picasso.LoadedFrom from) {
-                                getImageReceiver(data, imageReceiver, bitmapSender);
-                            }
+        new Handler(Looper.getMainLooper()).post(() -> Picasso.with(getApplicationContext()).load(imageSender).into(new Target() {
+            @Override
+            public void onBitmapLoaded(final Bitmap bitmapSender, Picasso.LoadedFrom from) {
+                getImageReceiver(data, imageReceiver, bitmapSender);
+            }
 
-                            @Override
-                            public void onBitmapFailed(Drawable errorDrawable) {
-                                getImageReceiver(data, imageReceiver, null);
-                            }
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+                getImageReceiver(data, imageReceiver, null);
+            }
 
-                            @Override
-                            public void onPrepareLoad(Drawable placeHolderDrawable) {
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
 
-                            }
-                        }));
+            }
+        }));
     }
 
     private void getImageReceiver(final Map<String, String> data, String imageReceiver, final Bitmap bitmapSender) {
-        Picasso.with(getApplicationContext())
-                .load(imageReceiver)
-                .into(new Target() {
-                    @Override
-                    public void onBitmapLoaded(Bitmap bitmapReceiver, Picasso.LoadedFrom from) {
-                        notifyMessage(data, bitmapSender, bitmapReceiver);
-                    }
+        Picasso.with(getApplicationContext()).load(imageReceiver).into(new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmapReceiver, Picasso.LoadedFrom from) {
+                notifyMessage(data, bitmapSender, bitmapReceiver);
+            }
 
-                    @Override
-                    public void onBitmapFailed(Drawable errorDrawable) {
-                        notifyMessage(data, bitmapSender, null);
-                    }
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+                notifyMessage(data, bitmapSender, null);
+            }
 
-                    @Override
-                    public void onPrepareLoad(Drawable placeHolderDrawable) {
-                    }
-                });
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+            }
+        });
     }
 
     private void notifyMessage(Map<String, String> data, Bitmap bitmapSender, Bitmap bitmapReceiver) {
@@ -133,7 +128,7 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
         intent.putExtra("imageSender", imageSender);
         intent.putExtra("imageReceiver", imageReceiver);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        RemoteInput remoteInput = new RemoteInput.Builder(NOTIFICATION_REPLY).setLabel("Escribe aquí tu mensaje...").build();
+        RemoteInput remoteInput = new RemoteInput.Builder(NOTIFICATION_REPLY).setLabel("Tu mensaje...").build();
         final NotificationCompat.Action action = new NotificationCompat.Action.Builder(R.mipmap.ic_launcher, "Responder", pendingIntent).addRemoteInput(remoteInput).build();
         Gson gson = new Gson();
         final Message[] messages = gson.fromJson(messagesJSON, Message[].class);

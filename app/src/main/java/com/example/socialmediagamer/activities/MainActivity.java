@@ -37,8 +37,8 @@ import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import static com.example.socialmediagamer.utils.ValidateEmail.isEmailValid;
 
 public class MainActivity extends AppCompatActivity {
     MaterialTextView materialTextView_register, materialTextViewForgotPassword;
@@ -159,13 +159,6 @@ public class MainActivity extends AppCompatActivity {
         alert.setNegativeButton("Cancelar", (dialog, which) -> {
         });
         alert.show();
-    }
-
-    private boolean isEmailValid(String email) {
-        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
-        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
     }
 
     @Override
