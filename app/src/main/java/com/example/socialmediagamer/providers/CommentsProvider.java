@@ -17,6 +17,10 @@ public class CommentsProvider {
         return mCollection.document().set(comment);
     }
 
+    public Task<Void> delete(String id) {
+        return mCollection.document(id).delete();
+    }
+
     public Query getCommentsByPost(String id) {
         return mCollection.whereEqualTo("idPost", id);
     }

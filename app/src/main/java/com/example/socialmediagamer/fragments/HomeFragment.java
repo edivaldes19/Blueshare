@@ -2,6 +2,7 @@ package com.example.socialmediagamer.fragments;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,7 +76,14 @@ public class HomeFragment extends Fragment implements MaterialSearchBar.OnSearch
             return true;
         });
         mFab.setOnClickListener(v -> goToPost());
+        showTooltip();
         return mView;
+    }
+
+    private void showTooltip() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            mFab.setTooltipText("Crear una nueva publicación");
+        }
     }
 
     private void searchByTitle(String title) {
@@ -120,8 +128,7 @@ public class HomeFragment extends Fragment implements MaterialSearchBar.OnSearch
     }
 
     private void goToPost() {
-        Intent intent = new Intent(getContext(), PostActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(getContext(), PostActivity.class));
     }
 
     private void logout() {

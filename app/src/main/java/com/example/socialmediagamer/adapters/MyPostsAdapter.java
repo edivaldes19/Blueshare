@@ -52,9 +52,9 @@ public class MyPostsAdapter extends FirestoreRecyclerAdapter<Post, MyPostsAdapte
         holder.textViewRelativeTime.setText(relativeTime);
         holder.textViewTitle.setText(post.getTitle());
         if (post.getIdUser().equals(mAuthProvider.getUid())) {
-            holder.mImageViewDelete.setVisibility(View.VISIBLE);
+            holder.imageViewDelete.setVisibility(View.VISIBLE);
         } else {
-            holder.mImageViewDelete.setVisibility(View.GONE);
+            holder.imageViewDelete.setVisibility(View.GONE);
         }
         if (post.getImage1() != null) {
             if (!post.getImage1().isEmpty()) {
@@ -66,7 +66,7 @@ public class MyPostsAdapter extends FirestoreRecyclerAdapter<Post, MyPostsAdapte
             intent.putExtra("id", postId);
             context.startActivity(intent);
         });
-        holder.mImageViewDelete.setOnClickListener(v -> showConfirmDelete(postId));
+        holder.imageViewDelete.setOnClickListener(v -> showConfirmDelete(postId));
     }
 
     private void showConfirmDelete(String postId) {
@@ -93,7 +93,7 @@ public class MyPostsAdapter extends FirestoreRecyclerAdapter<Post, MyPostsAdapte
     public static class ViewHolder extends RecyclerView.ViewHolder {
         MaterialTextView textViewTitle, textViewRelativeTime;
         CircleImageView circleImagePost;
-        ShapeableImageView mImageViewDelete;
+        ShapeableImageView imageViewDelete;
         View viewHolder;
 
         public ViewHolder(View view) {
@@ -101,7 +101,7 @@ public class MyPostsAdapter extends FirestoreRecyclerAdapter<Post, MyPostsAdapte
             textViewTitle = view.findViewById(R.id.textViewTitleMyPost);
             textViewRelativeTime = view.findViewById(R.id.textViewRelativeTimeMyPost);
             circleImagePost = view.findViewById(R.id.circleImageMyPost);
-            mImageViewDelete = view.findViewById(R.id.imageViewDeleteMyPost);
+            imageViewDelete = view.findViewById(R.id.imageViewDeleteMyPost);
             viewHolder = view;
         }
     }

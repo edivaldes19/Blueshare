@@ -45,4 +45,8 @@
     <string name="chats">Chats</string>
     <string name="categories">Categorías</string>
     <string name="myProfile">Mi perfil</string>
+    <string name="currentVersion">Versión: 1.0.0</string>
+    <string name="releaseDate">© Junio 2021</string>
+    <string name="developedBy">Desarrollado por:</string>
+    <string name="developerName">Edgar Manuel Velázquez Valdes</string>
 </resources>

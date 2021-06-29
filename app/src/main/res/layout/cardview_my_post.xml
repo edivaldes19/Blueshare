@@ -46,9 +46,17 @@
         </LinearLayout>
 
         <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imageViewEditMyPost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:src="@drawable/ic_edit_yellow" />
+
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imageViewDeleteMyPost"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
             android:src="@drawable/ic_delete" />
     </LinearLayout>
 </FrameLayout>

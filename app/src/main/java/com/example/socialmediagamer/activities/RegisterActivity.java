@@ -25,8 +25,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static com.example.socialmediagamer.utils.ValidateEmail.isEmailValid;
 
 public class RegisterActivity extends AppCompatActivity {
-    CircleImageView mcircleImageViewBack;
-    TextInputEditText mtextInputUsername, mtextInputEmailR, mtextInputPhone, mtextInputPasswordR, mtextInputConfirmPasswordR;
+    CircleImageView mCircleImageViewBack;
+    TextInputEditText mTextInputUsername, mTextInputEmailR, mTextInputPhone, mTextInputPasswordR, mTextInputConfirmPasswordR;
     MaterialButton materialButtonRegister;
     AuthProvider mAuthProvider;
     UsersProvider mUsersProvider;
@@ -36,12 +36,12 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        mcircleImageViewBack = findViewById(R.id.circleImageBack);
-        mtextInputUsername = findViewById(R.id.textInputUsernameR);
-        mtextInputEmailR = findViewById(R.id.textInputEmailR);
-        mtextInputPhone = findViewById(R.id.textInputPhoneR);
-        mtextInputPasswordR = findViewById(R.id.textInputPasswordR);
-        mtextInputConfirmPasswordR = findViewById(R.id.textInputConfirmPasswordR);
+        mCircleImageViewBack = findViewById(R.id.circleImageBack);
+        mTextInputUsername = findViewById(R.id.textInputUsernameR);
+        mTextInputEmailR = findViewById(R.id.textInputEmailR);
+        mTextInputPhone = findViewById(R.id.textInputPhoneR);
+        mTextInputPasswordR = findViewById(R.id.textInputPasswordR);
+        mTextInputConfirmPasswordR = findViewById(R.id.textInputConfirmPasswordR);
         materialButtonRegister = findViewById(R.id.btnRegister);
         mAuthProvider = new AuthProvider();
         mUsersProvider = new UsersProvider();
@@ -52,11 +52,11 @@ public class RegisterActivity extends AppCompatActivity {
         mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         validarCampos();
         materialButtonRegister.setOnClickListener(v -> {
-            String username = Objects.requireNonNull(mtextInputUsername.getText()).toString().trim();
-            String email = Objects.requireNonNull(mtextInputEmailR.getText()).toString().trim();
-            String phone = Objects.requireNonNull(mtextInputPhone.getText()).toString().trim();
-            String password = Objects.requireNonNull(mtextInputPasswordR.getText()).toString().trim();
-            String confirmPassword = Objects.requireNonNull(mtextInputConfirmPasswordR.getText()).toString().trim();
+            String username = Objects.requireNonNull(mTextInputUsername.getText()).toString().trim();
+            String email = Objects.requireNonNull(mTextInputEmailR.getText()).toString().trim();
+            String phone = Objects.requireNonNull(mTextInputPhone.getText()).toString().trim();
+            String password = Objects.requireNonNull(mTextInputPasswordR.getText()).toString().trim();
+            String confirmPassword = Objects.requireNonNull(mTextInputConfirmPasswordR.getText()).toString().trim();
             if (!username.isEmpty() && !email.isEmpty() && !phone.isEmpty() && !password.isEmpty() && !confirmPassword.isEmpty()) {
                 if (isEmailValid(email)) {
                     if (password.equals(confirmPassword)) {
@@ -75,7 +75,7 @@ public class RegisterActivity extends AppCompatActivity {
                 Snackbar.make(v, "Complete los campos", Snackbar.LENGTH_SHORT).show();
             }
         });
-        mcircleImageViewBack.setOnClickListener(v -> finish());
+        mCircleImageViewBack.setOnClickListener(v -> finish());
     }
 
     private void createUser(final String username, final String email, final String phone, final String password) {
@@ -109,17 +109,17 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void validarCampos() {
-        mtextInputUsername.addTextChangedListener(new TextWatcher() {
+        mTextInputUsername.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (Objects.requireNonNull(mtextInputUsername.getText()).toString().isEmpty()) {
-                    mtextInputUsername.setError("El nombre de usuario es obligatorio");
+                if (Objects.requireNonNull(mTextInputUsername.getText()).toString().isEmpty()) {
+                    mTextInputUsername.setError("El nombre de usuario es obligatorio");
                 } else {
-                    mtextInputUsername.setError(null);
+                    mTextInputUsername.setError(null);
                 }
             }
 
@@ -127,17 +127,17 @@ public class RegisterActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
             }
         });
-        mtextInputEmailR.addTextChangedListener(new TextWatcher() {
+        mTextInputEmailR.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (Objects.requireNonNull(mtextInputEmailR.getText()).toString().isEmpty()) {
-                    mtextInputEmailR.setError("El correo electrónico es obligatorio");
+                if (Objects.requireNonNull(mTextInputEmailR.getText()).toString().isEmpty()) {
+                    mTextInputEmailR.setError("El correo electrónico es obligatorio");
                 } else {
-                    mtextInputEmailR.setError(null);
+                    mTextInputEmailR.setError(null);
                 }
             }
 
@@ -145,17 +145,17 @@ public class RegisterActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
             }
         });
-        mtextInputPhone.addTextChangedListener(new TextWatcher() {
+        mTextInputPhone.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (Objects.requireNonNull(mtextInputPhone.getText()).toString().isEmpty()) {
-                    mtextInputPhone.setError("El teléfono es obligatorio");
+                if (Objects.requireNonNull(mTextInputPhone.getText()).toString().isEmpty()) {
+                    mTextInputPhone.setError("El teléfono es obligatorio");
                 } else {
-                    mtextInputPhone.setError(null);
+                    mTextInputPhone.setError(null);
                 }
             }
 
@@ -163,17 +163,17 @@ public class RegisterActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
             }
         });
-        mtextInputPasswordR.addTextChangedListener(new TextWatcher() {
+        mTextInputPasswordR.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (Objects.requireNonNull(mtextInputPasswordR.getText()).toString().isEmpty()) {
-                    mtextInputPasswordR.setError("La contraseña es obligatoria", null);
+                if (Objects.requireNonNull(mTextInputPasswordR.getText()).toString().isEmpty()) {
+                    mTextInputPasswordR.setError("La contraseña es obligatoria", null);
                 } else {
-                    mtextInputPasswordR.setError(null);
+                    mTextInputPasswordR.setError(null);
                 }
             }
 
@@ -181,17 +181,17 @@ public class RegisterActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
             }
         });
-        mtextInputConfirmPasswordR.addTextChangedListener(new TextWatcher() {
+        mTextInputConfirmPasswordR.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (Objects.requireNonNull(mtextInputConfirmPasswordR.getText()).toString().isEmpty()) {
-                    mtextInputConfirmPasswordR.setError("Debe confirmar su contraseña", null);
+                if (Objects.requireNonNull(mTextInputConfirmPasswordR.getText()).toString().isEmpty()) {
+                    mTextInputConfirmPasswordR.setError("Debe confirmar su contraseña", null);
                 } else {
-                    mtextInputConfirmPasswordR.setError(null);
+                    mTextInputConfirmPasswordR.setError(null);
                 }
             }
 

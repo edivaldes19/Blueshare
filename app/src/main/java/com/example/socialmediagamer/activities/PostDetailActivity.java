@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.widget.LinearLayout;
@@ -113,6 +114,13 @@ public class PostDetailActivity extends AppCompatActivity {
         mCardViewShowProfile.setOnClickListener(v -> goToShowProfile());
         getPost();
         getNumberLikes();
+        showTooltip();
+    }
+
+    private void showTooltip() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            mFabComment.setTooltipText("Crear un nuevo comentario");
+        }
     }
 
     @SuppressLint("SetTextI18n")

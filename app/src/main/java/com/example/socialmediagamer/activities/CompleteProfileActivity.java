@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.Objects;
 
 public class CompleteProfileActivity extends AppCompatActivity {
-    TextInputEditText mtextInputUsername, mtextInputPhone;
+    TextInputEditText mTextInputUsername, mTextInputPhone;
     MaterialButton materialButtonRegister;
     AuthProvider mAuthProvider;
     UsersProvider mUsersProvider;
@@ -30,9 +30,9 @@ public class CompleteProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_compile_profile);
-        mtextInputUsername = findViewById(R.id.textInputUsernameConfirm);
-        mtextInputPhone = findViewById(R.id.textInputPhone);
+        setContentView(R.layout.activity_complete_profile);
+        mTextInputUsername = findViewById(R.id.textInputUsernameConfirm);
+        mTextInputPhone = findViewById(R.id.textInputPhone);
         materialButtonRegister = findViewById(R.id.btnConfirm);
         mAuthProvider = new AuthProvider();
         mUsersProvider = new UsersProvider();
@@ -43,8 +43,8 @@ public class CompleteProfileActivity extends AppCompatActivity {
         mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         validarCampos();
         materialButtonRegister.setOnClickListener(v -> {
-            String username = Objects.requireNonNull(mtextInputUsername.getText()).toString().trim();
-            String phone = Objects.requireNonNull(mtextInputPhone.getText()).toString().trim();
+            String username = Objects.requireNonNull(mTextInputUsername.getText()).toString().trim();
+            String phone = Objects.requireNonNull(mTextInputPhone.getText()).toString().trim();
             if (!username.isEmpty() && !phone.isEmpty()) {
                 updateUser(username, phone);
             } else {
@@ -64,8 +64,7 @@ public class CompleteProfileActivity extends AppCompatActivity {
         mUsersProvider.update(user).addOnCompleteListener(task1 -> {
             mDialog.dismiss();
             if (task1.isSuccessful()) {
-                Intent intent = new Intent(CompleteProfileActivity.this, HomeActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(CompleteProfileActivity.this, HomeActivity.class));
                 finish();
             } else {
                 Toast.makeText(CompleteProfileActivity.this, "Error al registrar el usuario en la base de datos", Toast.LENGTH_SHORT).show();
@@ -74,17 +73,17 @@ public class CompleteProfileActivity extends AppCompatActivity {
     }
 
     private void validarCampos() {
-        mtextInputUsername.addTextChangedListener(new TextWatcher() {
+        mTextInputUsername.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (Objects.requireNonNull(mtextInputUsername.getText()).toString().isEmpty()) {
-                    mtextInputUsername.setError("El nombre de usuario es obligatorio");
+                if (Objects.requireNonNull(mTextInputUsername.getText()).toString().isEmpty()) {
+                    mTextInputUsername.setError("El nombre de usuario es obligatorio");
                 } else {
-                    mtextInputUsername.setError(null);
+                    mTextInputUsername.setError(null);
                 }
             }
 
@@ -92,17 +91,17 @@ public class CompleteProfileActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
             }
         });
-        mtextInputPhone.addTextChangedListener(new TextWatcher() {
+        mTextInputPhone.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (Objects.requireNonNull(mtextInputPhone.getText()).toString().isEmpty()) {
-                    mtextInputPhone.setError("El teléfono es obligatorio");
+                if (Objects.requireNonNull(mTextInputPhone.getText()).toString().isEmpty()) {
+                    mTextInputPhone.setError("El teléfono es obligatorio");
                 } else {
-                    mtextInputPhone.setError(null);
+                    mTextInputPhone.setError(null);
                 }
             }
 

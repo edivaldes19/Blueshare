@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                         if (task.isSuccessful()) {
                             Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
                             finish();
                         } else {
@@ -100,10 +101,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         mButtonGoogle.setOnClickListener(v -> resultLauncher.launch(new Intent(mGoogleSignInClient.getSignInIntent())));
-        materialTextView_register.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
-            startActivity(intent);
-        });
+        materialTextView_register.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, RegisterActivity.class)));
         materialTextViewForgotPassword.setOnClickListener(v -> showDialogForgotPassword());
         if (!isOnline(this)) {
             Toast.makeText(getApplicationContext(), "Error de red, verifique su conexión", Toast.LENGTH_LONG).show();
@@ -204,6 +202,7 @@ public class MainActivity extends AppCompatActivity {
             if (documentSnapshot.exists()) {
                 progressDialog.dismiss();
                 Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();
             } else {
@@ -214,12 +213,10 @@ public class MainActivity extends AppCompatActivity {
                 mUsersProvider.create(user).addOnCompleteListener(task -> {
                     progressDialog.dismiss();
                     if (task.isSuccessful()) {
-                        Intent intent = new Intent(MainActivity.this, CompleteProfileActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
+                        startActivity(new Intent(MainActivity.this, CompleteProfileActivity.class));
                         finish();
                     } else {
-                        Toast.makeText(MainActivity.this, "Error al guardar la información en Cloud Firestore", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Error al guardar la información en la base de datos", Toast.LENGTH_SHORT).show();
                     }
                 });
             }

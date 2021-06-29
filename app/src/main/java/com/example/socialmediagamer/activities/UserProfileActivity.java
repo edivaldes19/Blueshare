@@ -3,6 +3,7 @@ package com.example.socialmediagamer.activities;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,7 +43,7 @@ public class UserProfileActivity extends AppCompatActivity {
     UsersProvider mUsersProvider;
     AuthProvider mAuthProvider;
     PostProvider mPostProvider;
-    String mExtraIdUser;
+    String mExtraIdUser, mUsername = "";
     MyPostsAdapter mAdapter;
     ListenerRegistration mListener, mListenerGetUser;
 
@@ -77,6 +78,13 @@ public class UserProfileActivity extends AppCompatActivity {
         getUser();
         getPostNumber();
         checkIfExistPost();
+        showTooltip();
+    }
+
+    private void showTooltip() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            mFabChat.setTooltipText("Iniciar chat con " + mUsername);
+        }
     }
 
     private void goToChatActivity() {
@@ -150,8 +158,8 @@ public class UserProfileActivity extends AppCompatActivity {
             if (documentSnapshot != null) {
                 if (documentSnapshot.exists()) {
                     if (documentSnapshot.contains("username")) {
-                        String username = documentSnapshot.getString("username");
-                        mTextViewUsername.setText(username);
+                        mUsername = documentSnapshot.getString("username");
+                        mTextViewUsername.setText(mUsername);
                     }
                     if (documentSnapshot.contains("email")) {
                         String email = documentSnapshot.getString("email");

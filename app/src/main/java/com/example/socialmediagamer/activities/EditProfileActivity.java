@@ -100,8 +100,8 @@ public class EditProfileActivity extends AppCompatActivity {
                     user.setUsername(mUsername);
                     user.setPhone(mPhone);
                     user.setId(mAuthProvider.getUid());
-                    user.setImageProfile(mImageProfile);
-                    user.setImageCover(mImageCover);
+                    user.setImage_profile(mImageProfile);
+                    user.setImage_cover(mImageCover);
                     updateInfo(user);
                 }
             } else {
@@ -155,8 +155,8 @@ public class EditProfileActivity extends AppCompatActivity {
                                 User user = new User();
                                 user.setUsername(mUsername);
                                 user.setPhone(mPhone);
-                                user.setImageProfile(urlProfile);
-                                user.setImageCover(urlCover);
+                                user.setImage_profile(urlProfile);
+                                user.setImage_cover(urlCover);
                                 user.setId(mAuthProvider.getUid());
                                 updateInfo(user);
                             });
@@ -183,11 +183,11 @@ public class EditProfileActivity extends AppCompatActivity {
                     user.setUsername(mUsername);
                     user.setPhone(mPhone);
                     if (isProfileImage) {
-                        user.setImageProfile(url);
-                        user.setImageCover(mImageCover);
+                        user.setImage_profile(url);
+                        user.setImage_cover(mImageCover);
                     } else {
-                        user.setImageCover(url);
-                        user.setImageProfile(mImageProfile);
+                        user.setImage_cover(url);
+                        user.setImage_profile(mImageProfile);
                     }
                     user.setId(mAuthProvider.getUid());
                     updateInfo(user);

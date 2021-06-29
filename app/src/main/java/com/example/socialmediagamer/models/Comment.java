@@ -5,7 +5,6 @@ public class Comment {
     private long timestamp;
 
     public Comment() {
-
     }
 
     public Comment(String id, String comment, String idUser, String idPost, long timestamp) {

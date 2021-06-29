@@ -2,6 +2,7 @@ package com.example.socialmediagamer.activities;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -116,7 +117,10 @@ public class ContactanosActivity extends AppCompatActivity {
                 }
             }
         });
-        mCircleImageViewBack.setOnClickListener(v -> finish());
+        mCircleImageViewBack.setOnClickListener(v -> {
+            startActivity(new Intent(ContactanosActivity.this, HomeActivity.class));
+            finish();
+        });
         getUser();
     }
 

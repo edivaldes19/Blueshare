@@ -1,5 +1,6 @@
 package com.example.socialmediagamer.activities;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
@@ -30,6 +31,7 @@ public class HomeActivity extends AppCompatActivity implements ConnectionReceive
     TokenProvider mTokenProvider;
     AuthProvider mAuthProvider;
     UsersProvider mUsersProvider;
+    String mImageProfile = "", mImageCover = "";
     boolean isPressed = false;
 
     @Override
@@ -45,6 +47,21 @@ public class HomeActivity extends AppCompatActivity implements ConnectionReceive
         openFragment(new HomeFragment());
         createToken();
         checkConnection();
+        getUser();
+    }
+
+    private void getUser() {
+        mUsersProvider.getUser(mAuthProvider.getUid()).addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                if (documentSnapshot.contains("image_profile") && documentSnapshot.contains("image_cover")) {
+                    mImageProfile = documentSnapshot.getString("image_profile");
+                    mImageCover = documentSnapshot.getString("image_cover");
+                    if ((mImageProfile == null || mImageProfile.isEmpty()) || (mImageCover == null || mImageCover.isEmpty())) {
+                        new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_info).setTitle("Recomendación").setMessage("Vaya a Mi perfil -> Editar perfil y establezca una imagen de perfil y de portada para evitar posibles bloqueos en la aplicación.").setCancelable(false).setPositiveButton("De acuerdo", null).show();
+                    }
+                }
+            }
+        });
     }
 
     private void checkConnection() {

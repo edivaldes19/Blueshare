@@ -1,20 +1,20 @@
 package com.example.socialmediagamer.models;
 
 public class User {
-    private String id, email, username, phone, imageProfile, imageCover;
+    private String id, email, username, phone, image_profile, image_cover;
     private long timestamp, lastConnection;
     private boolean online;
 
     public User() {
     }
 
-    public User(String id, String email, String username, String phone, String imageProfile, String imageCover, long timestamp, long lastConnection, boolean online) {
+    public User(String id, String email, String username, String phone, String image_profile, String image_cover, long timestamp, long lastConnection, boolean online) {
         this.id = id;
         this.email = email;
         this.username = username;
         this.phone = phone;
-        this.imageProfile = imageProfile;
-        this.imageCover = imageCover;
+        this.image_profile = image_profile;
+        this.image_cover = image_cover;
         this.timestamp = timestamp;
         this.lastConnection = lastConnection;
         this.online = online;
@@ -52,20 +52,20 @@ public class User {
         this.phone = phone;
     }
 
-    public String getImageProfile() {
-        return imageProfile;
+    public String getImage_profile() {
+        return image_profile;
     }
 
-    public void setImageProfile(String imageProfile) {
-        this.imageProfile = imageProfile;
+    public void setImage_profile(String image_profile) {
+        this.image_profile = image_profile;
     }
 
-    public String getImageCover() {
-        return imageCover;
+    public String getImage_cover() {
+        return image_cover;
     }
 
-    public void setImageCover(String imageCover) {
-        this.imageCover = imageCover;
+    public void setImage_cover(String image_cover) {
+        this.image_cover = image_cover;
     }
 
     public long getTimestamp() {
