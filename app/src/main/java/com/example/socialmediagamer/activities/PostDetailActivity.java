@@ -323,7 +323,7 @@ public class PostDetailActivity extends AppCompatActivity {
                                 mImageViewCategory.setImageResource(R.drawable.ic_category_programation);
                                 break;
                             case "Videojuegos":
-                                mTextViewCategory.setTextColor(Color.GREEN);
+                                mTextViewCategory.setTextColor(Color.parseColor("#008000"));
                                 mImageViewCategory.setImageResource(R.drawable.ic_category_videogames);
                                 break;
                         }

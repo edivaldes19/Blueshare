@@ -52,6 +52,7 @@ public class HomeFragment extends Fragment implements MaterialSearchBar.OnSearch
         mSearchBar = mView.findViewById(R.id.searchBar);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(linearLayoutManager);
+        setHasOptionsMenu(true);
         mAuthProvider = new AuthProvider();
         mPostProvider = new PostProvider();
         mSearchBar.setOnSearchActionListener(this);

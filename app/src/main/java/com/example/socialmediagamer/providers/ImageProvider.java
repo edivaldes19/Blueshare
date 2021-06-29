@@ -11,7 +11,7 @@ import java.io.File;
 import java.util.Date;
 
 public class ImageProvider {
-    StorageReference mStorage;
+    private StorageReference mStorage;
 
     public ImageProvider() {
         mStorage = FirebaseStorage.getInstance().getReference();

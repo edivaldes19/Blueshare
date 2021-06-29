@@ -8,7 +8,7 @@ import com.google.firebase.firestore.Query;
 import java.util.ArrayList;
 
 public class ChatsProvider {
-    CollectionReference mCollection;
+    private final CollectionReference mCollection;
 
     public ChatsProvider() {
         mCollection = FirebaseFirestore.getInstance().collection("Chats");

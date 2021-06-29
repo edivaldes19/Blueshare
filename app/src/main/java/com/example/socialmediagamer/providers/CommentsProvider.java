@@ -7,7 +7,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 public class CommentsProvider {
-    CollectionReference mCollection;
+    private final CollectionReference mCollection;
 
     public CommentsProvider() {
         mCollection = FirebaseFirestore.getInstance().collection("Comments");

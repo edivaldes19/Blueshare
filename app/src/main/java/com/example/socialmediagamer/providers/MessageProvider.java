@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MessageProvider {
-    CollectionReference mCollection;
+    private final CollectionReference mCollection;
 
     public MessageProvider() {
         mCollection = FirebaseFirestore.getInstance().collection("Messages");

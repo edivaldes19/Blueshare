@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.socialmediagamer.R;
+import com.example.socialmediagamer.activities.PostActivity;
 import com.example.socialmediagamer.activities.PostDetailActivity;
 import com.example.socialmediagamer.models.Post;
 import com.example.socialmediagamer.providers.AuthProvider;
@@ -52,8 +53,10 @@ public class MyPostsAdapter extends FirestoreRecyclerAdapter<Post, MyPostsAdapte
         holder.textViewRelativeTime.setText(relativeTime);
         holder.textViewTitle.setText(post.getTitle());
         if (post.getIdUser().equals(mAuthProvider.getUid())) {
+            holder.imageViewEdit.setVisibility(View.VISIBLE);
             holder.imageViewDelete.setVisibility(View.VISIBLE);
         } else {
+            holder.imageViewEdit.setVisibility(View.GONE);
             holder.imageViewDelete.setVisibility(View.GONE);
         }
         if (post.getImage1() != null) {
@@ -64,6 +67,12 @@ public class MyPostsAdapter extends FirestoreRecyclerAdapter<Post, MyPostsAdapte
         holder.viewHolder.setOnClickListener(v -> {
             Intent intent = new Intent(context, PostDetailActivity.class);
             intent.putExtra("id", postId);
+            context.startActivity(intent);
+        });
+        holder.imageViewEdit.setOnClickListener(v -> {
+            Intent intent = new Intent(context, PostActivity.class);
+            intent.putExtra("idPostUpdate", postId);
+            intent.putExtra("PostSelect", true);
             context.startActivity(intent);
         });
         holder.imageViewDelete.setOnClickListener(v -> showConfirmDelete(postId));
@@ -93,7 +102,7 @@ public class MyPostsAdapter extends FirestoreRecyclerAdapter<Post, MyPostsAdapte
     public static class ViewHolder extends RecyclerView.ViewHolder {
         MaterialTextView textViewTitle, textViewRelativeTime;
         CircleImageView circleImagePost;
-        ShapeableImageView imageViewDelete;
+        ShapeableImageView imageViewEdit, imageViewDelete;
         View viewHolder;
 
         public ViewHolder(View view) {
@@ -101,6 +110,7 @@ public class MyPostsAdapter extends FirestoreRecyclerAdapter<Post, MyPostsAdapte
             textViewTitle = view.findViewById(R.id.textViewTitleMyPost);
             textViewRelativeTime = view.findViewById(R.id.textViewRelativeTimeMyPost);
             circleImagePost = view.findViewById(R.id.circleImageMyPost);
+            imageViewEdit = view.findViewById(R.id.imageViewEditMyPost);
             imageViewDelete = view.findViewById(R.id.imageViewDeleteMyPost);
             viewHolder = view;
         }

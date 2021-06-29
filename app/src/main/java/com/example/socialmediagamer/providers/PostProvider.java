@@ -7,15 +7,32 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 public class PostProvider {
-    CollectionReference mCollection;
+    private final CollectionReference mCollection;
 
     public PostProvider() {
         mCollection = FirebaseFirestore.getInstance().collection("Posts");
     }
 
     public Task<Void> save(Post post) {
-        return mCollection.document().set(post);
+        String id = mCollection.document().getId();
+        post.setId(id);
+        return mCollection.document(id).set(post);
+    }
+
+    public Task<Void> update(Post post) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("category", post.getCategory());
+        map.put("description", post.getDescription());
+        map.put("image1", post.getImage1());
+        map.put("image2", post.getImage2());
+        map.put("timestamp", new Date().getTime());
+        map.put("title", post.getTitle());
+        return mCollection.document(post.getId()).update(map);
     }
 
     public Query getAll() {

@@ -10,7 +10,6 @@ import android.os.Handler;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -26,7 +25,6 @@ import com.example.socialmediagamer.utils.ViewedMessageHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HomeActivity extends AppCompatActivity implements ConnectionReceiver.ReceiverListener {
-    CoordinatorLayout coordinatorLayout;
     BottomNavigationView bottomNavigationView;
     TokenProvider mTokenProvider;
     AuthProvider mAuthProvider;
@@ -38,7 +36,6 @@ public class HomeActivity extends AppCompatActivity implements ConnectionReceive
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        coordinatorLayout = findViewById(R.id.coordinatorHome);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
         mTokenProvider = new TokenProvider();

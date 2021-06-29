@@ -65,13 +65,13 @@ public class EditProfileActivity extends AppCompatActivity {
         mUsersProvider = new UsersProvider();
         mAuthProvider = new AuthProvider();
         progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Actualizando información...");
+        progressDialog.setTitle("Editando perfil...");
         progressDialog.setMessage("Por favor, espere un momento");
         progressDialog.setCancelable(false);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         mBuilderSelector = new AlertDialog.Builder(this);
         mBuilderSelector.setTitle("Seleccionar imagen");
-        options = new CharSequence[]{"Seleccionar de la galería", "Tomar foto"};
+        options = new CharSequence[]{"Seleccionar de la galería", "Tomar fotografía"};
         mCircleImageViewBack.setOnClickListener(v -> finish());
         mCircleImageProfile.setOnClickListener(v -> selectOptionsImage());
         mImageViewCover.setOnClickListener(v -> selectOptionsImage2());
@@ -168,7 +168,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 });
             } else {
                 progressDialog.dismiss();
-                Toast.makeText(EditProfileActivity.this, "Error al almacenar las imágenes en la base de datos", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditProfileActivity.this, "Error al almacenar las imágenes", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -194,7 +194,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 });
             } else {
                 progressDialog.dismiss();
-                Toast.makeText(EditProfileActivity.this, "Error al almacenar la imagen en Cloud Storage", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditProfileActivity.this, "Error al almacenar la imagen", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -206,9 +206,10 @@ public class EditProfileActivity extends AppCompatActivity {
         mUsersProvider.update(user).addOnCompleteListener(task1 -> {
             progressDialog.dismiss();
             if (task1.isSuccessful()) {
-                Toast.makeText(EditProfileActivity.this, "Información actualizada exitosamente", Toast.LENGTH_SHORT).show();
+                finish();
+                Toast.makeText(EditProfileActivity.this, "Perfil editado exitosamente", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(EditProfileActivity.this, "Error al actualizar información", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditProfileActivity.this, "Error al editar perfil", Toast.LENGTH_SHORT).show();
             }
         });
     }

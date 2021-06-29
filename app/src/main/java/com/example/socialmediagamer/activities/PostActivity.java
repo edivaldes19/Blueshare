@@ -50,8 +50,8 @@ public class PostActivity extends AppCompatActivity {
     PostProvider mPostProvider;
     AuthProvider mAuthProvider;
     TextInputEditText mTextInputTitle, mTextInputDescription;
-    MaterialTextView mTextViewCategory;
-    String mTitle = "", mDescription = "", mCategory = "", mAbsolutePhotoPath, mPhotoPath, mAbsolutePhotoPath2, mPhotoPath2;
+    MaterialTextView mTextViewCategory, mTextViewTitleActivity;
+    String mIdPost, mExtraPostId, mTitle = "", mDescription = "", mCategory = "", mAbsolutePhotoPath, mPhotoPath, mAbsolutePhotoPath2, mPhotoPath2, image1Update = "", image2Update = "", posting = "Publicando...", editing = "Editando publicación...";
     ProgressDialog progressDialog;
     AlertDialog.Builder mBuilderSelector;
     CharSequence[] options;
@@ -72,38 +72,74 @@ public class PostActivity extends AppCompatActivity {
         mTextInputTitle = findViewById(R.id.textInputVideogame);
         mTextInputDescription = findViewById(R.id.textInputDescription);
         mTextViewCategory = findViewById(R.id.textViewCategory);
+        mTextViewTitleActivity = findViewById(R.id.textViewNuevaPublicacion);
         mButtonPost = findViewById(R.id.btnPost);
         mImageProvider = new ImageProvider();
         mPostProvider = new PostProvider();
         mAuthProvider = new AuthProvider();
         progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Publicando...");
-        progressDialog.setMessage("Por favor, espere un momento");
-        progressDialog.setCancelable(false);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         mBuilderSelector = new AlertDialog.Builder(this);
         mBuilderSelector.setTitle("Seleccionar imagen");
-        options = new CharSequence[]{"Seleccionar de la galería", "Tomar foto"};
+        options = new CharSequence[]{"Seleccionar de la galería", "Tomar fotografía"};
         mCircleImageBack.setOnClickListener(v -> finish());
         mImageViewPost1.setOnClickListener(v -> selectOptionsImage());
         mImageViewPost2.setOnClickListener(v -> selectOptionsImage2());
+        mExtraPostId = getIntent().getStringExtra("idPostUpdate");
         mButtonPost.setOnClickListener(v -> {
-            mTitle = Objects.requireNonNull(mTextInputTitle.getText()).toString().trim();
-            mDescription = Objects.requireNonNull(mTextInputDescription.getText()).toString().trim();
-            if (!mTitle.isEmpty() && !mDescription.isEmpty() && !mCategory.isEmpty()) {
-                if (mImageFile != null && mImageFile2 != null) {
-                    saveImage(mImageFile, mImageFile2);
-                } else if (mPhotoFile != null && mPhotoFile2 != null) {
-                    saveImage(mPhotoFile, mPhotoFile2);
-                } else if (mImageFile != null && mPhotoFile2 != null) {
-                    saveImage(mImageFile, mPhotoFile2);
-                } else if (mPhotoFile != null && mImageFile2 != null) {
-                    saveImage(mPhotoFile, mImageFile2);
+            if (getIntent().getBooleanExtra("PostSelect", false)) {
+                //EDITAR PUBLICACIÓN
+                mTitle = Objects.requireNonNull(mTextInputTitle.getText()).toString().trim();
+                mDescription = Objects.requireNonNull(mTextInputDescription.getText()).toString().trim();
+                if (!mTitle.isEmpty() && !mDescription.isEmpty() && !mCategory.isEmpty()) {
+                    if (mImageFile != null && mImageFile2 != null) {
+                        saveImageUpdate(mImageFile, mImageFile2);
+                    } else if (mPhotoFile != null && mPhotoFile2 != null) {
+                        saveImageUpdate(mPhotoFile, mPhotoFile2);
+                    } else if (mImageFile != null && mPhotoFile2 != null) {
+                        saveImageUpdate(mImageFile, mPhotoFile2);
+                    } else if (mPhotoFile != null && mImageFile2 != null) {
+                        saveImageUpdate(mPhotoFile, mImageFile2);
+                    } else if (mPhotoFile != null) {
+                        saveOnlyImage(mPhotoFile, true);
+                    } else if (mPhotoFile2 != null) {
+                        saveOnlyImage(mPhotoFile2, false);
+                    } else if (mImageFile != null) {
+                        saveOnlyImage(mImageFile, true);
+                    } else if (mImageFile2 != null) {
+                        saveOnlyImage(mImageFile2, false);
+                    } else {
+                        Post post = new Post();
+                        post.setId(mIdPost);
+                        post.setImage1(image1Update);
+                        post.setImage2(image2Update);
+                        post.setTitle(mTitle);
+                        post.setDescription(mDescription);
+                        post.setCategory(mCategory);
+                        post.setTimestamp(new Date().getTime());
+                        updateInfo(post);
+                    }
                 } else {
-                    Snackbar.make(v, "Debe seleccionar una imagen", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(v, "Complete los campos", Snackbar.LENGTH_SHORT).show();
                 }
             } else {
-                Snackbar.make(v, "Complete los campos", Snackbar.LENGTH_SHORT).show();
+                //NUEVA PUBLICACIÓN
+                mTitle = Objects.requireNonNull(mTextInputTitle.getText()).toString().trim();
+                mDescription = Objects.requireNonNull(mTextInputDescription.getText()).toString().trim();
+                if (!mTitle.isEmpty() && !mDescription.isEmpty() && !mCategory.isEmpty()) {
+                    if (mImageFile != null && mImageFile2 != null) {
+                        saveImage(mImageFile, mImageFile2);
+                    } else if (mPhotoFile != null && mPhotoFile2 != null) {
+                        saveImage(mPhotoFile, mPhotoFile2);
+                    } else if (mImageFile != null && mPhotoFile2 != null) {
+                        saveImage(mImageFile, mPhotoFile2);
+                    } else if (mPhotoFile != null && mImageFile2 != null) {
+                        saveImage(mPhotoFile, mImageFile2);
+                    } else {
+                        Snackbar.make(v, "Debe seleccionar ambas imágenes", Snackbar.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Snackbar.make(v, "Complete los campos", Snackbar.LENGTH_SHORT).show();
+                }
             }
         });
         mCardViewCulture.setOnClickListener(v -> {
@@ -123,18 +159,88 @@ public class PostActivity extends AppCompatActivity {
         });
         mCardViewMusic.setOnClickListener(v -> {
             mCategory = "Música";
-            mTextViewCategory.setTextColor(Color.parseColor("#FF0000"));
+            mTextViewCategory.setTextColor(Color.RED);
             mTextViewCategory.setText(mCategory);
         });
         mCardViewProgramation.setOnClickListener(v -> {
             mCategory = "Programación";
-            mTextViewCategory.setTextColor(Color.parseColor("#0000FF"));
+            mTextViewCategory.setTextColor(Color.BLUE);
             mTextViewCategory.setText(mCategory);
         });
         mCardViewVideogames.setOnClickListener(v -> {
             mCategory = "Videojuegos";
             mTextViewCategory.setTextColor(Color.parseColor("#008000"));
             mTextViewCategory.setText(mCategory);
+        });
+        getDataFromAdapter();
+    }
+
+    private ProgressDialog getProgressDialog(String title) {
+        progressDialog.setTitle(title);
+        progressDialog.setMessage("Por favor, espere un momento");
+        progressDialog.setCancelable(false);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        return progressDialog;
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void getDataFromAdapter() {
+        if (getIntent().getBooleanExtra("PostSelect", false)) {
+            getPost();
+            mButtonPost.setIconResource(R.drawable.ic_edit);
+            mButtonPost.setText("Editar publicación");
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void getPost() {
+        mPostProvider.getPostById(mExtraPostId).addOnSuccessListener(documentSnapshot -> {
+            mIdPost = documentSnapshot.getId();
+            if (documentSnapshot.exists()) {
+                if (documentSnapshot.contains("image1")) {
+                    image1Update = documentSnapshot.getString("image1");
+                    Picasso.with(PostActivity.this).load(image1Update).into(mImageViewPost1);
+                }
+                if (documentSnapshot.contains("image2")) {
+                    image2Update = documentSnapshot.getString("image2");
+                    Picasso.with(PostActivity.this).load(image2Update).into(mImageViewPost2);
+                }
+                if (documentSnapshot.contains("title")) {
+                    mTitle = documentSnapshot.getString("title");
+                    mTextInputTitle.setText(mTitle);
+                    mTextViewTitleActivity.setText(mTitle);
+                }
+                if (documentSnapshot.contains("description")) {
+                    String description = documentSnapshot.getString("description");
+                    mTextInputDescription.setText(description);
+                }
+                if (documentSnapshot.contains("category")) {
+                    mCategory = documentSnapshot.getString("category");
+                    if (mCategory != null) {
+                        switch (mCategory) {
+                            case "Cultura":
+                                mTextViewCategory.setTextColor(Color.parseColor("#A25918"));
+                                break;
+                            case "Deporte":
+                                mTextViewCategory.setTextColor(Color.BLACK);
+                                break;
+                            case "Estilo de vida":
+                                mTextViewCategory.setTextColor(Color.parseColor("#A901DB"));
+                                break;
+                            case "Música":
+                                mTextViewCategory.setTextColor(Color.RED);
+                                break;
+                            case "Programación":
+                                mTextViewCategory.setTextColor(Color.BLUE);
+                                break;
+                            case "Videojuegos":
+                                mTextViewCategory.setTextColor(Color.parseColor("#008000"));
+                                break;
+                        }
+                    }
+                    mTextViewCategory.setText(mCategory);
+                }
+            }
         });
     }
 
@@ -213,7 +319,7 @@ public class PostActivity extends AppCompatActivity {
     }
 
     private void saveImage(File imageFile, File imageFile2) {
-        progressDialog.show();
+        getProgressDialog(posting).show();
         mImageProvider.save(PostActivity.this, imageFile).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 mImageProvider.getStorage().getDownloadUrl().addOnSuccessListener(uri -> {
@@ -231,9 +337,11 @@ public class PostActivity extends AppCompatActivity {
                                 post.setIdUser(mAuthProvider.getUid());
                                 post.setTimestamp(new Date().getTime());
                                 mPostProvider.save(post).addOnCompleteListener(taskSave -> {
-                                    progressDialog.dismiss();
+                                    getProgressDialog(posting).dismiss();
                                     if (taskSave.isSuccessful()) {
                                         clearForm();
+                                        startActivity(new Intent(PostActivity.this, HomeActivity.class));
+                                        finish();
                                         Toast.makeText(PostActivity.this, "Publicación creada exitosamente", Toast.LENGTH_SHORT).show();
                                     } else {
                                         Toast.makeText(PostActivity.this, "Error al crear publicación", Toast.LENGTH_SHORT).show();
@@ -241,14 +349,92 @@ public class PostActivity extends AppCompatActivity {
                                 });
                             });
                         } else {
-                            progressDialog.dismiss();
+                            getProgressDialog(posting).dismiss();
                             Toast.makeText(PostActivity.this, "Error al almacenar la segunda imagen", Toast.LENGTH_SHORT).show();
                         }
                     });
                 });
             } else {
-                progressDialog.dismiss();
-                Toast.makeText(PostActivity.this, "Error al almacenar la imagen en la base de datos", Toast.LENGTH_SHORT).show();
+                getProgressDialog(posting).dismiss();
+                Toast.makeText(PostActivity.this, "Error al almacenar las imágenes", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void saveImageUpdate(File imageFile, File imageFile2) {
+        getProgressDialog(editing).show();
+        mImageProvider.save(PostActivity.this, imageFile).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                mImageProvider.getStorage().getDownloadUrl().addOnSuccessListener(uri -> {
+                    final String url = uri.toString();
+                    mImageProvider.save(PostActivity.this, imageFile2).addOnCompleteListener(taskImage2 -> {
+                        if (taskImage2.isSuccessful()) {
+                            mImageProvider.getStorage().getDownloadUrl().addOnSuccessListener(uri2 -> {
+                                final String url2 = uri2.toString();
+                                Post post = new Post();
+                                post.setId(mIdPost);
+                                post.setImage1(url);
+                                post.setImage2(url2);
+                                post.setTitle(mTitle);
+                                post.setDescription(mDescription);
+                                post.setCategory(mCategory);
+                                post.setTimestamp(new Date().getTime());
+                                updateInfo(post);
+                            });
+                        } else {
+                            getProgressDialog(editing).dismiss();
+                            Toast.makeText(PostActivity.this, "Error al almacenar la segunda imagen", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                });
+            } else {
+                getProgressDialog(editing).dismiss();
+                Toast.makeText(PostActivity.this, "Error al almacenar las imágenes", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void saveOnlyImage(File image, boolean isOnlyImage) {
+        getProgressDialog(editing).show();
+        mImageProvider.save(PostActivity.this, image).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                mImageProvider.getStorage().getDownloadUrl().addOnSuccessListener(uri -> {
+                    final String url = uri.toString();
+                    Post post = new Post();
+                    post.setId(mIdPost);
+                    post.setTitle(mTitle);
+                    post.setDescription(mDescription);
+                    post.setCategory(mCategory);
+                    post.setTimestamp(new Date().getTime());
+                    if (isOnlyImage) {
+                        post.setImage1(url);
+                        post.setImage2(image2Update);
+                    } else {
+                        post.setImage2(url);
+                        post.setImage1(image1Update);
+                    }
+                    updateInfo(post);
+                });
+            } else {
+                getProgressDialog(editing).dismiss();
+                Toast.makeText(PostActivity.this, "Error al almacenar la imagen", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void updateInfo(Post post) {
+        if (getProgressDialog(editing).isShowing()) {
+            getProgressDialog(editing).show();
+        }
+        mPostProvider.update(post).addOnCompleteListener(task1 -> {
+            getProgressDialog(editing).dismiss();
+            if (task1.isSuccessful()) {
+                clearForm();
+                startActivity(new Intent(PostActivity.this, HomeActivity.class));
+                finish();
+                Toast.makeText(PostActivity.this, "Publicación editada exitosamente", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(PostActivity.this, "Error al editar información", Toast.LENGTH_SHORT).show();
             }
         });
     }

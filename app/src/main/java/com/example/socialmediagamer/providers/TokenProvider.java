@@ -8,7 +8,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 public class TokenProvider {
-    CollectionReference mCollection;
+    private final CollectionReference mCollection;
 
     public TokenProvider() {
         mCollection = FirebaseFirestore.getInstance().collection("Tokens");
