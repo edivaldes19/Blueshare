@@ -50,6 +50,7 @@ public class EditProfileActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
     AlertDialog.Builder mBuilderSelector;
     CharSequence[] options;
+    boolean isFirstEditProfile, isFirstEditCover;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,17 +126,27 @@ public class EditProfileActivity extends AppCompatActivity {
                 if (documentSnapshot.contains("image_profile")) {
                     mImageProfile = documentSnapshot.getString("image_profile");
                     if (mImageProfile != null) {
+                        isFirstEditProfile = false;
                         if (!mImageProfile.isEmpty()) {
                             Picasso.with(EditProfileActivity.this).load(mImageProfile).into(mCircleImageProfile);
+                        } else {
+                            isFirstEditProfile = true;
                         }
+                    } else {
+                        isFirstEditProfile = true;
                     }
                 }
                 if (documentSnapshot.contains("image_cover")) {
                     mImageCover = documentSnapshot.getString("image_cover");
                     if (mImageCover != null) {
+                        isFirstEditCover = false;
                         if (!mImageCover.isEmpty()) {
                             Picasso.with(EditProfileActivity.this).load(mImageCover).into(mImageViewCover);
+                        } else {
+                            isFirstEditCover = true;
                         }
+                    } else {
+                        isFirstEditCover = true;
                     }
                 }
             }
@@ -155,7 +166,17 @@ public class EditProfileActivity extends AppCompatActivity {
                                 User user = new User();
                                 user.setUsername(mUsername);
                                 user.setPhone(mPhone);
+                                if (mImageProfile != null) {
+                                    if (!mImageProfile.isEmpty()) {
+                                        mImageProvider.deleteFromPath(mImageProfile);
+                                    }
+                                }
                                 user.setImage_profile(urlProfile);
+                                if (mImageCover != null) {
+                                    if (!mImageCover.isEmpty()) {
+                                        mImageProvider.deleteFromPath(mImageCover);
+                                    }
+                                }
                                 user.setImage_cover(urlCover);
                                 user.setId(mAuthProvider.getUid());
                                 updateInfo(user);
@@ -173,30 +194,37 @@ public class EditProfileActivity extends AppCompatActivity {
         });
     }
 
+
     private void saveImage(File image, boolean isProfileImage) {
-        progressDialog.show();
-        mImageProvider.save(EditProfileActivity.this, image).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                mImageProvider.getStorage().getDownloadUrl().addOnSuccessListener(uri -> {
-                    final String url = uri.toString();
-                    User user = new User();
-                    user.setUsername(mUsername);
-                    user.setPhone(mPhone);
-                    if (isProfileImage) {
-                        user.setImage_profile(url);
-                        user.setImage_cover(mImageCover);
-                    } else {
-                        user.setImage_cover(url);
-                        user.setImage_profile(mImageProfile);
-                    }
-                    user.setId(mAuthProvider.getUid());
-                    updateInfo(user);
-                });
-            } else {
-                progressDialog.dismiss();
-                Toast.makeText(EditProfileActivity.this, "Error al almacenar la imagen", Toast.LENGTH_SHORT).show();
-            }
-        });
+        if (!isFirstEditProfile && !isFirstEditCover) {
+            progressDialog.show();
+            mImageProvider.save(EditProfileActivity.this, image).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    mImageProvider.getStorage().getDownloadUrl().addOnSuccessListener(uri -> {
+                        final String url = uri.toString();
+                        User user = new User();
+                        user.setUsername(mUsername);
+                        user.setPhone(mPhone);
+                        if (isProfileImage) {
+                            mImageProvider.deleteFromPath(mImageProfile);
+                            user.setImage_profile(url);
+                            user.setImage_cover(mImageCover);
+                        } else {
+                            mImageProvider.deleteFromPath(mImageCover);
+                            user.setImage_cover(url);
+                            user.setImage_profile(mImageProfile);
+                        }
+                        user.setId(mAuthProvider.getUid());
+                        updateInfo(user);
+                    });
+                } else {
+                    progressDialog.dismiss();
+                    Toast.makeText(EditProfileActivity.this, "Error al almacenar la imagen", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            Toast.makeText(this, "Debe establecer imagen de perfil y de portada", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void updateInfo(User user) {

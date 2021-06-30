@@ -16,6 +16,7 @@ import com.example.socialmediagamer.activities.PostActivity;
 import com.example.socialmediagamer.activities.PostDetailActivity;
 import com.example.socialmediagamer.models.Post;
 import com.example.socialmediagamer.providers.AuthProvider;
+import com.example.socialmediagamer.providers.ImageProvider;
 import com.example.socialmediagamer.providers.LikesProvider;
 import com.example.socialmediagamer.providers.PostProvider;
 import com.example.socialmediagamer.providers.UsersProvider;
@@ -35,6 +36,8 @@ public class MyPostsAdapter extends FirestoreRecyclerAdapter<Post, MyPostsAdapte
     LikesProvider mLikesProvider;
     AuthProvider mAuthProvider;
     PostProvider mPostProvider;
+    ImageProvider mImageProvider;
+    String pathImagePrimary, pathImageSecondary;
 
     public MyPostsAdapter(FirestoreRecyclerOptions<Post> options, Context context) {
         super(options);
@@ -43,6 +46,7 @@ public class MyPostsAdapter extends FirestoreRecyclerAdapter<Post, MyPostsAdapte
         mLikesProvider = new LikesProvider();
         mAuthProvider = new AuthProvider();
         mPostProvider = new PostProvider();
+        mImageProvider = new ImageProvider();
     }
 
     @Override
@@ -61,7 +65,13 @@ public class MyPostsAdapter extends FirestoreRecyclerAdapter<Post, MyPostsAdapte
         }
         if (post.getImage1() != null) {
             if (!post.getImage1().isEmpty()) {
+                pathImagePrimary = post.getImage1();
                 Picasso.with(context).load(post.getImage1()).into(holder.circleImagePost);
+            }
+        }
+        if (post.getImage2() != null) {
+            if (!post.getImage2().isEmpty()) {
+                pathImageSecondary = post.getImage2();
             }
         }
         holder.viewHolder.setOnClickListener(v -> {
@@ -85,6 +95,8 @@ public class MyPostsAdapter extends FirestoreRecyclerAdapter<Post, MyPostsAdapte
     private void deletePost(String postId) {
         mPostProvider.delete(postId).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
+                mImageProvider.deleteFromPath(pathImagePrimary);
+                mImageProvider.deleteFromPath(pathImageSecondary);
                 Toast.makeText(context, "Publicación eliminada exitosamente", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(context, "Error al eliminar la publicación", Toast.LENGTH_SHORT).show();
