@@ -3,11 +3,10 @@ package com.example.socialmediagamer.activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.example.socialmediagamer.R;
 import com.example.socialmediagamer.models.User;
@@ -22,9 +21,12 @@ import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.example.socialmediagamer.utils.ValidateEmail.isEmailValid;
+import static com.example.socialmediagamer.utils.Validations.isEmailValid;
+import static com.example.socialmediagamer.utils.Validations.validateFieldsAsYouType;
+import static com.example.socialmediagamer.utils.Validations.validatePasswordFieldsAsYouType;
 
 public class RegisterActivity extends AppCompatActivity {
+    CoordinatorLayout coordinatorLayout;
     CircleImageView mCircleImageViewBack;
     TextInputEditText mTextInputUsername, mTextInputEmailR, mTextInputPhone, mTextInputPasswordR, mTextInputConfirmPasswordR;
     MaterialButton materialButtonRegister;
@@ -36,6 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        coordinatorLayout = findViewById(R.id.coordinatorRegister);
         mCircleImageViewBack = findViewById(R.id.circleImageBack);
         mTextInputUsername = findViewById(R.id.textInputUsernameR);
         mTextInputEmailR = findViewById(R.id.textInputEmailR);
@@ -50,7 +53,11 @@ public class RegisterActivity extends AppCompatActivity {
         mDialog.setMessage("Por favor, espere un momento");
         mDialog.setCancelable(false);
         mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        validarCampos();
+        validateFieldsAsYouType(mTextInputUsername, "El nombre de usuario es obligatorio");
+        validateFieldsAsYouType(mTextInputEmailR, "El correo electrónico es obligatorio");
+        validateFieldsAsYouType(mTextInputPhone, "El número de teléfono es obligatorio");
+        validatePasswordFieldsAsYouType(mTextInputPasswordR, "La contraseña es obligatoria");
+        validatePasswordFieldsAsYouType(mTextInputConfirmPasswordR, "Debe confirmar su contraseña");
         materialButtonRegister.setOnClickListener(v -> {
             String username = Objects.requireNonNull(mTextInputUsername.getText()).toString().trim();
             String email = Objects.requireNonNull(mTextInputEmailR.getText()).toString().trim();
@@ -97,106 +104,13 @@ public class RegisterActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                     } else {
-                        Toast.makeText(RegisterActivity.this, "Error al registrar el usuario en la base de datos", Toast.LENGTH_SHORT).show();
+                        Snackbar.make(coordinatorLayout, "Error al registrar el usuario en la base de datos", Snackbar.LENGTH_SHORT).show();
                     }
                 });
-                Toast.makeText(RegisterActivity.this, "Bienvenido " + username, Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterActivity.this, "Bienvenido " + username, Toast.LENGTH_LONG).show();
             } else {
                 mDialog.dismiss();
-                Toast.makeText(RegisterActivity.this, "Error al registrar el usuario", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void validarCampos() {
-        mTextInputUsername.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (Objects.requireNonNull(mTextInputUsername.getText()).toString().isEmpty()) {
-                    mTextInputUsername.setError("El nombre de usuario es obligatorio");
-                } else {
-                    mTextInputUsername.setError(null);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-        mTextInputEmailR.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (Objects.requireNonNull(mTextInputEmailR.getText()).toString().isEmpty()) {
-                    mTextInputEmailR.setError("El correo electrónico es obligatorio");
-                } else {
-                    mTextInputEmailR.setError(null);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-        mTextInputPhone.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (Objects.requireNonNull(mTextInputPhone.getText()).toString().isEmpty()) {
-                    mTextInputPhone.setError("El teléfono es obligatorio");
-                } else {
-                    mTextInputPhone.setError(null);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-        mTextInputPasswordR.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (Objects.requireNonNull(mTextInputPasswordR.getText()).toString().isEmpty()) {
-                    mTextInputPasswordR.setError("La contraseña es obligatoria", null);
-                } else {
-                    mTextInputPasswordR.setError(null);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-        mTextInputConfirmPasswordR.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (Objects.requireNonNull(mTextInputConfirmPasswordR.getText()).toString().isEmpty()) {
-                    mTextInputConfirmPasswordR.setError("Debe confirmar su contraseña", null);
-                } else {
-                    mTextInputConfirmPasswordR.setError(null);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
+                Snackbar.make(coordinatorLayout, "Error al registrar el usuario", Snackbar.LENGTH_SHORT).show();
             }
         });
     }

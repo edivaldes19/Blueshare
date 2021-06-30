@@ -8,9 +8,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.InputFilter;
-import android.text.TextWatcher;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -18,6 +16,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.example.socialmediagamer.R;
 import com.example.socialmediagamer.models.User;
@@ -38,9 +37,12 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
 
-import static com.example.socialmediagamer.utils.ValidateEmail.isEmailValid;
+import static com.example.socialmediagamer.utils.Validations.isEmailValid;
+import static com.example.socialmediagamer.utils.Validations.validateFieldsAsYouType;
+import static com.example.socialmediagamer.utils.Validations.validatePasswordFieldsAsYouType;
 
 public class MainActivity extends AppCompatActivity {
+    CoordinatorLayout coordinatorLayout;
     MaterialTextView materialTextView_register, materialTextViewForgotPassword;
     TextInputEditText mtextInputEmail, mtextInputPassword;
     MaterialButton materialButtonLogin;
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        coordinatorLayout = findViewById(R.id.coordinatorLogin);
         materialTextViewForgotPassword = findViewById(R.id.forgotPassword);
         materialTextView_register = findViewById(R.id.textViewRegister);
         mtextInputEmail = findViewById(R.id.textInputEmail);
@@ -75,7 +78,8 @@ public class MainActivity extends AppCompatActivity {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id_strings)).requestEmail().build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         mUsersProvider = new UsersProvider();
-        validarCampos();
+        validateFieldsAsYouType(mtextInputEmail, "El correo electrónico es obligatorio");
+        validatePasswordFieldsAsYouType(mtextInputPassword, "La contraseña es obligatoria");
         materialButtonLogin.setOnClickListener(v -> {
             String email = Objects.requireNonNull(mtextInputEmail.getText()).toString().trim();
             String password = Objects.requireNonNull(mtextInputPassword.getText()).toString().trim();
@@ -143,15 +147,15 @@ public class MainActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Toast.makeText(MainActivity.this, "Se ha enviado un correo para restablecer la contraseña a: " + email, Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(MainActivity.this, "El correo electrónico ingresado no existe", Toast.LENGTH_SHORT).show();
+                            Snackbar.make(coordinatorLayout, "El correo electrónico ingresado no existe", Snackbar.LENGTH_SHORT).show();
                         }
                         progressDialogResetPassword.dismiss();
                     });
                 } else {
-                    Toast.makeText(this, "Formato de correo electrónico inválido", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(coordinatorLayout, "Formato de correo electrónico inválido", Snackbar.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(this, "El correo electrónico es obligatorio", Toast.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, "El correo electrónico es obligatorio", Snackbar.LENGTH_SHORT).show();
             }
         });
         alert.setNegativeButton("Cancelar", (dialog, which) -> {
@@ -192,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
                 checkUserExist(id);
             } else {
                 progressDialog.dismiss();
-                Toast.makeText(this, "Error al iniciar sesión con Google", Toast.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, "Error al iniciar sesión con Google", Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -216,48 +220,9 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(new Intent(MainActivity.this, CompleteProfileActivity.class));
                         finish();
                     } else {
-                        Toast.makeText(MainActivity.this, "Error al guardar la información en la base de datos", Toast.LENGTH_SHORT).show();
+                        Snackbar.make(coordinatorLayout, "Error al almacenar la información en la base de datos", Snackbar.LENGTH_SHORT).show();
                     }
                 });
-            }
-        });
-    }
-
-    private void validarCampos() {
-        mtextInputEmail.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (Objects.requireNonNull(mtextInputEmail.getText()).toString().isEmpty()) {
-                    mtextInputEmail.setError("El correo electrónico es obligatorio");
-                } else {
-                    mtextInputEmail.setError(null);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-        mtextInputPassword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (Objects.requireNonNull(mtextInputPassword.getText()).toString().isEmpty()) {
-                    mtextInputPassword.setError("La contraseña es obligatoria", null);
-                } else {
-                    mtextInputPassword.setError(null);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
             }
         });
     }

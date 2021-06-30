@@ -3,11 +3,9 @@ package com.example.socialmediagamer.activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.example.socialmediagamer.R;
 import com.example.socialmediagamer.models.User;
@@ -20,7 +18,10 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.util.Date;
 import java.util.Objects;
 
+import static com.example.socialmediagamer.utils.Validations.validateFieldsAsYouType;
+
 public class CompleteProfileActivity extends AppCompatActivity {
+    CoordinatorLayout coordinatorLayout;
     TextInputEditText mTextInputUsername, mTextInputPhone;
     MaterialButton materialButtonRegister;
     AuthProvider mAuthProvider;
@@ -31,6 +32,7 @@ public class CompleteProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complete_profile);
+        coordinatorLayout = findViewById(R.id.coordinatorComplete);
         mTextInputUsername = findViewById(R.id.textInputUsernameConfirm);
         mTextInputPhone = findViewById(R.id.textInputPhone);
         materialButtonRegister = findViewById(R.id.btnConfirm);
@@ -41,7 +43,8 @@ public class CompleteProfileActivity extends AppCompatActivity {
         mDialog.setMessage("Por favor, espere un momento");
         mDialog.setCancelable(false);
         mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        validarCampos();
+        validateFieldsAsYouType(mTextInputUsername, "El nombre de usuario es obligatorio");
+        validateFieldsAsYouType(mTextInputPhone, "El número de teléfono es obligatorio");
         materialButtonRegister.setOnClickListener(v -> {
             String username = Objects.requireNonNull(mTextInputUsername.getText()).toString().trim();
             String phone = Objects.requireNonNull(mTextInputPhone.getText()).toString().trim();
@@ -67,46 +70,7 @@ public class CompleteProfileActivity extends AppCompatActivity {
                 startActivity(new Intent(CompleteProfileActivity.this, HomeActivity.class));
                 finish();
             } else {
-                Toast.makeText(CompleteProfileActivity.this, "Error al registrar el usuario en la base de datos", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void validarCampos() {
-        mTextInputUsername.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (Objects.requireNonNull(mTextInputUsername.getText()).toString().isEmpty()) {
-                    mTextInputUsername.setError("El nombre de usuario es obligatorio");
-                } else {
-                    mTextInputUsername.setError(null);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-        mTextInputPhone.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (Objects.requireNonNull(mTextInputPhone.getText()).toString().isEmpty()) {
-                    mTextInputPhone.setError("El teléfono es obligatorio");
-                } else {
-                    mTextInputPhone.setError(null);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
+                Snackbar.make(coordinatorLayout, "Error al registrar el usuario en la base de datos", Snackbar.LENGTH_SHORT).show();
             }
         });
     }

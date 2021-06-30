@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.FileProvider;
 
 import com.example.socialmediagamer.R;
@@ -37,7 +38,10 @@ import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.example.socialmediagamer.utils.Validations.validateFieldsAsYouType;
+
 public class EditProfileActivity extends AppCompatActivity {
+    CoordinatorLayout coordinatorLayout;
     CircleImageView mCircleImageViewBack, mCircleImageProfile;
     ShapeableImageView mImageViewCover;
     TextInputEditText mTextInputEditTextUsername, mTextInputEditTextPhone;
@@ -56,6 +60,7 @@ public class EditProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+        coordinatorLayout = findViewById(R.id.coordinatorEditProfile);
         mCircleImageViewBack = findViewById(R.id.circleImageBack);
         mCircleImageProfile = findViewById(R.id.circleImageProfile);
         mImageViewCover = findViewById(R.id.imageViewCover);
@@ -73,6 +78,8 @@ public class EditProfileActivity extends AppCompatActivity {
         mBuilderSelector = new AlertDialog.Builder(this);
         mBuilderSelector.setTitle("Seleccionar imagen");
         options = new CharSequence[]{"Seleccionar de la galería", "Tomar fotografía"};
+        validateFieldsAsYouType(mTextInputEditTextUsername, "El nombre de usuario es obligatorio");
+        validateFieldsAsYouType(mTextInputEditTextPhone, "El número de teléfono es obligatorio");
         mCircleImageViewBack.setOnClickListener(v -> finish());
         mCircleImageProfile.setOnClickListener(v -> selectOptionsImage());
         mImageViewCover.setOnClickListener(v -> selectOptionsImage2());
@@ -183,13 +190,13 @@ public class EditProfileActivity extends AppCompatActivity {
                             });
                         } else {
                             progressDialog.dismiss();
-                            Toast.makeText(EditProfileActivity.this, "Error al almacenar la segunda imagen", Toast.LENGTH_SHORT).show();
+                            Snackbar.make(coordinatorLayout, "Error al almacenar la segunda imagen", Snackbar.LENGTH_SHORT).show();
                         }
                     });
                 });
             } else {
                 progressDialog.dismiss();
-                Toast.makeText(EditProfileActivity.this, "Error al almacenar las imágenes", Toast.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, "Error al almacenar las imágenes", Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -219,11 +226,11 @@ public class EditProfileActivity extends AppCompatActivity {
                     });
                 } else {
                     progressDialog.dismiss();
-                    Toast.makeText(EditProfileActivity.this, "Error al almacenar la imagen", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(coordinatorLayout, "Error al almacenar la imagen", Snackbar.LENGTH_SHORT).show();
                 }
             });
         } else {
-            Toast.makeText(this, "Debe establecer imagen de perfil y de portada", Toast.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, "Debe establecer imagen de perfil y de portada", Snackbar.LENGTH_SHORT).show();
         }
     }
 
@@ -237,7 +244,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 finish();
                 Toast.makeText(EditProfileActivity.this, "Perfil editado exitosamente", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(EditProfileActivity.this, "Error al editar perfil", Toast.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, "Error al editar perfil", Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -261,7 +268,7 @@ public class EditProfileActivity extends AppCompatActivity {
             try {
                 photoFile = createPhotoFile();
             } catch (Exception e) {
-                Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, "Error al tomar la primer fotografía", Snackbar.LENGTH_SHORT).show();
             }
             if (photoFile != null) {
                 Uri photoUri = FileProvider.getUriForFile(EditProfileActivity.this, "com.example.socialmediagamer", photoFile);
@@ -298,7 +305,7 @@ public class EditProfileActivity extends AppCompatActivity {
             try {
                 photoFile = createPhotoFile2();
             } catch (Exception e) {
-                Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, "Error al tomar la segunda fotografía", Snackbar.LENGTH_SHORT).show();
             }
             if (photoFile != null) {
                 Uri photoUri = FileProvider.getUriForFile(EditProfileActivity.this, "com.example.socialmediagamer", photoFile);
@@ -326,7 +333,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 }
                 mCircleImageProfile.setImageBitmap(BitmapFactory.decodeFile(mImageFile.getAbsolutePath()));
             } catch (Exception e) {
-                Toast.makeText(this, "Error al mostrar la imagen " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, "Error al mostrar la primera imagen", Snackbar.LENGTH_SHORT).show();
             }
         }
     });
@@ -347,7 +354,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 }
                 mImageViewCover.setImageBitmap(BitmapFactory.decodeFile(mImageFile2.getAbsolutePath()));
             } catch (Exception e) {
-                Toast.makeText(this, "Error al mostrar la imagen " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, "Error al mostrar la segunda imagen", Snackbar.LENGTH_SHORT).show();
             }
         }
     });

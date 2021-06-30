@@ -6,12 +6,11 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.example.socialmediagamer.R;
 import com.example.socialmediagamer.providers.AuthProvider;
@@ -35,9 +34,11 @@ import javax.mail.internet.MimeMessage;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.example.socialmediagamer.utils.ValidateEmail.isEmailValid;
+import static com.example.socialmediagamer.utils.Validations.isEmailValid;
+import static com.example.socialmediagamer.utils.Validations.validateFieldsAsYouType;
 
 public class ContactanosActivity extends AppCompatActivity {
+    CoordinatorLayout coordinatorLayout;
     CircleImageView mCircleImageViewBack;
     TextInputEditText textInputUsernameForm, textInputEmailForm, textInputMessageForm;
     RadioGroup radioGroup;
@@ -54,6 +55,7 @@ public class ContactanosActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contactanos);
+        coordinatorLayout = findViewById(R.id.coordinatorContactanos);
         mCircleImageViewBack = findViewById(R.id.circleImageBack);
         textInputUsernameForm = findViewById(R.id.textInputUsernameForm);
         textInputEmailForm = findViewById(R.id.textInputEmailForm);
@@ -63,7 +65,7 @@ public class ContactanosActivity extends AppCompatActivity {
         radioGroup = findViewById(R.id.radioGroup);
         mUsersProvider = new UsersProvider();
         mAuthProvider = new AuthProvider();
-        validarCampo();
+        validateFieldsAsYouType(textInputMessageForm, "El mensaje es obligatorio");
         MaterialButton materialButton_enviar = findViewById(R.id.btnSendForm);
         materialButton_enviar.setOnClickListener(view -> {
             int radioID = radioGroup.getCheckedRadioButtonId();
@@ -71,12 +73,12 @@ public class ContactanosActivity extends AppCompatActivity {
             name = Objects.requireNonNull(textInputUsernameForm.getText()).toString().trim();
             email = Objects.requireNonNull(textInputEmailForm.getText()).toString().trim();
             message = Objects.requireNonNull(textInputMessageForm.getText()).toString().trim();
-            if (!evaluarCampos(name) && !isEmailValid(email) && !evaluarCampos(message) && (!materialRadioButtonComplain.isChecked() || !materialRadioButtonSuggestion.isChecked())) {
+            if (name.isEmpty() && !isEmailValid(email) && message.isEmpty() && (!materialRadioButtonComplain.isChecked() || !materialRadioButtonSuggestion.isChecked())) {
                 Snackbar.make(view, "Complete los campos", Snackbar.LENGTH_SHORT).show();
             } else {
-                if (evaluarCampos(name)) {
+                if (!name.isEmpty()) {
                     if (isEmailValid(email)) {
-                        if (evaluarCampos(message)) {
+                        if (!message.isEmpty()) {
                             if (materialRadioButtonComplain.isChecked() || materialRadioButtonSuggestion.isChecked()) {
                                 affair = materialRadioButton.getText().toString().trim();
                                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -101,19 +103,19 @@ public class ContactanosActivity extends AppCompatActivity {
                                     message.setContent(this.message, "text/html; charset=utf-8");
                                     new SendMail().execute(message);
                                 } catch (Exception e) {
-                                    Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+                                    Snackbar.make(view, "Error al enviar correo electrónico", Snackbar.LENGTH_SHORT).show();
                                 }
                             } else {
-                                Snackbar.make(view, "Seleccione Queja o Sugerencia", Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(view, "Debe seleccionar queja o sugerencia", Snackbar.LENGTH_SHORT).show();
                             }
                         } else {
-                            textInputMessageForm.setError("El mensaje es obligatorio");
+                            Snackbar.make(view, "El mensaje es obligatorio", Snackbar.LENGTH_SHORT).show();
                         }
                     } else {
-                        textInputEmailForm.setError("El correo electrónico es obligatorio");
+                        Snackbar.make(view, "Formato de correo electrónico inválido", Snackbar.LENGTH_SHORT).show();
                     }
                 } else {
-                    textInputUsernameForm.setError("El nombre de usuario es obligatorio");
+                    Snackbar.make(view, "El nombre de usuario es obligatorio", Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
@@ -135,31 +137,6 @@ public class ContactanosActivity extends AppCompatActivity {
                     mEmail = documentSnapshot.getString("email");
                     textInputEmailForm.setText(mEmail);
                 }
-            }
-        });
-    }
-
-    private boolean evaluarCampos(String valor) {
-        return !valor.equals("");
-    }
-
-    private void validarCampo() {
-        textInputMessageForm.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (Objects.requireNonNull(textInputMessageForm.getText()).toString().isEmpty()) {
-                    textInputMessageForm.setError("El mensaje es obligatorio");
-                } else {
-                    textInputMessageForm.setError(null);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
             }
         });
     }
@@ -197,7 +174,7 @@ public class ContactanosActivity extends AppCompatActivity {
                 }
                 finish();
             } else {
-                Toast.makeText(ContactanosActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, "Error", Snackbar.LENGTH_SHORT).show();
             }
         }
     }

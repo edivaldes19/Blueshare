@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.FileProvider;
 
 import com.example.socialmediagamer.R;
@@ -40,7 +41,10 @@ import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.example.socialmediagamer.utils.Validations.validateFieldsAsYouType;
+
 public class PostActivity extends AppCompatActivity {
+    CoordinatorLayout coordinatorLayout;
     ShapeableImageView mImageViewPost1, mImageViewPost2;
     MaterialCardView mCardViewCulture, mCardViewSport, mCardViewLifestyle, mCardViewMusic, mCardViewProgramation, mCardViewVideogames;
     CircleImageView mCircleImageBack;
@@ -60,6 +64,7 @@ public class PostActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
+        coordinatorLayout = findViewById(R.id.coordinatorPost);
         mImageViewPost1 = findViewById(R.id.imageViewPost1);
         mImageViewPost2 = findViewById(R.id.imageViewPost2);
         mCardViewCulture = findViewById(R.id.cardViewCulture);
@@ -81,6 +86,8 @@ public class PostActivity extends AppCompatActivity {
         mBuilderSelector = new AlertDialog.Builder(this);
         mBuilderSelector.setTitle("Seleccionar imagen");
         options = new CharSequence[]{"Seleccionar de la galería", "Tomar fotografía"};
+        validateFieldsAsYouType(mTextInputTitle, "El título de la publicación es obligatorio");
+        validateFieldsAsYouType(mTextInputDescription, "La descripción de la publicación es obligatoria");
         mCircleImageBack.setOnClickListener(v -> finish());
         mImageViewPost1.setOnClickListener(v -> selectOptionsImage());
         mImageViewPost2.setOnClickListener(v -> selectOptionsImage2());
@@ -263,7 +270,7 @@ public class PostActivity extends AppCompatActivity {
             try {
                 photoFile = createPhotoFile();
             } catch (Exception e) {
-                Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, "Error al tomar la primer fotografía", Snackbar.LENGTH_SHORT).show();
             }
             if (photoFile != null) {
                 Uri photoUri = FileProvider.getUriForFile(PostActivity.this, "com.example.socialmediagamer", photoFile);
@@ -300,7 +307,7 @@ public class PostActivity extends AppCompatActivity {
             try {
                 photoFile = createPhotoFile2();
             } catch (Exception e) {
-                Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, "Error al tomar la segunda fotografía", Snackbar.LENGTH_SHORT).show();
             }
             if (photoFile != null) {
                 Uri photoUri = FileProvider.getUriForFile(PostActivity.this, "com.example.socialmediagamer", photoFile);
@@ -344,19 +351,19 @@ public class PostActivity extends AppCompatActivity {
                                         finish();
                                         Toast.makeText(PostActivity.this, "Publicación creada exitosamente", Toast.LENGTH_SHORT).show();
                                     } else {
-                                        Toast.makeText(PostActivity.this, "Error al crear publicación", Toast.LENGTH_SHORT).show();
+                                        Snackbar.make(coordinatorLayout, "Error al crear publicación", Snackbar.LENGTH_SHORT).show();
                                     }
                                 });
                             });
                         } else {
                             getProgressDialog(posting).dismiss();
-                            Toast.makeText(PostActivity.this, "Error al almacenar la segunda imagen", Toast.LENGTH_SHORT).show();
+                            Snackbar.make(coordinatorLayout, "Error al almacenar la segunda imagen", Snackbar.LENGTH_SHORT).show();
                         }
                     });
                 });
             } else {
                 getProgressDialog(posting).dismiss();
-                Toast.makeText(PostActivity.this, "Error al almacenar las imágenes", Toast.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, "Error al almacenar ambas imágenes", Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -383,13 +390,13 @@ public class PostActivity extends AppCompatActivity {
                             });
                         } else {
                             getProgressDialog(editing).dismiss();
-                            Toast.makeText(PostActivity.this, "Error al almacenar la segunda imagen", Toast.LENGTH_SHORT).show();
+                            Snackbar.make(coordinatorLayout, "Error al almacenar la segunda imagen", Snackbar.LENGTH_SHORT).show();
                         }
                     });
                 });
             } else {
                 getProgressDialog(editing).dismiss();
-                Toast.makeText(PostActivity.this, "Error al almacenar las imágenes", Toast.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, "Error al almacenar ambas imágenes", Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -417,7 +424,7 @@ public class PostActivity extends AppCompatActivity {
                 });
             } else {
                 getProgressDialog(editing).dismiss();
-                Toast.makeText(PostActivity.this, "Error al almacenar la imagen", Toast.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, "Error al almacenar la imagen", Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -434,7 +441,7 @@ public class PostActivity extends AppCompatActivity {
                 finish();
                 Toast.makeText(PostActivity.this, "Publicación editada exitosamente", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(PostActivity.this, "Error al editar información", Toast.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, "Error al editar información", Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -462,7 +469,7 @@ public class PostActivity extends AppCompatActivity {
                 }
                 mImageViewPost1.setImageBitmap(BitmapFactory.decodeFile(mImageFile.getAbsolutePath()));
             } catch (Exception e) {
-                Toast.makeText(this, "Error al mostrar la imagen" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, "Error al mostrar la imagen", Snackbar.LENGTH_SHORT).show();
             }
         }
     });
@@ -483,7 +490,7 @@ public class PostActivity extends AppCompatActivity {
                 }
                 mImageViewPost2.setImageBitmap(BitmapFactory.decodeFile(mImageFile2.getAbsolutePath()));
             } catch (Exception e) {
-                Toast.makeText(this, "Error al mostrar la imagen" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, "Error al mostrar la imagen", Snackbar.LENGTH_SHORT).show();
             }
         }
     });
