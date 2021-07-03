@@ -2,7 +2,6 @@ package com.example.socialmediagamer.utils;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
-import android.content.Context;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,7 +12,7 @@ public class RelativeTime extends Application {
     private static final int HOUR_MILLIS = 60 * MINUTE_MILLIS;
     private static final int DAY_MILLIS = 24 * HOUR_MILLIS;
 
-    public static String getTimeAgo(long time, Context ctx) {
+    public static String getTimeAgo(long time) {
         if (time < 1000000000000L) {
             time *= 1000;
         }
@@ -39,7 +38,7 @@ public class RelativeTime extends Application {
         }
     }
 
-    public static String timeFormatAMPM(long time, Context ctx) {
+    public static String timeFormatAMPM(long time) {
         @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("hh:mm a");
         if (time < 1000000000000L) {
             time *= 1000;

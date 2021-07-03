@@ -78,13 +78,6 @@ public class UserProfileActivity extends AppCompatActivity {
         getUser();
         getPostNumber();
         checkIfExistPost();
-        showTooltip();
-    }
-
-    private void showTooltip() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            mFabChat.setTooltipText("Iniciar chat con " + mUsername);
-        }
     }
 
     private void goToChatActivity() {
@@ -160,6 +153,9 @@ public class UserProfileActivity extends AppCompatActivity {
                     if (documentSnapshot.contains("username")) {
                         mUsername = documentSnapshot.getString("username");
                         mTextViewUsername.setText(mUsername);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            mFabChat.setTooltipText("Iniciar chat con " + mUsername);
+                        }
                     }
                     if (documentSnapshot.contains("email")) {
                         String email = documentSnapshot.getString("email");

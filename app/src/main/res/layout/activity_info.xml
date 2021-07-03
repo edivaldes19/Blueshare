@@ -37,7 +37,7 @@
                     tools:ignore="ContentDescription" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/fooduTextView"
+                    android:id="@+id/blueshareTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/app_name"
@@ -59,43 +59,35 @@
                     app:layout_constraintBottom_toTopOf="@id/iconImageView"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/fooduTextView" />
+                    app:layout_constraintTop_toBottomOf="@id/blueshareTextView" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/textView_derechos"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/releaseDate"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/copyrightAndRelease"
                     android:textColor="@color/white"
                     android:textSize="14sp"
-                    app:layout_constraintBottom_toTopOf="@id/textView_desarrollado"
+                    app:layout_constraintBottom_toTopOf="@id/textView_back"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/iconImageView" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/textView_desarrollado"
+                    android:id="@+id/textView_back"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/developedBy"
+                    android:layout_marginTop="5dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:text="@string/back"
                     android:textColor="@color/white"
                     android:textSize="14sp"
-                    app:layout_constraintBottom_toTopOf="@id/textView_mi_nombre"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textView_derechos" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/textView_mi_nombre"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/developerName"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textView_desarrollado" />
+                    app:layout_constraintTop_toBottomOf="@id/textView_derechos" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>

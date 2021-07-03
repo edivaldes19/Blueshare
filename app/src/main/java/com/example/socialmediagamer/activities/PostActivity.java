@@ -447,8 +447,8 @@ public class PostActivity extends AppCompatActivity {
     }
 
     private void clearForm() {
-        mTextInputTitle.setText(null);
-        mTextInputDescription.setText(null);
+        mTextInputTitle.setText(" ");
+        mTextInputDescription.setText(" ");
         mTextViewCategory.setText(null);
         mImageViewPost1.setImageResource(R.drawable.ic_insert_photo);
         mImageViewPost2.setImageResource(R.drawable.ic_insert_photo);

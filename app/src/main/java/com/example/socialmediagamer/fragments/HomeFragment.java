@@ -68,11 +68,9 @@ public class HomeFragment extends Fragment implements MaterialSearchBar.OnSearch
                 });
                 alert.show();
             } else if (item.getItemId() == R.id.itemAcercaDe) {
-                Intent intent = new Intent(getContext(), InfoActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(getContext(), InfoActivity.class));
             } else if (item.getItemId() == R.id.itemContactanos) {
-                Intent intent = new Intent(getContext(), ContactanosActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(getContext(), ContactanosActivity.class));
             }
             return true;
         });
@@ -125,6 +123,9 @@ public class HomeFragment extends Fragment implements MaterialSearchBar.OnSearch
         super.onDestroy();
         if (mPostsAdapter.getListener() != null) {
             mPostsAdapter.getListener().remove();
+        }
+        if (mPostsAdapter.getListenerComments() != null) {
+            mPostsAdapter.getListenerComments().remove();
         }
     }
 

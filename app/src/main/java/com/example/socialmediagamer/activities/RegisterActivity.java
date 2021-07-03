@@ -15,7 +15,9 @@ import com.example.socialmediagamer.providers.UsersProvider;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
@@ -33,6 +35,7 @@ public class RegisterActivity extends AppCompatActivity {
     AuthProvider mAuthProvider;
     UsersProvider mUsersProvider;
     ProgressDialog mDialog;
+    ArrayList<String> mUsernameList, mPhoneList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +51,8 @@ public class RegisterActivity extends AppCompatActivity {
         materialButtonRegister = findViewById(R.id.btnRegister);
         mAuthProvider = new AuthProvider();
         mUsersProvider = new UsersProvider();
+        mUsernameList = new ArrayList<>();
+        mPhoneList = new ArrayList<>();
         mDialog = new ProgressDialog(this);
         mDialog.setTitle("Registrando...");
         mDialog.setMessage("Por favor, espere un momento");
@@ -58,6 +63,10 @@ public class RegisterActivity extends AppCompatActivity {
         validateFieldsAsYouType(mTextInputPhone, "El número de teléfono es obligatorio");
         validatePasswordFieldsAsYouType(mTextInputPasswordR, "La contraseña es obligatoria");
         validatePasswordFieldsAsYouType(mTextInputConfirmPasswordR, "Debe confirmar su contraseña");
+        mUsernameList.clear();
+        isUserInfoExist(mUsernameList, "username");
+        mPhoneList.clear();
+        isUserInfoExist(mPhoneList, "phone");
         materialButtonRegister.setOnClickListener(v -> {
             String username = Objects.requireNonNull(mTextInputUsername.getText()).toString().trim();
             String email = Objects.requireNonNull(mTextInputEmailR.getText()).toString().trim();
@@ -65,6 +74,22 @@ public class RegisterActivity extends AppCompatActivity {
             String password = Objects.requireNonNull(mTextInputPasswordR.getText()).toString().trim();
             String confirmPassword = Objects.requireNonNull(mTextInputConfirmPasswordR.getText()).toString().trim();
             if (!username.isEmpty() && !email.isEmpty() && !phone.isEmpty() && !password.isEmpty() && !confirmPassword.isEmpty()) {
+                if (!mUsernameList.isEmpty()) {
+                    for (String s : mUsernameList) {
+                        if (s.equals(username)) {
+                            Snackbar.make(v, "Ya existe un usuario con ese nombre", Snackbar.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
+                }
+                if (!mPhoneList.isEmpty()) {
+                    for (String s : mPhoneList) {
+                        if (s.equals(phone)) {
+                            Snackbar.make(v, "Ya existe un usuario con ese teléfono", Snackbar.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
+                }
                 if (isEmailValid(email)) {
                     if (password.equals(confirmPassword)) {
                         if (password.length() >= 6) {
@@ -83,6 +108,23 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
         mCircleImageViewBack.setOnClickListener(v -> finish());
+    }
+
+    public void isUserInfoExist(ArrayList<String> stringList, String field) {
+        mUsersProvider.getAllUserDocuments().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot snapshot : Objects.requireNonNull(task.getResult())) {
+                    if (snapshot.exists()) {
+                        if (snapshot.contains(field)) {
+                            String allFields = snapshot.getString(field);
+                            stringList.add(allFields);
+                        }
+                    }
+                }
+            } else {
+                Snackbar.make(coordinatorLayout, "Error al obtener la información de los usuarios", Snackbar.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void createUser(final String username, final String email, final String phone, final String password) {
@@ -110,7 +152,7 @@ public class RegisterActivity extends AppCompatActivity {
                 Toast.makeText(RegisterActivity.this, "Bienvenido " + username, Toast.LENGTH_LONG).show();
             } else {
                 mDialog.dismiss();
-                Snackbar.make(coordinatorLayout, "Error al registrar el usuario", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, "Ya existe un usuario con ese correo electrónico", Snackbar.LENGTH_SHORT).show();
             }
         });
     }

@@ -1,5 +1,6 @@
 package com.example.socialmediagamer.adapters;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -49,12 +50,13 @@ public class MyPostsAdapter extends FirestoreRecyclerAdapter<Post, MyPostsAdapte
         mImageProvider = new ImageProvider();
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onBindViewHolder(@NonNull final MyPostsAdapter.ViewHolder holder, int position, @NonNull final Post post) {
         DocumentSnapshot document = getSnapshots().getSnapshot(position);
         final String postId = document.getId();
-        String relativeTime = RelativeTime.getTimeAgo(post.getTimestamp(), context);
-        holder.textViewRelativeTime.setText(relativeTime);
+        String relativeTime = RelativeTime.getTimeAgo(post.getTimestamp());
+        holder.textViewRelativeTime.setText("Publicado " + relativeTime.toLowerCase());
         holder.textViewTitle.setText(post.getTitle());
         if (post.getIdUser().equals(mAuthProvider.getUid())) {
             holder.imageViewEdit.setVisibility(View.VISIBLE);

@@ -44,6 +44,6 @@
             android:layout_height="20dp"
             android:layout_gravity="bottom"
             android:layout_marginStart="5dp"
-            android:src="@drawable/icon_check_gray" />
+            android:src="@drawable/ic_check_gray" />
     </LinearLayout>
 </RelativeLayout>

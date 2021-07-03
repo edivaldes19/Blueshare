@@ -45,7 +45,7 @@ public class ContactanosActivity extends AppCompatActivity {
     MaterialRadioButton materialRadioButton, materialRadioButtonComplain, materialRadioButtonSuggestion;
     final String emailProject = "proyectosmariorecio@gmail.com", passwordProject = "MR1704002053CV";
     static String affair;
-    String name, email, message, mUsername = "", mEmail = "";
+    String name, email, message;
     Session session;
     UsersProvider mUsersProvider;
     AuthProvider mAuthProvider;
@@ -130,12 +130,12 @@ public class ContactanosActivity extends AppCompatActivity {
         mUsersProvider.getUser(mAuthProvider.getUid()).addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
                 if (documentSnapshot.contains("username")) {
-                    mUsername = documentSnapshot.getString("username");
-                    textInputUsernameForm.setText(mUsername);
+                    String username = documentSnapshot.getString("username");
+                    textInputUsernameForm.setText(username);
                 }
                 if (documentSnapshot.contains("email")) {
-                    mEmail = documentSnapshot.getString("email");
-                    textInputEmailForm.setText(mEmail);
+                    String email = documentSnapshot.getString("email");
+                    textInputEmailForm.setText(email);
                 }
             }
         });

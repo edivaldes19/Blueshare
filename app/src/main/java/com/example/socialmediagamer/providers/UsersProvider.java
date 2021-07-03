@@ -6,6 +6,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -49,5 +50,9 @@ public class UsersProvider {
 
     public DocumentReference getUserReference(String id) {
         return mCollection.document(id);
+    }
+
+    public Task<QuerySnapshot> getAllUserDocuments() {
+        return mCollection.get();
     }
 }

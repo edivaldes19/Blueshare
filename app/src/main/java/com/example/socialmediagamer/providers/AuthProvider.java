@@ -7,8 +7,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-import java.util.Objects;
-
 public class AuthProvider {
     private final FirebaseAuth mAuth;
 
@@ -31,7 +29,7 @@ public class AuthProvider {
 
     public String getUid() {
         if (mAuth.getCurrentUser() != null) {
-            return Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+            return mAuth.getCurrentUser().getUid();
         } else {
             return null;
         }

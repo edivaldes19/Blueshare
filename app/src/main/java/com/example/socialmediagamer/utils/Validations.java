@@ -3,6 +3,7 @@ package com.example.socialmediagamer.utils;
 import android.text.Editable;
 import android.text.TextWatcher;
 
+import com.example.socialmediagamer.providers.UsersProvider;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Objects;
@@ -10,6 +11,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Validations {
+    UsersProvider usersProvider = new UsersProvider();
+
     public static boolean isEmailValid(String email) {
         String expression = "^[\\w.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
         Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);

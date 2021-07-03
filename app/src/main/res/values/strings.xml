@@ -38,7 +38,6 @@
     <string name="posts">Publicaciones</string>
     <string name="editProfile">Editar perfil</string>
     <string name="totalResults">Total de resultados:</string>
-    <string name="zero">0</string>
     <string name="signOut">Cerrar sesión</string>
     <string name="about">Acerca de</string>
     <string name="home">Inicio</string>
@@ -46,7 +45,8 @@
     <string name="categories">Categorías</string>
     <string name="myProfile">Mi perfil</string>
     <string name="currentVersion">Versión: 1.0.0</string>
-    <string name="releaseDate">© Junio 2021</string>
+    <string name="copyrightAndRelease">© Junio 2021 EdiVal</string>
     <string name="developedBy">Desarrollado por:</string>
     <string name="developerName">Edgar Manuel Velázquez Valdes</string>
+    <string name="back">VOLVER</string>
 </resources>

@@ -38,7 +38,7 @@ public class MessagesAdapter extends FirestoreRecyclerAdapter<Message, MessagesA
     @Override
     protected void onBindViewHolder(@NonNull MessagesAdapter.ViewHolder holder, int position, @NonNull Message message) {
         holder.textViewMessage.setText(message.getMessage());
-        String relativeTime = RelativeTime.timeFormatAMPM(message.getTimestamp(), context);
+        String relativeTime = RelativeTime.timeFormatAMPM(message.getTimestamp());
         holder.textViewDateMessage.setText(relativeTime);
         if (message.getIdSender().equals(mAuthProvider.getUid())) {
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -62,9 +62,9 @@ public class MessagesAdapter extends FirestoreRecyclerAdapter<Message, MessagesA
             holder.textViewDateMessage.setTextColor(Color.LTGRAY);
         }
         if (message.isViewed()) {
-            holder.imageViewMessageViewed.setImageResource(R.drawable.icon_check_blue);
+            holder.imageViewMessageViewed.setImageResource(R.drawable.ic_check_white);
         } else {
-            holder.imageViewMessageViewed.setImageResource(R.drawable.icon_check_gray);
+            holder.imageViewMessageViewed.setImageResource(R.drawable.ic_check_gray);
         }
     }
 

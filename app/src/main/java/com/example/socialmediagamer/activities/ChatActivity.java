@@ -210,26 +210,28 @@ public class ChatActivity extends AppCompatActivity {
             idUserInfo = mExtraIdUser1;
         }
         mListener = mUsersProvider.getUserRealtime(idUserInfo).addSnapshotListener((documentSnapshot, e) -> {
-            if (documentSnapshot != null && documentSnapshot.exists()) {
-                if (documentSnapshot.contains("username")) {
-                    mUsernameChat = documentSnapshot.getString("username");
-                    mTextViewUsername.setText(mUsernameChat);
-                }
-                if (documentSnapshot.contains("online")) {
-                    boolean online = documentSnapshot.getBoolean("online");
-                    if (online) {
-                        mTextViewRelativeTime.setText("en línea");
-                    } else if (documentSnapshot.contains("lastConnection")) {
-                        long lastConnection = documentSnapshot.getLong("lastConnection");
-                        String relativeTime = RelativeTime.getTimeAgo(lastConnection, ChatActivity.this);
-                        mTextViewRelativeTime.setText(relativeTime);
+            if (documentSnapshot != null) {
+                if (documentSnapshot.exists()) {
+                    if (documentSnapshot.contains("username")) {
+                        mUsernameChat = documentSnapshot.getString("username");
+                        mTextViewUsername.setText(mUsernameChat);
                     }
-                }
-                if (documentSnapshot.contains("image_profile")) {
-                    mImageReceiver = documentSnapshot.getString("image_profile");
-                    if (mImageReceiver != null) {
-                        if (!mImageReceiver.equals("")) {
-                            Picasso.with(ChatActivity.this).load(mImageReceiver).into(mCircleImageProfile);
+                    if (documentSnapshot.contains("online")) {
+                        boolean online = documentSnapshot.getBoolean("online");
+                        if (online) {
+                            mTextViewRelativeTime.setText("en línea");
+                        } else if (documentSnapshot.contains("lastConnection")) {
+                            long lastConnection = documentSnapshot.getLong("lastConnection");
+                            String relativeTime = RelativeTime.getTimeAgo(lastConnection);
+                            mTextViewRelativeTime.setText("Conectado(a) " + relativeTime.toLowerCase());
+                        }
+                    }
+                    if (documentSnapshot.contains("image_profile")) {
+                        mImageReceiver = documentSnapshot.getString("image_profile");
+                        if (mImageReceiver != null) {
+                            if (!mImageReceiver.equals("")) {
+                                Picasso.with(ChatActivity.this).load(mImageReceiver).into(mCircleImageProfile);
+                            }
                         }
                     }
                 }

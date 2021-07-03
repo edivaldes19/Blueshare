@@ -193,8 +193,7 @@ public class PostDetailActivity extends AppCompatActivity {
                 Toast.makeText(this, "No se pueden publicar comentarios vacíos", Toast.LENGTH_SHORT).show();
             }
         });
-        alert.setNegativeButton("Cancelar", (dialog, which) -> {
-        });
+        alert.setNegativeButton("Cancelar", null);
         alert.show();
     }
 
@@ -275,6 +274,7 @@ public class PostDetailActivity extends AppCompatActivity {
         mSliderView.startAutoCycle();
     }
 
+    @SuppressLint("SetTextI18n")
     private void getPost() {
         mPostProvider.getPostById(mExtraPostId).addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
@@ -336,8 +336,8 @@ public class PostDetailActivity extends AppCompatActivity {
                 }
                 if (documentSnapshot.contains("timestamp")) {
                     long timestamp = documentSnapshot.getLong("timestamp");
-                    String relativeTime = RelativeTime.getTimeAgo(timestamp, PostDetailActivity.this);
-                    mTextViewRelativeTime.setText(relativeTime);
+                    String relativeTime = RelativeTime.getTimeAgo(timestamp);
+                    mTextViewRelativeTime.setText("Publicado " + relativeTime.toLowerCase());
                 }
                 instancesSlider();
             }

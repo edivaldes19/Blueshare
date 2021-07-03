@@ -21,7 +21,7 @@ public class CommentsProvider {
         return mCollection.document(id).delete();
     }
 
-    public Query getCommentsByPost(String id) {
-        return mCollection.whereEqualTo("idPost", id);
+    public Query getCommentsByPost(String idPost) {
+        return mCollection.whereEqualTo("idPost", idPost);
     }
 }
