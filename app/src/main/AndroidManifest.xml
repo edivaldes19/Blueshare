@@ -19,6 +19,7 @@
         android:theme="@style/Theme.SocialMediaGamer">
         <activity
             android:name=".activities.SplashActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

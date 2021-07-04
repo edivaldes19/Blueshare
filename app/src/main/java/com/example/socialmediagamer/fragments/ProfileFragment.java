@@ -84,7 +84,7 @@ public class ProfileFragment extends Fragment {
                     mTextViewPostExist.setTextColor(Color.parseColor("#1876f2"));
                 } else {
                     mTextViewPostExist.setText("No hay publicaciones ");
-                    mTextViewPostExist.setTextColor(Color.BLACK);
+                    mTextViewPostExist.setTextColor(Color.GRAY);
                 }
             }
         });
@@ -125,9 +125,7 @@ public class ProfileFragment extends Fragment {
     private void getPostNumber() {
         mPostProvider.getPostByUser(mAuthProvider.getUid()).get().addOnSuccessListener(queryDocumentSnapshots -> {
             int numberPost = queryDocumentSnapshots.size();
-            if (numberPost > 0) {
-                mTextViewPostNumber.setText(String.valueOf(numberPost));
-            }
+            mTextViewPostNumber.setText(String.valueOf(numberPost));
         });
     }
 

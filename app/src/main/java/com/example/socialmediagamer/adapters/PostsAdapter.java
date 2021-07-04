@@ -49,14 +49,14 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
         mAuthProvider = new AuthProvider();
     }
 
-    public PostsAdapter(FirestoreRecyclerOptions<Post> options, Context context, MaterialTextView materialTextView) {
+    public PostsAdapter(FirestoreRecyclerOptions<Post> options, Context context, MaterialTextView materialTextViewFilter) {
         super(options);
         this.context = context;
         mUsersProvider = new UsersProvider();
         mLikesProvider = new LikesProvider();
         mCommentsProvider = new CommentsProvider();
         mAuthProvider = new AuthProvider();
-        mTextViewNumberFilter = materialTextView;
+        mTextViewNumberFilter = materialTextViewFilter;
     }
 
 
@@ -69,9 +69,7 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
         holder.textViewRelativeTime.setText("Publicado " + relativeTime.toLowerCase());
         if (mTextViewNumberFilter != null) {
             int numberFilter = getSnapshots().size();
-            if (numberFilter > 0) {
-                mTextViewNumberFilter.setText(String.valueOf(numberFilter));
-            }
+            mTextViewNumberFilter.setText(String.valueOf(numberFilter));
         }
         holder.textViewTitle.setText(post.getTitle());
         holder.textViewDescription.setText(post.getDescription());
@@ -80,21 +78,29 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
                 Picasso.with(context).load(post.getImage1()).into(holder.imageViewPost);
             }
         }
-        holder.viewHolder.setOnClickListener(v -> {
+        holder.viewHolder.setOnClickListener(v ->
+
+        {
             Intent intent = new Intent(context, PostDetailActivity.class);
             intent.putExtra("id", postId);
             context.startActivity(intent);
         });
-        holder.imageViewLike.setOnClickListener(v -> {
+        holder.imageViewLike.setOnClickListener(v ->
+
+        {
             Like like = new Like();
             like.setIdUser(mAuthProvider.getUid());
             like.setIdPost(postId);
             like.setTimestamp(new Date().getTime());
             meGusta(like, holder);
         });
+
         getUserInfo(post.getIdUser(), holder);
+
         getNumberLikesByPost(postId, holder);
+
         getNumberCommentsByPost(postId, holder);
+
         checkIfExistLike(postId, mAuthProvider.getUid(), holder);
     }
 
@@ -102,9 +108,7 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
         mListener = mLikesProvider.getLikesByPost(idPost).addSnapshotListener((value, error) -> {
             if (value != null) {
                 int numberLikes = value.size();
-                if (numberLikes > 0) {
-                    holder.textViewContadorLikes.setText(String.valueOf(numberLikes));
-                }
+                holder.textViewContadorLikes.setText(String.valueOf(numberLikes));
             }
         });
     }
@@ -113,9 +117,7 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
         mListenerComments = mCommentsProvider.getCommentsByPost(idPost).addSnapshotListener((value, error) -> {
             if (value != null) {
                 int numberComments = value.size();
-                if (numberComments > 0) {
-                    holder.textViewContadorComments.setText(String.valueOf(numberComments));
-                }
+                holder.textViewContadorComments.setText(String.valueOf(numberComments));
             }
         });
     }

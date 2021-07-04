@@ -133,7 +133,7 @@ public class UserProfileActivity extends AppCompatActivity {
                     mTextViewPostExist.setTextColor(Color.parseColor("#1876f2"));
                 } else {
                     mTextViewPostExist.setText("No hay publicaciones ");
-                    mTextViewPostExist.setTextColor(Color.BLACK);
+                    mTextViewPostExist.setTextColor(Color.GRAY);
                 }
             }
         });
@@ -142,9 +142,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private void getPostNumber() {
         mPostProvider.getPostByUser(mExtraIdUser).get().addOnSuccessListener(queryDocumentSnapshots -> {
             int numberPost = queryDocumentSnapshots.size();
-            if (numberPost > 0) {
-                mTextViewPostNumber.setText(String.valueOf(numberPost));
-            }
+            mTextViewPostNumber.setText(String.valueOf(numberPost));
         });
     }
 

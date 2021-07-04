@@ -230,7 +230,7 @@ public class PostDetailActivity extends AppCompatActivity {
                         public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
                             if (response.body() != null) {
                                 if (response.body().getSuccess() == 1) {
-                                    Toast.makeText(PostDetailActivity.this, "Notificación enviada correctamente", Toast.LENGTH_SHORT).show();
+                                    //Notificación enviada exitosamente
                                 } else {
                                     Toast.makeText(PostDetailActivity.this, "Error al enviar la notificación", Toast.LENGTH_SHORT).show();
                                 }
