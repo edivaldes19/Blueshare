@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class Chat {
     private String id, idUser1, idUser2;
-    private boolean isWriting;
     private long timestamp;
     private ArrayList<String> ids;
     private int idNotification;
@@ -12,11 +11,10 @@ public class Chat {
     public Chat() {
     }
 
-    public Chat(String id, String idUser1, String idUser2, boolean isWriting, long timestamp, ArrayList<String> ids, int idNotification) {
+    public Chat(String id, String idUser1, String idUser2, long timestamp, ArrayList<String> ids, int idNotification) {
         this.id = id;
         this.idUser1 = idUser1;
         this.idUser2 = idUser2;
-        this.isWriting = isWriting;
         this.timestamp = timestamp;
         this.ids = ids;
         this.idNotification = idNotification;
@@ -44,14 +42,6 @@ public class Chat {
 
     public void setIdUser2(String idUser2) {
         this.idUser2 = idUser2;
-    }
-
-    public boolean isWriting() {
-        return isWriting;
-    }
-
-    public void setWriting(boolean writing) {
-        isWriting = writing;
     }
 
     public long getTimestamp() {

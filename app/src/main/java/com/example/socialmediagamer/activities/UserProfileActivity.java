@@ -142,7 +142,9 @@ public class UserProfileActivity extends AppCompatActivity {
     private void getPostNumber() {
         mPostProvider.getPostByUser(mExtraIdUser).get().addOnSuccessListener(queryDocumentSnapshots -> {
             int numberPost = queryDocumentSnapshots.size();
-            mTextViewPostNumber.setText(String.valueOf(numberPost));
+            if (numberPost > 0) {
+                mTextViewPostNumber.setText(String.valueOf(numberPost));
+            }
         });
     }
 

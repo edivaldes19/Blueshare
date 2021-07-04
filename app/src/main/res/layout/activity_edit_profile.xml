@@ -30,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_landscape"
+                android:src="@drawable/ic_click_here_to_set_a_cover_image_foreground"
                 android:transitionName="@string/transitionname_picture"
                 app:layout_collapseMode="parallax"
                 app:layout_constraintEnd_toEndOf="parent"

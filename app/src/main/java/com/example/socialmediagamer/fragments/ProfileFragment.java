@@ -125,7 +125,9 @@ public class ProfileFragment extends Fragment {
     private void getPostNumber() {
         mPostProvider.getPostByUser(mAuthProvider.getUid()).get().addOnSuccessListener(queryDocumentSnapshots -> {
             int numberPost = queryDocumentSnapshots.size();
-            mTextViewPostNumber.setText(String.valueOf(numberPost));
+            if (numberPost > 0) {
+                mTextViewPostNumber.setText(String.valueOf(numberPost));
+            }
         });
     }
 

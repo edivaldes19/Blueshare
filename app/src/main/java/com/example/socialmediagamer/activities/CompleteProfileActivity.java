@@ -57,8 +57,9 @@ public class CompleteProfileActivity extends AppCompatActivity {
     }
 
     private void updateUser(final String username, final String phone) {
+        String id = mAuthProvider.getUid();
         User user = new User();
-        user.setId(mAuthProvider.getUid());
+        user.setId(id);
         user.setUsername(username);
         user.setPhone(phone);
         user.setTimestamp(new Date().getTime());

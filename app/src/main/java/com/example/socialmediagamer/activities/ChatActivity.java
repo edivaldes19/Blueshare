@@ -273,7 +273,6 @@ public class ChatActivity extends AppCompatActivity {
         Chat chat = new Chat();
         chat.setIdUser1(mExtraIdUser1);
         chat.setIdUser2(mExtraIdUser2);
-        chat.setWriting(false);
         chat.setTimestamp(new Date().getTime());
         chat.setId(mExtraIdUser1 + mExtraIdUser2);
         Random random = new Random();
