@@ -8,14 +8,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.socialmediagamer.R;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.imageview.ShapeableImageView;
+import com.ortiz.touchview.TouchImageView;
 import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
 
 public class MyPhotoActivity extends AppCompatActivity {
     MaterialToolbar mToolbar;
-    ShapeableImageView imageView;
+    TouchImageView imageView;
     String mExtraMyImagePath, mExtraMyImageType, mExtraForeignImagePath, mExtraForeignImageType, mExtraUsername;
 
     @Override
@@ -45,12 +45,14 @@ public class MyPhotoActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             finish();
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         }
         return true;
     }

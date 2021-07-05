@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
@@ -45,6 +46,7 @@ public class ChatsAdapter extends FirestoreRecyclerAdapter<Chat, ChatsAdapter.Vi
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull final Chat chat) {
+        holder.frameLayoutChats.setAnimation(AnimationUtils.loadAnimation(context, R.anim.slide));
         DocumentSnapshot document = getSnapshots().getSnapshot(position);
         final String chatId = document.getId();
         if (mAuthProvider.getUid().equals(chat.getIdUser1())) {
@@ -132,6 +134,7 @@ public class ChatsAdapter extends FirestoreRecyclerAdapter<Chat, ChatsAdapter.Vi
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        FrameLayout frameLayoutChats;
         MaterialTextView textViewUsername, textViewLastMessage, textViewMessageNotRead;
         CircleImageView circleImageChat;
         FrameLayout frameLayoutMessageNotRead;
@@ -139,6 +142,7 @@ public class ChatsAdapter extends FirestoreRecyclerAdapter<Chat, ChatsAdapter.Vi
 
         public ViewHolder(View view) {
             super(view);
+            frameLayoutChats = view.findViewById(R.id.frameLayoutChats);
             textViewUsername = view.findViewById(R.id.textViewUsernameChat);
             textViewLastMessage = view.findViewById(R.id.textViewLastMessageChat);
             textViewMessageNotRead = view.findViewById(R.id.textViewMessageNotRead);

@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -37,6 +38,7 @@ public class MessagesAdapter extends FirestoreRecyclerAdapter<Message, MessagesA
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     protected void onBindViewHolder(@NonNull MessagesAdapter.ViewHolder holder, int position, @NonNull Message message) {
+        holder.linearLayoutMessage.setAnimation(AnimationUtils.loadAnimation(context, R.anim.slide));
         holder.textViewMessage.setText(message.getMessage());
         String relativeTime = RelativeTime.timeFormatAMPM(message.getTimestamp());
         holder.textViewDateMessage.setText(relativeTime);

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +22,7 @@ import com.example.socialmediagamer.providers.UsersProvider;
 import com.example.socialmediagamer.utils.RelativeTime;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -62,6 +64,7 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
     @SuppressLint("SetTextI18n")
     @Override
     protected void onBindViewHolder(@NonNull final PostsAdapter.ViewHolder holder, int position, @NonNull final Post post) {
+        holder.cardViewPost.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_transition));
         DocumentSnapshot document = getSnapshots().getSnapshot(position);
         final String postId = document.getId();
         String relativeTime = RelativeTime.getTimeAgo(post.getTimestamp());
@@ -175,6 +178,7 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        MaterialCardView cardViewPost;
         CircleImageView circleImageViewUser;
         MaterialTextView textViewTitle, textViewUsername, textViewRelativeTime, textViewDescription, textViewContadorLikes, textViewContadorComments;
         ShapeableImageView imageViewPost, imageViewLike;
@@ -182,6 +186,7 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
 
         public ViewHolder(View view) {
             super(view);
+            cardViewPost = view.findViewById(R.id.cardViewPost);
             circleImageViewUser = view.findViewById(R.id.circleImagePostAuthor);
             textViewTitle = view.findViewById(R.id.textViewTitlePostCard);
             textViewUsername = view.findViewById(R.id.textViewUsernamePostCard);

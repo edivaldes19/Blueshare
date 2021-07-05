@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
                     mAuth.setLanguageCode("es");
                     mAuth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            Toast.makeText(MainActivity.this, "Se ha enviado un correo para restablecer la contraseña a: " + email, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "Se ha enviado un correo para restablecer la contraseña a: " + email, Toast.LENGTH_LONG).show();
                         } else {
                             Snackbar.make(coordinatorLayout, "El correo electrónico ingresado no existe", Snackbar.LENGTH_SHORT).show();
                         }

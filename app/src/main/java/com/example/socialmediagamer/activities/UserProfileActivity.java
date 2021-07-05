@@ -130,6 +130,7 @@ public class UserProfileActivity extends AppCompatActivity {
         intent.putExtra("username", username);
         startActivity(intent);
         finish();
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     private void goToChatActivity() {

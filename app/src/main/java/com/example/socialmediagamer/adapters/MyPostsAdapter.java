@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -53,6 +55,7 @@ public class MyPostsAdapter extends FirestoreRecyclerAdapter<Post, MyPostsAdapte
     @SuppressLint("SetTextI18n")
     @Override
     protected void onBindViewHolder(@NonNull final MyPostsAdapter.ViewHolder holder, int position, @NonNull final Post post) {
+        holder.frameLayoutMyPost.setAnimation(AnimationUtils.loadAnimation(context, R.anim.slide));
         DocumentSnapshot document = getSnapshots().getSnapshot(position);
         final String postId = document.getId();
         String relativeTime = RelativeTime.getTimeAgo(post.getTimestamp());
@@ -114,6 +117,7 @@ public class MyPostsAdapter extends FirestoreRecyclerAdapter<Post, MyPostsAdapte
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        FrameLayout frameLayoutMyPost;
         MaterialTextView textViewTitle, textViewRelativeTime;
         CircleImageView circleImagePost;
         ShapeableImageView imageViewEdit, imageViewDelete;
@@ -121,6 +125,7 @@ public class MyPostsAdapter extends FirestoreRecyclerAdapter<Post, MyPostsAdapte
 
         public ViewHolder(View view) {
             super(view);
+            frameLayoutMyPost = view.findViewById(R.id.frameLayoutMyPost);
             textViewTitle = view.findViewById(R.id.textViewTitleMyPost);
             textViewRelativeTime = view.findViewById(R.id.textViewRelativeTimeMyPost);
             circleImagePost = view.findViewById(R.id.circleImageMyPost);

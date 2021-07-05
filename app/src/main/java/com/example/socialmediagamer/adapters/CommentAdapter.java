@@ -5,6 +5,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -40,6 +42,7 @@ public class CommentAdapter extends FirestoreRecyclerAdapter<Comment, CommentAda
 
     @Override
     protected void onBindViewHolder(@NonNull CommentAdapter.ViewHolder holder, int position, @NonNull Comment comment) {
+        holder.frameLayoutComments.setAnimation(AnimationUtils.loadAnimation(context, R.anim.slide));
         DocumentSnapshot document = getSnapshots().getSnapshot(position);
         final String idUser = document.getString("idUser");
         final String commentId = document.getId();
@@ -94,6 +97,7 @@ public class CommentAdapter extends FirestoreRecyclerAdapter<Comment, CommentAda
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        FrameLayout frameLayoutComments;
         MaterialTextView textViewUsername, textViewComment;
         CircleImageView imageViewComment;
         ShapeableImageView imageViewDeleteComment;
@@ -101,6 +105,7 @@ public class CommentAdapter extends FirestoreRecyclerAdapter<Comment, CommentAda
 
         public ViewHolder(View view) {
             super(view);
+            frameLayoutComments = view.findViewById(R.id.frameLayoutComments);
             textViewUsername = view.findViewById(R.id.textViewUsername);
             textViewComment = view.findViewById(R.id.textViewComment);
             imageViewComment = view.findViewById(R.id.circleImageComment);
