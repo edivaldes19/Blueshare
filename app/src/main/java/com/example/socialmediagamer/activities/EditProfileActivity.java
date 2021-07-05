@@ -135,7 +135,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     if (mImageProfile != null) {
                         isFirstEditProfile = false;
                         if (!mImageProfile.isEmpty()) {
-                            Picasso.with(EditProfileActivity.this).load(mImageProfile).into(mCircleImageProfile);
+                            Picasso.get().load(mImageProfile).into(mCircleImageProfile);
                         } else {
                             isFirstEditProfile = true;
                         }
@@ -148,7 +148,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     if (mImageCover != null) {
                         isFirstEditCover = false;
                         if (!mImageCover.isEmpty()) {
-                            Picasso.with(EditProfileActivity.this).load(mImageCover).into(mImageViewCover);
+                            Picasso.get().load(mImageCover).into(mImageViewCover);
                         } else {
                             isFirstEditCover = true;
                         }
@@ -369,14 +369,14 @@ public class EditProfileActivity extends AppCompatActivity {
         if (result.getResultCode() == Activity.RESULT_OK) {
             mImageFile = null;
             mPhotoFile = new File(mAbsolutePhotoPath);
-            Picasso.with(EditProfileActivity.this).load(mPhotoPath).into(mCircleImageProfile);
+            Picasso.get().load(mPhotoPath).into(mCircleImageProfile);
         }
     });
     ActivityResultLauncher<Intent> someActivityResultLauncher4 = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == Activity.RESULT_OK) {
             mImageFile2 = null;
             mPhotoFile2 = new File(mAbsolutePhotoPath2);
-            Picasso.with(EditProfileActivity.this).load(mPhotoPath2).into(mImageViewCover);
+            Picasso.get().load(mPhotoPath2).into(mImageViewCover);
         }
     });
 

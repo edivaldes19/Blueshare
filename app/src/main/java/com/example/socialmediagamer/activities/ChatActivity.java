@@ -230,7 +230,7 @@ public class ChatActivity extends AppCompatActivity {
                         mImageReceiver = documentSnapshot.getString("image_profile");
                         if (mImageReceiver != null) {
                             if (!mImageReceiver.equals("")) {
-                                Picasso.with(ChatActivity.this).load(mImageReceiver).into(mCircleImageProfile);
+                                Picasso.get().load(mImageReceiver).into(mCircleImageProfile);
                             }
                         }
                     }

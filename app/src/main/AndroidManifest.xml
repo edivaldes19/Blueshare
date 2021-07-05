@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
 
     <application
@@ -18,11 +19,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SocialMediaGamer">
         <activity
+            android:name=".activities.MyPhotoActivity"
+            android:parentActivityName=".activities.HomeActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activities.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -87,12 +93,15 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
+
         <receiver
             android:name=".receivers.MessageReceiver"
             android:enabled="true"
             android:exported="false" />
     </application>
+
 </manifest>

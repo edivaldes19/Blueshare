@@ -15,9 +15,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.socialmediagamer.R;
 import com.example.socialmediagamer.activities.EditProfileActivity;
+import com.example.socialmediagamer.activities.MyPhotoActivity;
 import com.example.socialmediagamer.adapters.MyPostsAdapter;
 import com.example.socialmediagamer.models.Post;
 import com.example.socialmediagamer.providers.AuthProvider;
+import com.example.socialmediagamer.providers.ImageProvider;
 import com.example.socialmediagamer.providers.PostProvider;
 import com.example.socialmediagamer.providers.UsersProvider;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -38,9 +40,11 @@ public class ProfileFragment extends Fragment {
     UsersProvider mUsersProvider;
     AuthProvider mAuthProvider;
     PostProvider mPostProvider;
+    ImageProvider mImageProvider;
     RecyclerView mRecyclerView;
     MyPostsAdapter mAdapter;
     ListenerRegistration mListener, mListenerGetUser;
+    String mExtraImagePathProfile, mExtraImagePathCover;
 
     public ProfileFragment() {
     }
@@ -62,16 +66,26 @@ public class ProfileFragment extends Fragment {
         mCircleImageProfile = mView.findViewById(R.id.circleImageProfile);
         mImageViewCover = mView.findViewById(R.id.imageViewCover);
         mRecyclerView = mView.findViewById(R.id.recyclerViewMyPost);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        mRecyclerView.setLayoutManager(linearLayoutManager);
-        mLinearLayoutEditProfile.setOnClickListener(v -> goToEditProfile());
         mUsersProvider = new UsersProvider();
         mAuthProvider = new AuthProvider();
         mPostProvider = new PostProvider();
+        mImageProvider = new ImageProvider();
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+        mLinearLayoutEditProfile.setOnClickListener(v -> goToEditProfile());
+        mCircleImageProfile.setOnClickListener(v -> goToMyPhoto(mExtraImagePathProfile, "Mi foto de perfil"));
+        mImageViewCover.setOnClickListener(v -> goToMyPhoto(mExtraImagePathCover, "Mi foto de portada"));
         getUser();
         getPostNumber();
         checkIfExistPost();
         return mView;
+    }
+
+    private void goToMyPhoto(String path, String type) {
+        Intent intent = new Intent(getContext(), MyPhotoActivity.class);
+        intent.putExtra("pathImage", path);
+        intent.putExtra("pathType", type);
+        startActivity(intent);
     }
 
     @SuppressLint("SetTextI18n")
@@ -149,7 +163,8 @@ public class ProfileFragment extends Fragment {
                         String imageCover = documentSnapshot.getString("image_cover");
                         if (imageCover != null) {
                             if (!imageCover.isEmpty()) {
-                                Picasso.with(getContext()).load(imageCover).into(mImageViewCover);
+                                mExtraImagePathCover = imageCover;
+                                Picasso.get().load(imageCover).into(mImageViewCover);
                             }
                         }
                     }
@@ -157,7 +172,8 @@ public class ProfileFragment extends Fragment {
                         String imageProfile = documentSnapshot.getString("image_profile");
                         if (imageProfile != null) {
                             if (!imageProfile.isEmpty()) {
-                                Picasso.with(getContext()).load(imageProfile).into(mCircleImageProfile);
+                                mExtraImagePathProfile = imageProfile;
+                                Picasso.get().load(imageProfile).into(mCircleImageProfile);
                             }
                         }
                     }

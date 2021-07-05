@@ -116,7 +116,7 @@ public class ChatsAdapter extends FirestoreRecyclerAdapter<Chat, ChatsAdapter.Vi
                     String imageProfile = documentSnapshot.getString("image_profile");
                     if (imageProfile != null) {
                         if (!imageProfile.isEmpty()) {
-                            Picasso.with(context).load(imageProfile).into(holder.circleImageChat);
+                            Picasso.get().load(imageProfile).into(holder.circleImageChat);
                         }
                     }
                 }

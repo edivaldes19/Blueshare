@@ -68,7 +68,7 @@ public class MyPostsAdapter extends FirestoreRecyclerAdapter<Post, MyPostsAdapte
         if (post.getImage1() != null) {
             if (!post.getImage1().isEmpty()) {
                 pathImagePrimary = post.getImage1();
-                Picasso.with(context).load(post.getImage1()).into(holder.circleImagePost);
+                Picasso.get().load(post.getImage1()).into(holder.circleImagePost);
             }
         }
         if (post.getImage2() != null) {
@@ -91,7 +91,7 @@ public class MyPostsAdapter extends FirestoreRecyclerAdapter<Post, MyPostsAdapte
     }
 
     private void showConfirmDelete(String postId) {
-        new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_menu_delete).setTitle("Eliminar publicación").setMessage("¿Está seguro de realizar esta acción?").setCancelable(false).setPositiveButton("Eliminar", (dialog, which) -> deletePost(postId)).setNegativeButton("Cancelar", null).show();
+        new AlertDialog.Builder(context).setIcon(R.drawable.ic_delete).setTitle("Eliminar publicación").setMessage("¿Está seguro de realizar esta acción?").setCancelable(false).setPositiveButton("Eliminar", (dialog, which) -> deletePost(postId)).setNegativeButton("Cancelar", null).show();
     }
 
     private void deletePost(String postId) {

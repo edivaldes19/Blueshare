@@ -158,6 +158,15 @@
                                     android:textSize="12sp"
                                     android:textStyle="bold" />
                             </LinearLayout>
+
+                            <com.google.android.material.imageview.ShapeableImageView
+                                android:id="@+id/imageViewCall"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="25dp"
+                                android:background="?android:attr/selectableItemBackground"
+                                android:src="@drawable/ic_call" />
                         </LinearLayout>
                     </LinearLayout>
                 </HorizontalScrollView>

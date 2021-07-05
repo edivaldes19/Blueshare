@@ -37,7 +37,7 @@
     <string name="newPost">Nueva publicación</string>
     <string name="posts">Publicaciones</string>
     <string name="editProfile">Editar perfil</string>
-    <string name="results">resultados</string>
+    <string name="results">resultado(s)</string>
     <string name="signOut">Cerrar sesión</string>
     <string name="about">Acerca de</string>
     <string name="home">Inicio</string>
@@ -50,4 +50,5 @@
     <string name="developerName">Edgar Manuel Velázquez Valdes</string>
     <string name="back">VOLVER</string>
     <string name="zero">0</string>
+    <string name="viewProfile">Ver perfil</string>
 </resources>

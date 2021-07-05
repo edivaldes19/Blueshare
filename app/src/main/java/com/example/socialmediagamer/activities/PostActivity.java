@@ -206,11 +206,11 @@ public class PostActivity extends AppCompatActivity {
             if (documentSnapshot.exists()) {
                 if (documentSnapshot.contains("image1")) {
                     image1Update = documentSnapshot.getString("image1");
-                    Picasso.with(PostActivity.this).load(image1Update).into(mImageViewPost1);
+                    Picasso.get().load(image1Update).into(mImageViewPost1);
                 }
                 if (documentSnapshot.contains("image2")) {
                     image2Update = documentSnapshot.getString("image2");
-                    Picasso.with(PostActivity.this).load(image2Update).into(mImageViewPost2);
+                    Picasso.get().load(image2Update).into(mImageViewPost2);
                 }
                 if (documentSnapshot.contains("title")) {
                     mTitle = documentSnapshot.getString("title");
@@ -505,7 +505,7 @@ public class PostActivity extends AppCompatActivity {
         if (result.getResultCode() == Activity.RESULT_OK) {
             mImageFile = null;
             mPhotoFile = new File(mAbsolutePhotoPath);
-            Picasso.with(PostActivity.this).load(mPhotoPath).into(mImageViewPost1);
+            Picasso.get().load(mPhotoPath).into(mImageViewPost1);
         }
     });
 
@@ -513,7 +513,7 @@ public class PostActivity extends AppCompatActivity {
         if (result.getResultCode() == Activity.RESULT_OK) {
             mImageFile2 = null;
             mPhotoFile2 = new File(mAbsolutePhotoPath2);
-            Picasso.with(PostActivity.this).load(mPhotoPath2).into(mImageViewPost2);
+            Picasso.get().load(mPhotoPath2).into(mImageViewPost2);
         }
     });
 

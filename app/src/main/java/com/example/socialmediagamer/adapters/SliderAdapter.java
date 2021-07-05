@@ -34,7 +34,7 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
         SliderItem sliderItem = mSliderItems.get(position);
         if (sliderItem.getImageUrl() != null) {
             if (!sliderItem.getImageUrl().isEmpty()) {
-                Picasso.with(context).load(sliderItem.getImageUrl()).into(viewHolder.imageViewSlider);
+                Picasso.get().load(sliderItem.getImageUrl()).into(viewHolder.imageViewSlider);
             }
         }
     }

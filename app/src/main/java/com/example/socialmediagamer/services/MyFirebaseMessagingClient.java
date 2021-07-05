@@ -71,14 +71,14 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
             showNotificationMessage(data);
             return;
         }
-        new Handler(Looper.getMainLooper()).post(() -> Picasso.with(getApplicationContext()).load(imageSender).into(new Target() {
+        new Handler(Looper.getMainLooper()).post(() -> Picasso.get().load(imageSender).into(new Target() {
             @Override
             public void onBitmapLoaded(final Bitmap bitmapSender, Picasso.LoadedFrom from) {
                 getImageReceiver(data, imageReceiver, bitmapSender);
             }
 
             @Override
-            public void onBitmapFailed(Drawable errorDrawable) {
+            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
                 getImageReceiver(data, imageReceiver, null);
             }
 
@@ -90,14 +90,14 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
     }
 
     private void getImageReceiver(final Map<String, String> data, String imageReceiver, final Bitmap bitmapSender) {
-        Picasso.with(getApplicationContext()).load(imageReceiver).into(new Target() {
+        Picasso.get().load(imageReceiver).into(new Target() {
             @Override
             public void onBitmapLoaded(Bitmap bitmapReceiver, Picasso.LoadedFrom from) {
                 notifyMessage(data, bitmapSender, bitmapReceiver);
             }
 
             @Override
-            public void onBitmapFailed(Drawable errorDrawable) {
+            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
                 notifyMessage(data, bitmapSender, null);
             }
 

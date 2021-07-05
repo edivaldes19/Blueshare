@@ -59,7 +59,6 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
         mTextViewNumberFilter = materialTextViewFilter;
     }
 
-
     @SuppressLint("SetTextI18n")
     @Override
     protected void onBindViewHolder(@NonNull final PostsAdapter.ViewHolder holder, int position, @NonNull final Post post) {
@@ -75,18 +74,16 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
         holder.textViewDescription.setText(post.getDescription());
         if (post.getImage1() != null) {
             if (!post.getImage1().isEmpty()) {
-                Picasso.with(context).load(post.getImage1()).into(holder.imageViewPost);
+                Picasso.get().load(post.getImage1()).into(holder.imageViewPost);
             }
         }
         holder.viewHolder.setOnClickListener(v ->
-
         {
             Intent intent = new Intent(context, PostDetailActivity.class);
             intent.putExtra("id", postId);
             context.startActivity(intent);
         });
         holder.imageViewLike.setOnClickListener(v ->
-
         {
             Like like = new Like();
             like.setIdUser(mAuthProvider.getUid());
@@ -94,13 +91,9 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
             like.setTimestamp(new Date().getTime());
             meGusta(like, holder);
         });
-
         getUserInfo(post.getIdUser(), holder);
-
         getNumberLikesByPost(postId, holder);
-
         getNumberCommentsByPost(postId, holder);
-
         checkIfExistLike(postId, mAuthProvider.getUid(), holder);
     }
 
@@ -158,7 +151,7 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
                     String imageProfile = documentSnapshot.getString("image_profile");
                     if (imageProfile != null) {
                         if (!imageProfile.isEmpty()) {
-                            Picasso.with(context).load(imageProfile).into(holder.circleImageViewUser);
+                            Picasso.get().load(imageProfile).into(holder.circleImageViewUser);
                         }
                     }
                 }

@@ -54,7 +54,7 @@ public class CommentAdapter extends FirestoreRecyclerAdapter<Comment, CommentAda
     }
 
     private void showConfirmDelete(String commentId) {
-        new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_menu_delete).setTitle("Eliminar comentario").setMessage("¿Está seguro de realizar esta acción?").setCancelable(false).setPositiveButton("Eliminar", (dialog, which) -> deleteComment(commentId)).setNegativeButton("Cancelar", null).show();
+        new AlertDialog.Builder(context).setIcon(R.drawable.ic_delete).setTitle("Eliminar comentario").setMessage("¿Está seguro de realizar esta acción?").setCancelable(false).setPositiveButton("Eliminar", (dialog, which) -> deleteComment(commentId)).setNegativeButton("Cancelar", null).show();
     }
 
     private void deleteComment(String idUser) {
@@ -78,7 +78,7 @@ public class CommentAdapter extends FirestoreRecyclerAdapter<Comment, CommentAda
                     String imageProfile = documentSnapshot.getString("image_profile");
                     if (imageProfile != null) {
                         if (!imageProfile.isEmpty()) {
-                            Picasso.with(context).load(imageProfile).into(holder.imageViewComment);
+                            Picasso.get().load(imageProfile).into(holder.imageViewComment);
                         }
                     }
                 }

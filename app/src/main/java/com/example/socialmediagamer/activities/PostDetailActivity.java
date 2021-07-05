@@ -60,7 +60,7 @@ import retrofit2.Response;
 public class PostDetailActivity extends AppCompatActivity {
     MaterialToolbar mToolbar;
     MaterialCardView mCardViewShowProfile;
-    MaterialTextView mTextViewTitle, mTextViewDescription, mTextViewUsername, mTextViewPhone, mTextViewCategory, mTextViewRelativeTime, mTextViewLikes;
+    MaterialTextView mTextViewTitle, mTextViewDescription, mTextViewUsername, mTextViewCategory, mTextViewRelativeTime, mTextViewLikes;
     FloatingActionButton mFabComment;
     ShapeableImageView mImageViewCategory;
     CircleImageView mCircleImageViewProfile;
@@ -87,7 +87,6 @@ public class PostDetailActivity extends AppCompatActivity {
         mTextViewTitle = findViewById(R.id.textViewTitle);
         mTextViewDescription = findViewById(R.id.textViewDescription);
         mTextViewUsername = findViewById(R.id.textViewUsername);
-        mTextViewPhone = findViewById(R.id.textViewPhone);
         mTextViewCategory = findViewById(R.id.textViewCategory);
         mImageViewCategory = findViewById(R.id.imageViewCategory);
         mTextViewRelativeTime = findViewById(R.id.textViewRelativeTime);
@@ -351,13 +350,9 @@ public class PostDetailActivity extends AppCompatActivity {
                     String username = documentSnapshot.getString("username");
                     mTextViewUsername.setText(username);
                 }
-                if (documentSnapshot.contains("phone")) {
-                    String phone = documentSnapshot.getString("phone");
-                    mTextViewPhone.setText(phone);
-                }
                 if (documentSnapshot.contains("image_profile")) {
                     String imageProfile = documentSnapshot.getString("image_profile");
-                    Picasso.with(PostDetailActivity.this).load(imageProfile).into(mCircleImageViewProfile);
+                    Picasso.get().load(imageProfile).into(mCircleImageViewProfile);
                 }
             }
         });
