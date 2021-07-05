@@ -1,10 +1,13 @@
 package com.example.socialmediagamer.activities;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -12,7 +15,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.example.socialmediagamer.R;
 import com.example.socialmediagamer.providers.AuthProvider;
 import com.example.socialmediagamer.providers.UsersProvider;
-import com.example.socialmediagamer.utils.SendMail;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.radiobutton.MaterialRadioButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -23,8 +25,10 @@ import java.util.Properties;
 
 import javax.mail.Authenticator;
 import javax.mail.Message;
+import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
+import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
@@ -98,7 +102,6 @@ public class ContactanosActivity extends AppCompatActivity {
                                     message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailProject));
                                     message.setContent(this.message, "text/html; charset=utf-8");
                                     new SendMail().execute(message);
-                                    returnAfterSendingMail();
                                 } catch (Exception e) {
                                     Snackbar.make(view, "Error al enviar correo electrónico", Snackbar.LENGTH_SHORT).show();
                                 }
@@ -120,11 +123,6 @@ public class ContactanosActivity extends AppCompatActivity {
         getUser();
     }
 
-    private void returnAfterSendingMail() {
-        startActivity(new Intent(ContactanosActivity.this, HomeActivity.class));
-        finish();
-    }
-
     private void getUser() {
         mUsersProvider.getUser(mAuthProvider.getUid()).addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
@@ -138,5 +136,48 @@ public class ContactanosActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void returnAfterSendingMail() {
+        startActivity(new Intent(ContactanosActivity.this, HomeActivity.class));
+        finish();
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    public class SendMail extends AsyncTask<Message, String, String> {
+        private ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = ProgressDialog.show(ContactanosActivity.this, "Enviando correo electrónico...", "Por favor, espere un momento", true, false);
+        }
+
+        @Override
+        protected String doInBackground(Message... messages) {
+            try {
+                Transport.send(messages[0]);
+                return "Éxito";
+            } catch (MessagingException e) {
+                e.printStackTrace();
+                return "Error";
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            progressDialog.dismiss();
+            if (s.equals("Éxito")) {
+                if (ContactanosActivity.affair.equals("Queja")) {
+                    Toast.makeText(ContactanosActivity.this, "Gracias por su queja", Toast.LENGTH_LONG).show();
+                } else if (ContactanosActivity.affair.equals("Sugerencia")) {
+                    Toast.makeText(ContactanosActivity.this, "Gracias por su sugerencia", Toast.LENGTH_LONG).show();
+                }
+                returnAfterSendingMail();
+            } else {
+                Snackbar.make(coordinatorLayout, "Error", Snackbar.LENGTH_SHORT).show();
+            }
+        }
     }
 }

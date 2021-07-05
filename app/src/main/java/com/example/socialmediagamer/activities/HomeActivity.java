@@ -22,6 +22,7 @@ import com.example.socialmediagamer.fragments.ProfileFragment;
 import com.example.socialmediagamer.providers.AuthProvider;
 import com.example.socialmediagamer.providers.TokenProvider;
 import com.example.socialmediagamer.providers.UsersProvider;
+import com.example.socialmediagamer.utils.ConnectionReceiver;
 import com.example.socialmediagamer.utils.ViewedMessageHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -56,7 +57,9 @@ public class HomeActivity extends AppCompatActivity implements ConnectionReceive
                     mImageProfile = documentSnapshot.getString("image_profile");
                     mImageCover = documentSnapshot.getString("image_cover");
                     if ((mImageProfile == null || mImageProfile.isEmpty()) || (mImageCover == null || mImageCover.isEmpty())) {
-                        new AlertDialog.Builder(this).setIcon(R.drawable.ic_tip).setTitle("Aviso importante").setMessage("Para mejorar su experiencia y evitar posibles bloqueos en la aplicación al momento de enviar mensajes, es recomendable establecer ahora una imagen de perfil y de portada.").setCancelable(false).setPositiveButton("Ir a editar perfil", (dialog, which) -> startActivity(new Intent(HomeActivity.this, EditProfileActivity.class))).setNegativeButton("En otro momento", null).show();
+                        new AlertDialog.Builder(this).setIcon(R.drawable.ic_tip).setTitle("Aviso importante").setMessage("Para mejorar su experiencia y evitar posibles bloqueos en la aplicación al momento de enviar mensajes, es recomendable establecer ahora una imagen de perfil y de portada.").setCancelable(false).setPositiveButton("Ir a editar perfil", (dialog, which) -> {
+                            startActivity(new Intent(HomeActivity.this, EditProfileActivity.class));
+                        }).setNegativeButton("En otro momento", null).show();
                     }
                 }
             }

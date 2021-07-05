@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -107,17 +106,16 @@ public class UserProfileActivity extends AppCompatActivity {
         getUser();
         getPostNumber();
         checkIfExistPost();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestCallPermission();
-        }
+        requestCallPermission();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     public boolean requestCallPermission() {
         int callsPermission = ActivityCompat.checkSelfPermission(UserProfileActivity.this, Manifest.permission.CALL_PHONE);
         if (callsPermission != PackageManager.PERMISSION_GRANTED) {
             int request = 0;
-            requestPermissions(new String[]{Manifest.permission.CALL_PHONE}, request);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.CALL_PHONE}, request);
+            }
             return false;
         }
         return true;

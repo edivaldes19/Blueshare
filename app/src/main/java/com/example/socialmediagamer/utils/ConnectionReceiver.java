@@ -1,4 +1,4 @@
-package com.example.socialmediagamer.activities;
+package com.example.socialmediagamer.utils;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
