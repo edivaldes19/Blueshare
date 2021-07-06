@@ -55,7 +55,7 @@ public class PostActivity extends AppCompatActivity {
     AuthProvider mAuthProvider;
     TextInputEditText mTextInputTitle, mTextInputDescription;
     MaterialTextView mTextViewCategory, mTextViewTitleActivity;
-    String mIdPost, mExtraPostId, mTitle = "", mDescription = "", mCategory = "", mAbsolutePhotoPath, mPhotoPath, mAbsolutePhotoPath2, mPhotoPath2, image1Update = "", image2Update = "", posting = "Publicando...", editing = "Editando publicación...";
+    String mExtraPostId, mTitle = "", mDescription = "", mCategory = "", mAbsolutePhotoPath, mPhotoPath, mAbsolutePhotoPath2, mPhotoPath2, mImage1Update = "", mImage2Update = "", posting = "Publicando...", editing = "Editando publicación...";
     ProgressDialog progressDialog;
     AlertDialog.Builder mBuilderSelector;
     CharSequence[] options;
@@ -93,32 +93,32 @@ public class PostActivity extends AppCompatActivity {
         mImageViewPost2.setOnClickListener(v -> selectOptionsImage2());
         mExtraPostId = getIntent().getStringExtra("idPostUpdate");
         mButtonPost.setOnClickListener(v -> {
-            if (getIntent().getBooleanExtra("PostSelect", false)) {
+            if (getIntent().getBooleanExtra("postSelect", false)) {
                 //EDITAR PUBLICACIÓN
                 mTitle = Objects.requireNonNull(mTextInputTitle.getText()).toString().trim();
                 mDescription = Objects.requireNonNull(mTextInputDescription.getText()).toString().trim();
                 if (!mTitle.isEmpty() && !mDescription.isEmpty() && !mCategory.isEmpty()) {
                     if (mImageFile != null && mImageFile2 != null) {
-                        saveImageUpdate(mImageFile, mImageFile2);
+                        updateBothImages(mImageFile, mImageFile2);
                     } else if (mPhotoFile != null && mPhotoFile2 != null) {
-                        saveImageUpdate(mPhotoFile, mPhotoFile2);
+                        updateBothImages(mPhotoFile, mPhotoFile2);
                     } else if (mImageFile != null && mPhotoFile2 != null) {
-                        saveImageUpdate(mImageFile, mPhotoFile2);
+                        updateBothImages(mImageFile, mPhotoFile2);
                     } else if (mPhotoFile != null && mImageFile2 != null) {
-                        saveImageUpdate(mPhotoFile, mImageFile2);
+                        updateBothImages(mPhotoFile, mImageFile2);
                     } else if (mPhotoFile != null) {
-                        saveOnlyImage(mPhotoFile, true);
+                        updateOnlyOneImage(mPhotoFile, true);
                     } else if (mPhotoFile2 != null) {
-                        saveOnlyImage(mPhotoFile2, false);
+                        updateOnlyOneImage(mPhotoFile2, false);
                     } else if (mImageFile != null) {
-                        saveOnlyImage(mImageFile, true);
+                        updateOnlyOneImage(mImageFile, true);
                     } else if (mImageFile2 != null) {
-                        saveOnlyImage(mImageFile2, false);
+                        updateOnlyOneImage(mImageFile2, false);
                     } else {
                         Post post = new Post();
-                        post.setId(mIdPost);
-                        post.setImage1(image1Update);
-                        post.setImage2(image2Update);
+                        post.setId(mExtraPostId);
+                        post.setImage1(mImage1Update);
+                        post.setImage2(mImage2Update);
                         post.setTitle(mTitle);
                         post.setDescription(mDescription);
                         post.setCategory(mCategory);
@@ -134,15 +134,30 @@ public class PostActivity extends AppCompatActivity {
                 mDescription = Objects.requireNonNull(mTextInputDescription.getText()).toString().trim();
                 if (!mTitle.isEmpty() && !mDescription.isEmpty() && !mCategory.isEmpty()) {
                     if (mImageFile != null && mImageFile2 != null) {
-                        saveImage(mImageFile, mImageFile2);
+                        saveBothImages(mImageFile, mImageFile2);
                     } else if (mPhotoFile != null && mPhotoFile2 != null) {
-                        saveImage(mPhotoFile, mPhotoFile2);
+                        saveBothImages(mPhotoFile, mPhotoFile2);
                     } else if (mImageFile != null && mPhotoFile2 != null) {
-                        saveImage(mImageFile, mPhotoFile2);
+                        saveBothImages(mImageFile, mPhotoFile2);
                     } else if (mPhotoFile != null && mImageFile2 != null) {
-                        saveImage(mPhotoFile, mImageFile2);
+                        saveBothImages(mPhotoFile, mImageFile2);
+                    } else if (mPhotoFile != null) {
+                        saveOnlyOneImage(mPhotoFile, true);
+                    } else if (mPhotoFile2 != null) {
+                        saveOnlyOneImage(mPhotoFile2, false);
+                    } else if (mImageFile != null) {
+                        saveOnlyOneImage(mImageFile, true);
+                    } else if (mImageFile2 != null) {
+                        saveOnlyOneImage(mImageFile2, false);
                     } else {
-                        Snackbar.make(v, "Debe seleccionar ambas imágenes", Snackbar.LENGTH_SHORT).show();
+                        //PUBLICACIÓN SIN IMÁGENES
+                        Post post = new Post();
+                        post.setTitle(mTitle);
+                        post.setDescription(mDescription);
+                        post.setCategory(mCategory);
+                        post.setIdUser(mAuthProvider.getUid());
+                        post.setTimestamp(new Date().getTime());
+                        saveInfo(post);
                     }
                 } else {
                     Snackbar.make(v, "Complete los campos", Snackbar.LENGTH_SHORT).show();
@@ -192,7 +207,7 @@ public class PostActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     private void getDataFromAdapter() {
-        if (getIntent().getBooleanExtra("PostSelect", false)) {
+        if (getIntent().getBooleanExtra("postSelect", false)) {
             getPost();
             mButtonPost.setIconResource(R.drawable.ic_edit);
             mButtonPost.setText("Editar publicación");
@@ -202,15 +217,22 @@ public class PostActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     private void getPost() {
         mPostProvider.getPostById(mExtraPostId).addOnSuccessListener(documentSnapshot -> {
-            mIdPost = documentSnapshot.getId();
             if (documentSnapshot.exists()) {
                 if (documentSnapshot.contains("image1")) {
-                    image1Update = documentSnapshot.getString("image1");
-                    Picasso.get().load(image1Update).into(mImageViewPost1);
+                    mImage1Update = documentSnapshot.getString("image1");
+                    if (mImage1Update != null) {
+                        if (!mImage1Update.isEmpty()) {
+                            Picasso.get().load(mImage1Update).into(mImageViewPost1);
+                        }
+                    }
                 }
                 if (documentSnapshot.contains("image2")) {
-                    image2Update = documentSnapshot.getString("image2");
-                    Picasso.get().load(image2Update).into(mImageViewPost2);
+                    mImage2Update = documentSnapshot.getString("image2");
+                    if (mImage2Update != null) {
+                        if (!mImage2Update.isEmpty()) {
+                            Picasso.get().load(mImage2Update).into(mImageViewPost2);
+                        }
+                    }
                 }
                 if (documentSnapshot.contains("title")) {
                     mTitle = documentSnapshot.getString("title");
@@ -325,7 +347,7 @@ public class PostActivity extends AppCompatActivity {
         return photoFile;
     }
 
-    private void saveImage(File imageFile, File imageFile2) {
+    private void saveBothImages(File imageFile, File imageFile2) {
         getProgressDialog(posting).show();
         mImageProvider.save(PostActivity.this, imageFile).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -343,17 +365,7 @@ public class PostActivity extends AppCompatActivity {
                                 post.setCategory(mCategory);
                                 post.setIdUser(mAuthProvider.getUid());
                                 post.setTimestamp(new Date().getTime());
-                                mPostProvider.save(post).addOnCompleteListener(taskSave -> {
-                                    getProgressDialog(posting).dismiss();
-                                    if (taskSave.isSuccessful()) {
-                                        clearForm();
-                                        startActivity(new Intent(PostActivity.this, HomeActivity.class));
-                                        finish();
-                                        Toast.makeText(PostActivity.this, "Publicación creada exitosamente", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Snackbar.make(coordinatorLayout, "Error al crear publicación", Snackbar.LENGTH_SHORT).show();
-                                    }
-                                });
+                                saveInfo(post);
                             });
                         } else {
                             getProgressDialog(posting).dismiss();
@@ -368,7 +380,50 @@ public class PostActivity extends AppCompatActivity {
         });
     }
 
-    private void saveImageUpdate(File imageFile, File imageFile2) {
+    private void saveOnlyOneImage(File image, boolean isOnlyImage) {
+        getProgressDialog(posting).show();
+        mImageProvider.save(PostActivity.this, image).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                mImageProvider.getStorage().getDownloadUrl().addOnSuccessListener(uri -> {
+                    final String url = uri.toString();
+                    Post post = new Post();
+                    post.setTitle(mTitle);
+                    post.setDescription(mDescription);
+                    post.setCategory(mCategory);
+                    post.setIdUser(mAuthProvider.getUid());
+                    post.setTimestamp(new Date().getTime());
+                    if (isOnlyImage) {
+                        post.setImage1(url);
+                    } else {
+                        post.setImage2(url);
+                    }
+                    saveInfo(post);
+                });
+            } else {
+                getProgressDialog(posting).dismiss();
+                Snackbar.make(coordinatorLayout, "Error al almacenar la imagen", Snackbar.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void saveInfo(Post post) {
+        if (getProgressDialog(posting).isShowing()) {
+            getProgressDialog(posting).show();
+        }
+        mPostProvider.save(post).addOnCompleteListener(task1 -> {
+            getProgressDialog(posting).dismiss();
+            if (task1.isSuccessful()) {
+                clearForm();
+                startActivity(new Intent(PostActivity.this, HomeActivity.class));
+                finish();
+                Toast.makeText(PostActivity.this, "Publicación creada exitosamente", Toast.LENGTH_SHORT).show();
+            } else {
+                Snackbar.make(coordinatorLayout, "Error al crear publicación", Snackbar.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void updateBothImages(File imageFile, File imageFile2) {
         getProgressDialog(editing).show();
         mImageProvider.save(PostActivity.this, imageFile).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -379,8 +434,18 @@ public class PostActivity extends AppCompatActivity {
                             mImageProvider.getStorage().getDownloadUrl().addOnSuccessListener(uri2 -> {
                                 final String url2 = uri2.toString();
                                 Post post = new Post();
-                                post.setId(mIdPost);
+                                post.setId(mExtraPostId);
+                                if (mImage1Update != null) {
+                                    if (!mImage1Update.isEmpty()) {
+                                        mImageProvider.deleteFromPath(mImage1Update);
+                                    }
+                                }
                                 post.setImage1(url);
+                                if (mImage2Update != null) {
+                                    if (!mImage2Update.isEmpty()) {
+                                        mImageProvider.deleteFromPath(mImage2Update);
+                                    }
+                                }
                                 post.setImage2(url2);
                                 post.setTitle(mTitle);
                                 post.setDescription(mDescription);
@@ -401,24 +466,34 @@ public class PostActivity extends AppCompatActivity {
         });
     }
 
-    private void saveOnlyImage(File image, boolean isOnlyImage) {
+    private void updateOnlyOneImage(File image, boolean isOnlyImage) {
         getProgressDialog(editing).show();
         mImageProvider.save(PostActivity.this, image).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 mImageProvider.getStorage().getDownloadUrl().addOnSuccessListener(uri -> {
                     final String url = uri.toString();
                     Post post = new Post();
-                    post.setId(mIdPost);
+                    post.setId(mExtraPostId);
                     post.setTitle(mTitle);
                     post.setDescription(mDescription);
                     post.setCategory(mCategory);
                     post.setTimestamp(new Date().getTime());
                     if (isOnlyImage) {
+                        if (mImage1Update != null) {
+                            if (!mImage1Update.isEmpty()) {
+                                mImageProvider.deleteFromPath(mImage1Update);
+                            }
+                        }
                         post.setImage1(url);
-                        post.setImage2(image2Update);
+                        post.setImage2(mImage2Update);
                     } else {
+                        if (mImage2Update != null) {
+                            if (!mImage2Update.isEmpty()) {
+                                mImageProvider.deleteFromPath(mImage2Update);
+                            }
+                        }
                         post.setImage2(url);
-                        post.setImage1(image1Update);
+                        post.setImage1(mImage1Update);
                     }
                     updateInfo(post);
                 });

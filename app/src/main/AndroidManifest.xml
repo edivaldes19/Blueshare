@@ -19,7 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SocialMediaGamer">
         <activity
-            android:name=".activities.MyPhotoActivity"
+            android:name=".activities.PhotoActivity"
             android:parentActivityName=".activities.HomeActivity"
             android:screenOrientation="portrait" />
         <activity

@@ -40,7 +40,6 @@ public class MyPostsAdapter extends FirestoreRecyclerAdapter<Post, MyPostsAdapte
     AuthProvider mAuthProvider;
     PostProvider mPostProvider;
     ImageProvider mImageProvider;
-    String pathImagePrimary, pathImageSecondary;
 
     public MyPostsAdapter(FirestoreRecyclerOptions<Post> options, Context context) {
         super(options);
@@ -70,14 +69,12 @@ public class MyPostsAdapter extends FirestoreRecyclerAdapter<Post, MyPostsAdapte
         }
         if (post.getImage1() != null) {
             if (!post.getImage1().isEmpty()) {
-                pathImagePrimary = post.getImage1();
                 Picasso.get().load(post.getImage1()).into(holder.circleImagePost);
+            } else if (post.getImage2() != null) {
+                Picasso.get().load(post.getImage2()).into(holder.circleImagePost);
             }
-        }
-        if (post.getImage2() != null) {
-            if (!post.getImage2().isEmpty()) {
-                pathImageSecondary = post.getImage2();
-            }
+        } else if (post.getImage2() != null) {
+            Picasso.get().load(post.getImage2()).into(holder.circleImagePost);
         }
         holder.viewHolder.setOnClickListener(v -> {
             Intent intent = new Intent(context, PostDetailActivity.class);
@@ -87,21 +84,21 @@ public class MyPostsAdapter extends FirestoreRecyclerAdapter<Post, MyPostsAdapte
         holder.imageViewEdit.setOnClickListener(v -> {
             Intent intent = new Intent(context, PostActivity.class);
             intent.putExtra("idPostUpdate", postId);
-            intent.putExtra("PostSelect", true);
+            intent.putExtra("postSelect", true);
             context.startActivity(intent);
         });
-        holder.imageViewDelete.setOnClickListener(v -> showConfirmDelete(postId));
+        holder.imageViewDelete.setOnClickListener(v -> showConfirmDelete(postId, post));
     }
 
-    private void showConfirmDelete(String postId) {
-        new AlertDialog.Builder(context).setIcon(R.drawable.ic_delete).setTitle("Eliminar publicación").setMessage("¿Está seguro de realizar esta acción?").setCancelable(false).setPositiveButton("Eliminar", (dialog, which) -> deletePost(postId)).setNegativeButton("Cancelar", null).show();
+    private void showConfirmDelete(String postId, Post post) {
+        new AlertDialog.Builder(context).setIcon(R.drawable.ic_delete).setTitle("Eliminar publicación").setMessage("¿Está seguro de realizar esta acción?").setCancelable(false).setPositiveButton("Eliminar", (dialog, which) -> deletePost(postId, post)).setNegativeButton("Cancelar", null).show();
     }
 
-    private void deletePost(String postId) {
+    private void deletePost(String postId, Post post) {
         mPostProvider.delete(postId).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                mImageProvider.deleteFromPath(pathImagePrimary);
-                mImageProvider.deleteFromPath(pathImageSecondary);
+                mImageProvider.deleteFromPath(post.getImage1());
+                mImageProvider.deleteFromPath(post.getImage2());
                 Toast.makeText(context, "Publicación eliminada exitosamente", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(context, "Error al eliminar la publicación", Toast.LENGTH_SHORT).show();

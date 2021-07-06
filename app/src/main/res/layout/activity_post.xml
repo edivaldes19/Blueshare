@@ -78,7 +78,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:scaleType="centerInside"
-                                android:src="@drawable/ic_insert_photo" />
+                                android:src="@drawable/ic_add_image1_foreground" />
                         </com.google.android.material.card.MaterialCardView>
 
                         <com.google.android.material.card.MaterialCardView
@@ -94,7 +94,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:scaleType="centerInside"
-                                android:src="@drawable/ic_insert_photo" />
+                                android:src="@drawable/ic_add_image2_foreground" />
                         </com.google.android.material.card.MaterialCardView>
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>

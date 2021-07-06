@@ -3,7 +3,6 @@ package com.example.socialmediagamer.models;
 import java.util.ArrayList;
 
 public class FCMResponse {
-
     private long multicast_id;
     private int success;
     private int failure;

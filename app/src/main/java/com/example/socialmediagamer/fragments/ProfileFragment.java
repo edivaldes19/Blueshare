@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.socialmediagamer.R;
 import com.example.socialmediagamer.activities.EditProfileActivity;
-import com.example.socialmediagamer.activities.MyPhotoActivity;
+import com.example.socialmediagamer.activities.PhotoActivity;
 import com.example.socialmediagamer.adapters.MyPostsAdapter;
 import com.example.socialmediagamer.models.Post;
 import com.example.socialmediagamer.providers.AuthProvider;
@@ -82,7 +82,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void goToMyPhoto(String path, String type) {
-        Intent intent = new Intent(getContext(), MyPhotoActivity.class);
+        Intent intent = new Intent(getContext(), PhotoActivity.class);
         intent.putExtra("pathImage", path);
         intent.putExtra("pathType", type);
         startActivity(intent);

@@ -78,16 +78,18 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
         if (post.getImage1() != null) {
             if (!post.getImage1().isEmpty()) {
                 Picasso.get().load(post.getImage1()).into(holder.imageViewPost);
+            } else if (post.getImage2() != null) {
+                Picasso.get().load(post.getImage2()).into(holder.imageViewPost);
             }
+        } else if (post.getImage2() != null) {
+            Picasso.get().load(post.getImage2()).into(holder.imageViewPost);
         }
-        holder.viewHolder.setOnClickListener(v ->
-        {
+        holder.viewHolder.setOnClickListener(v -> {
             Intent intent = new Intent(context, PostDetailActivity.class);
             intent.putExtra("id", postId);
             context.startActivity(intent);
         });
-        holder.imageViewLike.setOnClickListener(v ->
-        {
+        holder.imageViewLike.setOnClickListener(v -> {
             Like like = new Like();
             like.setIdUser(mAuthProvider.getUid());
             like.setIdPost(postId);

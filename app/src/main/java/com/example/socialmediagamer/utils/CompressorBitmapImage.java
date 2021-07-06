@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
 
 import id.zelory.compressor.Compressor;
 
@@ -20,7 +19,9 @@ public class CompressorBitmapImage {
             e.printStackTrace();
         }
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Objects.requireNonNull(thumb_bitmap).compress(Bitmap.CompressFormat.JPEG, 80, baos);
+        if (thumb_bitmap != null) {
+            thumb_bitmap.compress(Bitmap.CompressFormat.JPEG, 80, baos);
+        }
         return baos.toByteArray();
     }
 }

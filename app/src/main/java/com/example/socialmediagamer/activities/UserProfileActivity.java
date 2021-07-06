@@ -122,7 +122,7 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     private void goToPhotoUser(String path, String type, String username) {
-        Intent intent = new Intent(UserProfileActivity.this, MyPhotoActivity.class);
+        Intent intent = new Intent(UserProfileActivity.this, PhotoActivity.class);
         intent.putExtra("pathImageForeign", path);
         intent.putExtra("pathTypeForeign", type);
         intent.putExtra("username", username);

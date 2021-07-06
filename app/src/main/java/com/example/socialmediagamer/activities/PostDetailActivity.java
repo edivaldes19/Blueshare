@@ -3,9 +3,11 @@ package com.example.socialmediagamer.activities;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.InputFilter;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -250,7 +252,7 @@ public class PostDetailActivity extends AppCompatActivity {
     }
 
     private void goToShowProfile() {
-        if (!mIdUser.equals("")) {
+        if (!mIdUser.isEmpty()) {
             Intent intent = new Intent(PostDetailActivity.this, UserProfileActivity.class);
             intent.putExtra("idUser", mIdUser);
             startActivity(intent);
@@ -292,6 +294,10 @@ public class PostDetailActivity extends AppCompatActivity {
                 if (documentSnapshot.contains("title")) {
                     String title = documentSnapshot.getString("title");
                     mTextViewTitle.setText(title);
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("postTitle", title);
+                    editor.apply();
                 }
                 if (documentSnapshot.contains("description")) {
                     String description = documentSnapshot.getString("description");

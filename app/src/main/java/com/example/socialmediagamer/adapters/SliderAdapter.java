@@ -2,11 +2,13 @@ package com.example.socialmediagamer.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.socialmediagamer.R;
+import com.example.socialmediagamer.activities.PhotoActivity;
 import com.example.socialmediagamer.models.SliderItem;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.smarteist.autoimageslider.SliderViewAdapter;
@@ -15,7 +17,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapterVH> {
-    private final Context context;
+    Context context;
     private final List<SliderItem> mSliderItems;
 
     public SliderAdapter(Context context, List<SliderItem> sliderItems) {
@@ -35,6 +37,7 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
         if (sliderItem.getImageUrl() != null) {
             if (!sliderItem.getImageUrl().isEmpty()) {
                 Picasso.get().load(sliderItem.getImageUrl()).into(viewHolder.imageViewSlider);
+                viewHolder.imageViewSlider.setOnClickListener(v -> goToShowPhotoActivity(sliderItem.getImageUrl()));
             }
         }
     }
@@ -44,7 +47,13 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
         return mSliderItems.size();
     }
 
-    static class SliderAdapterVH extends SliderViewAdapter.ViewHolder {
+    private void goToShowPhotoActivity(String url) {
+        Intent intent = new Intent(context, PhotoActivity.class);
+        intent.putExtra("urlImagePost", url);
+        context.startActivity(intent);
+    }
+
+    public static class SliderAdapterVH extends SliderViewAdapter.ViewHolder {
         View itemView;
         ShapeableImageView imageViewSlider;
 

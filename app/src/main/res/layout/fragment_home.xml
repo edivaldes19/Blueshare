@@ -15,7 +15,6 @@
 
         <com.mancj.materialsearchbar.MaterialSearchBar
             android:id="@+id/searchBar"
-            style="@style/MaterialSearchBarLight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:mt_backIconTint="@color/colorPrimary"

@@ -42,6 +42,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging'
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.firebaseui:firebase-ui-firestore:7.1.1'
+    //noinspection GradleDependency
     implementation 'id.zelory:compressor:2.1.1'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
