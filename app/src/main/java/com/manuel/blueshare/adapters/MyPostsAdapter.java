@@ -71,10 +71,14 @@ public class MyPostsAdapter extends FirestoreRecyclerAdapter<Post, MyPostsAdapte
             if (!post.getImage1().isEmpty()) {
                 Picasso.get().load(post.getImage1()).into(holder.circleImagePost);
             } else if (post.getImage2() != null) {
-                Picasso.get().load(post.getImage2()).into(holder.circleImagePost);
+                if (!post.getImage2().isEmpty()) {
+                    Picasso.get().load(post.getImage2()).into(holder.circleImagePost);
+                }
             }
         } else if (post.getImage2() != null) {
-            Picasso.get().load(post.getImage2()).into(holder.circleImagePost);
+            if (!post.getImage2().isEmpty()) {
+                Picasso.get().load(post.getImage2()).into(holder.circleImagePost);
+            }
         }
         holder.viewHolder.setOnClickListener(v -> {
             Intent intent = new Intent(context, PostDetailActivity.class);
