@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.socialmediagamer">
+    package="com.manuel.blueshare">
 
     <uses-feature
         android:name="android.hardware.camera2"
@@ -17,51 +17,47 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.SocialMediaGamer">
+        android:theme="@style/Theme.Blueshare">
         <activity
-            android:name=".activities.PhotoActivity"
-            android:parentActivityName=".activities.HomeActivity"
+            android:name="com.manuel.blueshare.activities.PhotoActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.SplashActivity"
+            android:name="com.manuel.blueshare.activities.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.ContactanosActivity"
-            android:parentActivityName=".activities.HomeActivity"
+            android:name="com.manuel.blueshare.activities.ContactanosActivity"
+            android:parentActivityName="com.manuel.blueshare.activities.HomeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.InfoActivity"
-            android:parentActivityName=".activities.HomeActivity"
+            android:name="com.manuel.blueshare.activities.InfoActivity"
+            android:parentActivityName="com.manuel.blueshare.activities.HomeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.ChatActivity"
+            android:name="com.manuel.blueshare.activities.ChatActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.FiltersActivity"
-            android:parentActivityName=".activities.HomeActivity"
+            android:name="com.manuel.blueshare.activities.CategoriesActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.UserProfileActivity"
-            android:parentActivityName=".activities.PostDetailActivity"
+            android:name="com.manuel.blueshare.activities.UserProfileActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.PostDetailActivity"
-            android:parentActivityName=".activities.HomeActivity"
+            android:name="com.manuel.blueshare.activities.PostDetailActivity"
+            android:parentActivityName="com.manuel.blueshare.activities.HomeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.EditProfileActivity"
+            android:name="com.manuel.blueshare.activities.EditProfileActivity"
             android:screenOrientation="portrait" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.example.socialmediagamer"
+            android:authorities="com.manuel.blueshare"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -70,38 +66,35 @@
         </provider>
 
         <activity
-            android:name=".activities.PostActivity"
+            android:name="com.manuel.blueshare.activities.PostActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.CompleteProfileActivity"
+            android:name="com.manuel.blueshare.activities.CompleteProfileActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.HomeActivity"
+            android:name="com.manuel.blueshare.activities.HomeActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activities.RegisterActivity"
+            android:name="com.manuel.blueshare.activities.RegisterActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.MainActivity"
+            android:name="com.manuel.blueshare.activities.MainActivity"
             android:screenOrientation="portrait" />
 
         <service
-            android:name=".services.MyFirebaseMessagingClient"
+            android:name="com.manuel.blueshare.services.MyFirebaseMessagingClient"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
-
         <receiver
-            android:name=".receivers.MessageReceiver"
+            android:name="com.manuel.blueshare.receivers.MessageReceiver"
             android:enabled="true"
             android:exported="false" />
     </application>
-
 </manifest>

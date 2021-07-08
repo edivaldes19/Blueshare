@@ -1,49 +1,41 @@
 {
   "project_info": {
-    "project_number": "654779651722",
-    "project_id": "socialmediagamer-2cb63",
-    "storage_bucket": "socialmediagamer-2cb63.appspot.com"
+    "project_number": "453605900545",
+    "project_id": "blueshare-7ccc7",
+    "storage_bucket": "blueshare-7ccc7.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:654779651722:android:b85eb0e3946d7507773f73",
+        "mobilesdk_app_id": "1:453605900545:android:0dee490f4ab7fe8e675b00",
         "android_client_info": {
-          "package_name": "com.example.socialmediagamer"
+          "package_name": "com.manuel.blueshare"
         }
       },
       "oauth_client": [
         {
-          "client_id": "654779651722-m9qmee9i6ip4skarh49pk3o9k7b08eso.apps.googleusercontent.com",
+          "client_id": "453605900545-a7lj2sa1dl47gtq6jkmjnqv6spnpvv3r.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.socialmediagamer",
+            "package_name": "com.manuel.blueshare",
             "certificate_hash": "112f8b3ca6da778bf4bfd7529a3ef4cce271af20"
           }
         },
         {
-          "client_id": "654779651722-rt0p5fj7kucs0c1nrvc75jcs9no118eu.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.socialmediagamer",
-            "certificate_hash": "2bfe99fb666f7d095648fe538ad2a0ebed1ffed3"
-          }
-        },
-        {
-          "client_id": "654779651722-ggkrs9jc63csiq1jls2b79ri7hdjhlql.apps.googleusercontent.com",
+          "client_id": "453605900545-ir7e7tpac0jko17q24fid00gfk1qgj62.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAQPvI26dUMZptRTvWrjKe3KedrRdnPtD0"
+          "current_key": "AIzaSyAgk1fB2rxxYfG_qRTPSiqSduaRfif4uJc"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "654779651722-ggkrs9jc63csiq1jls2b79ri7hdjhlql.apps.googleusercontent.com",
+              "client_id": "453605900545-ir7e7tpac0jko17q24fid00gfk1qgj62.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
