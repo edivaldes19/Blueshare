@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.snackbar.Snackbar;
@@ -40,9 +42,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserProfileActivity extends AppCompatActivity {
     MaterialToolbar mToolbar;
-    ShapeableImageView mImageViewCover, mImageViewCall;
+    ShapeableImageView mImageViewCover;
     CircleImageView mCircleImageProfile;
     MaterialTextView mTextViewUsername, mTextViewEmail, mTextViewPhone, mTextViewPostNumber, mTextViewPostExist;
+    MaterialButton mButtonCall;
     FloatingActionButton mFabChat;
     RecyclerView mRecyclerView;
     UsersProvider mUsersProvider;
@@ -63,7 +66,7 @@ public class UserProfileActivity extends AppCompatActivity {
         mTextViewPostNumber = findViewById(R.id.textViewPostNumber);
         mCircleImageProfile = findViewById(R.id.circleImageProfile);
         mImageViewCover = findViewById(R.id.imageViewCover);
-        mImageViewCall = findViewById(R.id.imageViewCall);
+        mButtonCall = findViewById(R.id.btnCall);
         mTextViewPostExist = findViewById(R.id.textViewPostExist);
         mRecyclerView = findViewById(R.id.recyclerViewMyPost);
         mFabChat = findViewById(R.id.fabChat);
@@ -84,10 +87,10 @@ public class UserProfileActivity extends AppCompatActivity {
         mFabChat.setOnClickListener(v -> goToChatActivity());
         mCircleImageProfile.setOnClickListener(v -> goToPhotoUser(mExtraImagePathProfile, "Perfil de ", mUsername));
         mImageViewCover.setOnClickListener(v -> goToPhotoUser(mExtraImagePathCover, "Portada de ", mUsername));
-        mImageViewCall.setOnClickListener(v -> {
+        mButtonCall.setOnClickListener(v -> {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (requestCallPermission()) {
-                    if (mPhone != null && !mPhone.isEmpty()) {
+                    if (!TextUtils.isEmpty(mPhone)) {
                         Intent intent = new Intent(Intent.ACTION_CALL);
                         intent.setData(Uri.parse("tel:" + mPhone));
                         if (intent.resolveActivity(getPackageManager()) != null) {
@@ -218,22 +221,18 @@ public class UserProfileActivity extends AppCompatActivity {
                         mTextViewPhone.setText(phone);
                         mPhone = phone;
                     }
-                    if (documentSnapshot.contains("image_cover")) {
-                        String imageCover = documentSnapshot.getString("image_cover");
-                        if (imageCover != null) {
-                            if (!imageCover.isEmpty()) {
-                                mExtraImagePathCover = imageCover;
-                                Picasso.get().load(imageCover).into(mImageViewCover);
-                            }
-                        }
-                    }
                     if (documentSnapshot.contains("image_profile")) {
                         String imageProfile = documentSnapshot.getString("image_profile");
-                        if (imageProfile != null) {
-                            if (!imageProfile.isEmpty()) {
-                                mExtraImagePathProfile = imageProfile;
-                                Picasso.get().load(imageProfile).into(mCircleImageProfile);
-                            }
+                        if (!TextUtils.isEmpty(imageProfile)) {
+                            mExtraImagePathProfile = imageProfile;
+                            Picasso.get().load(imageProfile).into(mCircleImageProfile);
+                        }
+                    }
+                    if (documentSnapshot.contains("image_cover")) {
+                        String imageCover = documentSnapshot.getString("image_cover");
+                        if (!TextUtils.isEmpty(imageCover)) {
+                            mExtraImagePathCover = imageCover;
+                            Picasso.get().load(imageCover).into(mImageViewCover);
                         }
                     }
                 }

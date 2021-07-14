@@ -10,14 +10,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.firebase.firestore.Query;
 import com.manuel.blueshare.R;
 import com.manuel.blueshare.adapters.ChatsAdapter;
 import com.manuel.blueshare.models.Chat;
 import com.manuel.blueshare.providers.AuthProvider;
 import com.manuel.blueshare.providers.ChatsProvider;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.material.appbar.MaterialToolbar;
-import com.google.firebase.firestore.Query;
 
 import java.util.Objects;
 
@@ -30,6 +30,11 @@ public class ChatsFragment extends Fragment {
     MaterialToolbar mToolbar;
 
     public ChatsFragment() {
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override

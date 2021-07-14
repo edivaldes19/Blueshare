@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="50dp"
+    android:layout_marginBottom="?attr/actionBarSize"
     tools:context=".fragments.CategoriesFragment">
 
     <include layout="@layout/action_bar_toolbar" />
@@ -16,9 +16,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="55dp"
-            android:orientation="vertical"
-            tools:ignore="UselessParent">
+            android:layout_marginTop="?attr/actionBarSize"
+            android:orientation="vertical">
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardViewCulture"
@@ -51,7 +50,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginStart="20dp"
                         android:gravity="center_vertical"
-                        android:text="Cultura"
+                        android:text="@string/culture"
                         android:textColor="#A25918"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -90,7 +89,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginStart="20dp"
                         android:gravity="center_vertical"
-                        android:text="Deporte"
+                        android:text="@string/sports"
                         android:textColor="@color/black"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -129,7 +128,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginStart="20dp"
                         android:gravity="center_vertical"
-                        android:text="Estilo de vida"
+                        android:text="@string/lifestyle"
                         android:textColor="#A901DB"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -168,7 +167,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginStart="20dp"
                         android:gravity="center_vertical"
-                        android:text="Música"
+                        android:text="@string/music"
                         android:textColor="#FF0000"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -204,7 +203,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginStart="20dp"
                         android:gravity="center_vertical"
-                        android:text="Programación"
+                        android:text="@string/programation"
                         android:textColor="#0000FF"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -240,7 +239,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginStart="20dp"
                         android:gravity="center_vertical"
-                        android:text="Videojuegos"
+                        android:text="@string/videogames"
                         android:textColor="#008000"
                         android:textSize="20sp"
                         android:textStyle="bold" />

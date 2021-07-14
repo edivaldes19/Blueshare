@@ -162,30 +162,20 @@
                     </LinearLayout>
                 </HorizontalScrollView>
 
-                <LinearLayout
-                    android:id="@+id/linearLayoutEditProfile"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnGoToEditProfile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:background="?android:attr/selectableItemBackground"
+                    android:background="@android:color/transparent"
+                    android:text="@string/editProfile"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    app:icon="@drawable/ic_edit"
+                    app:iconTint="@color/white"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_edit" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:text="@string/editProfile"
-                        android:textColor="@color/colorAccent"
-                        android:textStyle="bold" />
-                </LinearLayout>
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>

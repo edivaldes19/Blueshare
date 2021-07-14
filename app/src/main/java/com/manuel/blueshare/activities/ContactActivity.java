@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.text.TextUtils;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -16,6 +17,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.radiobutton.MaterialRadioButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textview.MaterialTextView;
 import com.manuel.blueshare.R;
 import com.manuel.blueshare.providers.AuthProvider;
 import com.manuel.blueshare.providers.UsersProvider;
@@ -37,16 +39,16 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static com.manuel.blueshare.utils.Validations.isEmailValid;
 import static com.manuel.blueshare.utils.Validations.validateFieldsAsYouType;
 
-public class ContactanosActivity extends AppCompatActivity {
-    public static String affair;
+public class ContactActivity extends AppCompatActivity {
+    public static String mReasonStatic;
     CoordinatorLayout coordinatorLayout;
     CircleImageView mCircleImageViewBack;
     TextInputEditText textInputUsernameForm, textInputEmailForm, textInputMessageForm;
-    RadioGroup radioGroup;
+    MaterialTextView mTextViewReasonSelected;
+    RadioGroup mRadioGroup;
     MaterialRadioButton materialRadioButton, materialRadioButtonComplain, materialRadioButtonSuggestion;
-    final String emailProject = "appsmanuel1219@gmail.com", passwordProject = "e12171922M/";
-    String name, email, message;
-    Session session;
+    final String mEmailProject = "appsmanuel1219@gmail.com", mPasswordProject = "e12171922M/";
+    Session mSession;
     UsersProvider mUsersProvider;
     AuthProvider mAuthProvider;
 
@@ -54,7 +56,7 @@ public class ContactanosActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_contactanos);
+        setContentView(R.layout.activity_contact);
         coordinatorLayout = findViewById(R.id.coordinatorContactanos);
         mCircleImageViewBack = findViewById(R.id.circleImageBack);
         textInputUsernameForm = findViewById(R.id.textInputUsernameForm);
@@ -62,25 +64,28 @@ public class ContactanosActivity extends AppCompatActivity {
         textInputMessageForm = findViewById(R.id.textInputMessageForm);
         materialRadioButtonComplain = findViewById(R.id.radioButtonComplain);
         materialRadioButtonSuggestion = findViewById(R.id.radioButtonSuggestion);
-        radioGroup = findViewById(R.id.radioGroup);
+        mTextViewReasonSelected = findViewById(R.id.textViewReasonSelected);
+        mRadioGroup = findViewById(R.id.radioGroup);
         mUsersProvider = new UsersProvider();
         mAuthProvider = new AuthProvider();
         validateFieldsAsYouType(textInputMessageForm, "El mensaje es obligatorio");
-        MaterialButton materialButton_enviar = findViewById(R.id.btnSendForm);
-        materialButton_enviar.setOnClickListener(view -> {
-            int radioID = radioGroup.getCheckedRadioButtonId();
+        materialRadioButtonComplain.setOnClickListener(v -> mTextViewReasonSelected.setText(materialRadioButtonComplain.getText().toString().trim()));
+        materialRadioButtonSuggestion.setOnClickListener(v -> mTextViewReasonSelected.setText(materialRadioButtonSuggestion.getText().toString().trim()));
+        MaterialButton buttonSend = findViewById(R.id.btnSendForm);
+        buttonSend.setOnClickListener(view -> {
+            int radioID = mRadioGroup.getCheckedRadioButtonId();
             materialRadioButton = findViewById(radioID);
-            name = Objects.requireNonNull(textInputUsernameForm.getText()).toString().trim();
-            email = Objects.requireNonNull(textInputEmailForm.getText()).toString().trim();
-            message = Objects.requireNonNull(textInputMessageForm.getText()).toString().trim();
-            if (name.isEmpty() && !isEmailValid(email) && message.isEmpty() && (!materialRadioButtonComplain.isChecked() || !materialRadioButtonSuggestion.isChecked())) {
+            String name = Objects.requireNonNull(textInputUsernameForm.getText()).toString().trim();
+            String email = Objects.requireNonNull(textInputEmailForm.getText()).toString().trim();
+            String messageInput = Objects.requireNonNull(textInputMessageForm.getText()).toString().trim();
+            if (TextUtils.isEmpty(name) && !isEmailValid(email) && TextUtils.isEmpty(messageInput) && (!materialRadioButtonComplain.isChecked() || !materialRadioButtonSuggestion.isChecked())) {
                 Snackbar.make(view, "Complete los campos", Snackbar.LENGTH_SHORT).show();
             } else {
-                if (!name.isEmpty()) {
+                if (!TextUtils.isEmpty(name)) {
                     if (isEmailValid(email)) {
-                        if (!message.isEmpty()) {
+                        if (!TextUtils.isEmpty(messageInput)) {
                             if (materialRadioButtonComplain.isChecked() || materialRadioButtonSuggestion.isChecked()) {
-                                affair = materialRadioButton.getText().toString().trim();
+                                mReasonStatic = materialRadioButton.getText().toString().trim();
                                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                                 StrictMode.setThreadPolicy(policy);
                                 Properties properties = new Properties();
@@ -89,18 +94,18 @@ public class ContactanosActivity extends AppCompatActivity {
                                 properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
                                 properties.put("mail.smtp.auth", "true");
                                 properties.put("mail.smtp.port", "465");
-                                session = Session.getDefaultInstance(properties, new Authenticator() {
+                                mSession = Session.getDefaultInstance(properties, new Authenticator() {
                                     @Override
                                     protected PasswordAuthentication getPasswordAuthentication() {
-                                        return new PasswordAuthentication(emailProject, passwordProject);
+                                        return new PasswordAuthentication(mEmailProject, mPasswordProject);
                                     }
                                 });
                                 try {
-                                    Message message = new MimeMessage(session);
+                                    Message message = new MimeMessage(mSession);
                                     message.setFrom(new InternetAddress(email, name + " (" + email + ")"));
-                                    message.setSubject(affair + " de Blueshare");
-                                    message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailProject));
-                                    message.setContent(this.message, "text/html; charset=utf-8");
+                                    message.setSubject(mReasonStatic + " de Blueshare");
+                                    message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mEmailProject));
+                                    message.setContent(messageInput, "text/html; charset=utf-8");
                                     new SendMail().execute(message);
                                 } catch (Exception e) {
                                     Snackbar.make(view, "Error al enviar correo electrónico", Snackbar.LENGTH_SHORT).show();
@@ -139,7 +144,7 @@ public class ContactanosActivity extends AppCompatActivity {
     }
 
     private void returnAfterSendingMail() {
-        startActivity(new Intent(ContactanosActivity.this, HomeActivity.class));
+        startActivity(new Intent(ContactActivity.this, HomeActivity.class));
         finish();
     }
 
@@ -150,7 +155,7 @@ public class ContactanosActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = ProgressDialog.show(ContactanosActivity.this, "Enviando correo electrónico...", "Por favor, espere un momento", true, false);
+            progressDialog = ProgressDialog.show(ContactActivity.this, "Enviando correo electrónico...", "Por favor, espere un momento", true, false);
         }
 
         @Override
@@ -169,10 +174,10 @@ public class ContactanosActivity extends AppCompatActivity {
             super.onPostExecute(s);
             progressDialog.dismiss();
             if (s.equals("Éxito")) {
-                if (ContactanosActivity.affair.equals("Queja")) {
-                    Toast.makeText(ContactanosActivity.this, "Gracias por su queja", Toast.LENGTH_LONG).show();
-                } else if (ContactanosActivity.affair.equals("Sugerencia")) {
-                    Toast.makeText(ContactanosActivity.this, "Gracias por su sugerencia", Toast.LENGTH_LONG).show();
+                if (ContactActivity.mReasonStatic.equals("Queja")) {
+                    Toast.makeText(ContactActivity.this, "Gracias por su queja", Toast.LENGTH_LONG).show();
+                } else if (ContactActivity.mReasonStatic.equals("Sugerencia")) {
+                    Toast.makeText(ContactActivity.this, "Gracias por su sugerencia", Toast.LENGTH_LONG).show();
                 }
                 returnAfterSendingMail();
             } else {

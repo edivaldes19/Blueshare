@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,18 +68,10 @@ public class MyPostsAdapter extends FirestoreRecyclerAdapter<Post, MyPostsAdapte
             holder.imageViewEdit.setVisibility(View.GONE);
             holder.imageViewDelete.setVisibility(View.GONE);
         }
-        if (post.getImage1() != null) {
-            if (!post.getImage1().isEmpty()) {
-                Picasso.get().load(post.getImage1()).into(holder.circleImagePost);
-            } else if (post.getImage2() != null) {
-                if (!post.getImage2().isEmpty()) {
-                    Picasso.get().load(post.getImage2()).into(holder.circleImagePost);
-                }
-            }
-        } else if (post.getImage2() != null) {
-            if (!post.getImage2().isEmpty()) {
-                Picasso.get().load(post.getImage2()).into(holder.circleImagePost);
-            }
+        if (!TextUtils.isEmpty(post.getImage1())) {
+            Picasso.get().load(post.getImage1()).into(holder.circleImagePost);
+        } else if (!TextUtils.isEmpty(post.getImage2())) {
+            Picasso.get().load(post.getImage2()).into(holder.circleImagePost);
         }
         holder.viewHolder.setOnClickListener(v -> {
             Intent intent = new Intent(context, PostDetailActivity.class);
@@ -101,15 +94,11 @@ public class MyPostsAdapter extends FirestoreRecyclerAdapter<Post, MyPostsAdapte
     private void deletePost(String postId, Post post) {
         mPostProvider.delete(postId).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                if (post.getImage1() != null) {
-                    if (!post.getImage1().isEmpty()) {
-                        mImageProvider.deleteFromPath(post.getImage1());
-                    }
+                if (!TextUtils.isEmpty(post.getImage1())) {
+                    mImageProvider.deleteFromPath(post.getImage1());
                 }
-                if (post.getImage2() != null) {
-                    if (!post.getImage2().isEmpty()) {
-                        mImageProvider.deleteFromPath(post.getImage2());
-                    }
+                if (!TextUtils.isEmpty(post.getImage2())) {
+                    mImageProvider.deleteFromPath(post.getImage2());
                 }
                 Toast.makeText(context, "Publicación eliminada exitosamente", Toast.LENGTH_SHORT).show();
             } else {

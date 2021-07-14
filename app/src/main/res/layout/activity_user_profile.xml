@@ -141,6 +141,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="25dp"
+                                android:layout_marginEnd="25dp"
                                 android:gravity="center"
                                 android:orientation="vertical">
 
@@ -160,15 +161,27 @@
                                     android:textStyle="bold" />
                             </LinearLayout>
 
-                            <com.google.android.material.imageview.ShapeableImageView
-                                android:id="@+id/imageViewCall"
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="match_parent"
+                                android:background="@color/black" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnCall"
+                                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_marginStart="25dp"
                                 android:layout_marginEnd="25dp"
-                                android:background="?android:attr/selectableItemBackground"
-                                android:src="@drawable/ic_call" />
+                                android:backgroundTint="@color/white"
+                                android:text="@string/call"
+                                android:textAllCaps="false"
+                                android:textColor="@color/black"
+                                app:cornerRadius="@dimen/corner_radius_rounded"
+                                app:icon="@drawable/ic_call"
+                                app:iconTint="@color/black"
+                                app:strokeColor="@color/black" />
                         </LinearLayout>
                     </LinearLayout>
                 </HorizontalScrollView>
@@ -215,8 +228,8 @@
         android:id="@+id/fabChat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="20dp"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
         android:src="@drawable/ic_start_chat"
         tools:ignore="ContentDescription" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

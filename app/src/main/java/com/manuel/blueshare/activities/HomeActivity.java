@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -56,10 +57,8 @@ public class HomeActivity extends AppCompatActivity implements ConnectionReceive
                 if (documentSnapshot.contains("image_profile") && documentSnapshot.contains("image_cover")) {
                     mImageProfile = documentSnapshot.getString("image_profile");
                     mImageCover = documentSnapshot.getString("image_cover");
-                    if ((mImageProfile == null || mImageProfile.isEmpty()) || (mImageCover == null || mImageCover.isEmpty())) {
-                        new AlertDialog.Builder(this).setIcon(R.drawable.ic_tip).setTitle("Aviso importante").setMessage("Para mejorar su experiencia y evitar posibles bloqueos en la aplicación al momento de enviar mensajes, es recomendable establecer ahora una imagen de perfil y de portada.").setCancelable(false).setPositiveButton("Ir a editar perfil", (dialog, which) -> {
-                            startActivity(new Intent(HomeActivity.this, EditProfileActivity.class));
-                        }).setNegativeButton("En otro momento", null).show();
+                    if (TextUtils.isEmpty(mImageProfile) || TextUtils.isEmpty(mImageCover)) {
+                        new AlertDialog.Builder(this).setIcon(R.drawable.ic_tip).setTitle("Aviso importante").setMessage("Para mejorar su experiencia y evitar posibles bloqueos en la aplicación al momento de enviar mensajes, es recomendable establecer ahora una imagen de perfil y de portada.").setCancelable(false).setPositiveButton("Ir a editar perfil", (dialog, which) -> startActivity(new Intent(HomeActivity.this, EditProfileActivity.class))).setNegativeButton("En otro momento", null).show();
                     }
                 }
             }

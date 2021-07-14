@@ -31,7 +31,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.manuel.blueshare.activities.ContactanosActivity"
+            android:name="com.manuel.blueshare.activities.ContactActivity"
             android:parentActivityName="com.manuel.blueshare.activities.HomeActivity"
             android:screenOrientation="portrait" />
         <activity

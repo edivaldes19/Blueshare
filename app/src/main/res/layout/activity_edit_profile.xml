@@ -131,6 +131,7 @@
                     android:textAllCaps="false"
                     android:textColor="@color/colorAccent"
                     app:backgroundTint="@color/colorPrimary"
+                    app:cornerRadius="@dimen/corner_radius_rounded"
                     app:icon="@drawable/ic_edit" />
             </LinearLayout>
 

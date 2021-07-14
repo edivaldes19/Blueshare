@@ -2,6 +2,7 @@ package com.manuel.blueshare.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,11 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.material.textview.MaterialTextView;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.manuel.blueshare.R;
 import com.manuel.blueshare.activities.ChatActivity;
 import com.manuel.blueshare.models.Chat;
@@ -18,11 +24,6 @@ import com.manuel.blueshare.providers.AuthProvider;
 import com.manuel.blueshare.providers.ChatsProvider;
 import com.manuel.blueshare.providers.MessageProvider;
 import com.manuel.blueshare.providers.UsersProvider;
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.material.textview.MaterialTextView;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.ListenerRegistration;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -116,10 +117,8 @@ public class ChatsAdapter extends FirestoreRecyclerAdapter<Chat, ChatsAdapter.Vi
                 }
                 if (documentSnapshot.contains("image_profile")) {
                     String imageProfile = documentSnapshot.getString("image_profile");
-                    if (imageProfile != null) {
-                        if (!imageProfile.isEmpty()) {
-                            Picasso.get().load(imageProfile).into(holder.circleImageChat);
-                        }
+                    if (!TextUtils.isEmpty(imageProfile)) {
+                        Picasso.get().load(imageProfile).into(holder.circleImageChat);
                     }
                 }
             }

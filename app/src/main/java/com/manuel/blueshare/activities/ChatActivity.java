@@ -3,6 +3,7 @@ package com.manuel.blueshare.activities;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
@@ -221,10 +222,8 @@ public class ChatActivity extends AppCompatActivity {
                     }
                     if (documentSnapshot.contains("image_profile")) {
                         mImageReceiver = documentSnapshot.getString("image_profile");
-                        if (mImageReceiver != null) {
-                            if (!mImageReceiver.equals("")) {
-                                Picasso.get().load(mImageReceiver).into(mCircleImageProfile);
-                            }
+                        if (!TextUtils.isEmpty(mImageReceiver)) {
+                            Picasso.get().load(mImageReceiver).into(mCircleImageProfile);
                         }
                     }
                 }

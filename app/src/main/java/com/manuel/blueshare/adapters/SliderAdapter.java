@@ -3,6 +3,7 @@ package com.manuel.blueshare.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,11 +35,9 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
     @Override
     public void onBindViewHolder(SliderAdapterVH viewHolder, final int position) {
         SliderItem sliderItem = mSliderItems.get(position);
-        if (sliderItem.getImageUrl() != null) {
-            if (!sliderItem.getImageUrl().isEmpty()) {
-                Picasso.get().load(sliderItem.getImageUrl()).into(viewHolder.imageViewSlider);
-                viewHolder.imageViewSlider.setOnClickListener(v -> goToShowPhotoActivity(sliderItem.getImageUrl()));
-            }
+        if (!TextUtils.isEmpty(sliderItem.getImageUrl())) {
+            Picasso.get().load(sliderItem.getImageUrl()).into(viewHolder.imageViewSlider);
+            viewHolder.imageViewSlider.setOnClickListener(v -> goToShowPhotoActivity(sliderItem.getImageUrl()));
         }
     }
 

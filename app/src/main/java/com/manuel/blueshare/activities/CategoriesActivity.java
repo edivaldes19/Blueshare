@@ -8,16 +8,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.textview.MaterialTextView;
+import com.google.firebase.firestore.Query;
 import com.manuel.blueshare.R;
 import com.manuel.blueshare.adapters.PostsAdapter;
 import com.manuel.blueshare.models.Post;
 import com.manuel.blueshare.providers.AuthProvider;
 import com.manuel.blueshare.providers.PostProvider;
 import com.manuel.blueshare.utils.ViewedMessageHelper;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.textview.MaterialTextView;
-import com.google.firebase.firestore.Query;
 
 import java.util.Objects;
 

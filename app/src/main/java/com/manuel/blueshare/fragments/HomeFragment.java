@@ -17,7 +17,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.Query;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.manuel.blueshare.R;
-import com.manuel.blueshare.activities.ContactanosActivity;
+import com.manuel.blueshare.activities.ContactActivity;
 import com.manuel.blueshare.activities.InfoActivity;
 import com.manuel.blueshare.activities.MainActivity;
 import com.manuel.blueshare.activities.PostActivity;
@@ -41,18 +41,17 @@ public class HomeFragment extends Fragment implements MaterialSearchBar.OnSearch
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         mView = inflater.inflate(R.layout.fragment_home, container, false);
         mFab = mView.findViewById(R.id.fab);
         mRecyclerView = mView.findViewById(R.id.recyclerViewHome);
         mSearchBar = mView.findViewById(R.id.searchBar);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        setHasOptionsMenu(true);
         mAuthProvider = new AuthProvider();
         mPostProvider = new PostProvider();
         mSearchBar.setOnSearchActionListener(this);
@@ -67,10 +66,10 @@ public class HomeFragment extends Fragment implements MaterialSearchBar.OnSearch
                 alert.setNegativeButton("Cancelar", (dialog, which) -> {
                 });
                 alert.show();
-            } else if (item.getItemId() == R.id.itemAcercaDe) {
+            } else if (item.getItemId() == R.id.itemAbout) {
                 startActivity(new Intent(getContext(), InfoActivity.class));
-            } else if (item.getItemId() == R.id.itemContactanos) {
-                startActivity(new Intent(getContext(), ContactanosActivity.class));
+            } else if (item.getItemId() == R.id.itemContact) {
+                startActivity(new Intent(getContext(), ContactActivity.class));
             }
             return true;
         });

@@ -51,4 +51,6 @@
     <string name="back">VOLVER</string>
     <string name="zero">0</string>
     <string name="viewProfile">Ver perfil</string>
+    <string name="selectAReason">Seleccione un motivo:</string>
+    <string name="call">Llamar</string>
 </resources>

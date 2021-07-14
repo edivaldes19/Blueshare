@@ -2,6 +2,7 @@ package com.manuel.blueshare.adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,16 +13,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.manuel.blueshare.R;
-import com.manuel.blueshare.models.Comment;
-import com.manuel.blueshare.providers.AuthProvider;
-import com.manuel.blueshare.providers.CommentsProvider;
-import com.manuel.blueshare.providers.UsersProvider;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.manuel.blueshare.R;
+import com.manuel.blueshare.models.Comment;
+import com.manuel.blueshare.providers.AuthProvider;
+import com.manuel.blueshare.providers.CommentsProvider;
+import com.manuel.blueshare.providers.UsersProvider;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -79,10 +80,8 @@ public class CommentAdapter extends FirestoreRecyclerAdapter<Comment, CommentAda
                 }
                 if (documentSnapshot.contains("image_profile")) {
                     String imageProfile = documentSnapshot.getString("image_profile");
-                    if (imageProfile != null) {
-                        if (!imageProfile.isEmpty()) {
-                            Picasso.get().load(imageProfile).into(holder.imageViewComment);
-                        }
+                    if (!TextUtils.isEmpty(imageProfile)) {
+                        Picasso.get().load(imageProfile).into(holder.imageViewComment);
                     }
                 }
             }

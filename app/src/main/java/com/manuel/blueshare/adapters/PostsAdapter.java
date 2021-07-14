@@ -3,6 +3,7 @@ package com.manuel.blueshare.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,13 @@ import android.view.animation.AnimationUtils;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.imageview.ShapeableImageView;
+import com.google.android.material.textview.MaterialTextView;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.manuel.blueshare.R;
 import com.manuel.blueshare.activities.PostDetailActivity;
 import com.manuel.blueshare.models.Like;
@@ -20,13 +28,6 @@ import com.manuel.blueshare.providers.CommentsProvider;
 import com.manuel.blueshare.providers.LikesProvider;
 import com.manuel.blueshare.providers.UsersProvider;
 import com.manuel.blueshare.utils.RelativeTime;
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.imageview.ShapeableImageView;
-import com.google.android.material.textview.MaterialTextView;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.ListenerRegistration;
 import com.squareup.picasso.Picasso;
 
 import java.util.Date;
@@ -75,13 +76,9 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
         }
         holder.textViewTitle.setText(post.getTitle());
         holder.textViewDescription.setText(post.getDescription());
-        if (post.getImage1() != null) {
-            if (!post.getImage1().isEmpty()) {
-                Picasso.get().load(post.getImage1()).into(holder.imageViewPost);
-            } else if (post.getImage2() != null) {
-                Picasso.get().load(post.getImage2()).into(holder.imageViewPost);
-            }
-        } else if (post.getImage2() != null) {
+        if (!TextUtils.isEmpty(post.getImage1())) {
+            Picasso.get().load(post.getImage1()).into(holder.imageViewPost);
+        } else if (!TextUtils.isEmpty(post.getImage2())) {
             Picasso.get().load(post.getImage2()).into(holder.imageViewPost);
         }
         holder.viewHolder.setOnClickListener(v -> {
@@ -154,10 +151,8 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
                 }
                 if (documentSnapshot.contains("image_profile")) {
                     String imageProfile = documentSnapshot.getString("image_profile");
-                    if (imageProfile != null) {
-                        if (!imageProfile.isEmpty()) {
-                            Picasso.get().load(imageProfile).into(holder.circleImageViewUser);
-                        }
+                    if (!TextUtils.isEmpty(imageProfile)) {
+                        Picasso.get().load(imageProfile).into(holder.circleImageViewUser);
                     }
                 }
             }

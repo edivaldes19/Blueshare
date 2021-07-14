@@ -1,12 +1,12 @@
 package com.manuel.blueshare.providers;
 
-import com.manuel.blueshare.models.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.manuel.blueshare.models.User;
 
 import java.util.Date;
 import java.util.HashMap;

@@ -3,6 +3,7 @@ package com.manuel.blueshare.activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -63,9 +64,7 @@ public class RegisterActivity extends AppCompatActivity {
         validateFieldsAsYouType(mTextInputPhone, "El número de teléfono es obligatorio");
         validatePasswordFieldsAsYouType(mTextInputPasswordR, "La contraseña es obligatoria");
         validatePasswordFieldsAsYouType(mTextInputConfirmPasswordR, "Debe confirmar su contraseña");
-        mUsernameList.clear();
         isUserInfoExist(mUsernameList, "username");
-        mPhoneList.clear();
         isUserInfoExist(mPhoneList, "phone");
         materialButtonRegister.setOnClickListener(v -> {
             String username = Objects.requireNonNull(mTextInputUsername.getText()).toString().trim();
@@ -73,12 +72,12 @@ public class RegisterActivity extends AppCompatActivity {
             String phone = Objects.requireNonNull(mTextInputPhone.getText()).toString().trim();
             String password = Objects.requireNonNull(mTextInputPasswordR.getText()).toString().trim();
             String confirmPassword = Objects.requireNonNull(mTextInputConfirmPasswordR.getText()).toString().trim();
-            if (!username.isEmpty()) {
-                if (!email.isEmpty()) {
-                    if (!phone.isEmpty()) {
-                        if (!password.isEmpty()) {
-                            if (!confirmPassword.isEmpty()) {
-                                if (!mUsernameList.isEmpty()) {
+            if (!TextUtils.isEmpty(username)) {
+                if (!TextUtils.isEmpty(email)) {
+                    if (!TextUtils.isEmpty(phone)) {
+                        if (!TextUtils.isEmpty(password)) {
+                            if (!TextUtils.isEmpty(confirmPassword)) {
+                                if (mUsernameList != null && !mUsernameList.isEmpty()) {
                                     for (String s : mUsernameList) {
                                         if (s.equals(username)) {
                                             Snackbar.make(v, "Ya existe un usuario con ese nombre", Snackbar.LENGTH_SHORT).show();
@@ -86,7 +85,7 @@ public class RegisterActivity extends AppCompatActivity {
                                         }
                                     }
                                 }
-                                if (!mPhoneList.isEmpty()) {
+                                if (mPhoneList != null && !mPhoneList.isEmpty()) {
                                     for (String s : mPhoneList) {
                                         if (s.equals(phone)) {
                                             Snackbar.make(v, "Ya existe un usuario con ese teléfono", Snackbar.LENGTH_SHORT).show();
@@ -143,8 +142,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private void createUser(final String username, final String email, final String phone,
-                            final String password) {
+    private void createUser(String username, String email, String phone, String password) {
         mDialog.show();
         mAuthProvider.register(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {

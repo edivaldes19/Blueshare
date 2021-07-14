@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -22,6 +23,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.manuel.blueshare.R;
 import com.manuel.blueshare.models.User;
 import com.manuel.blueshare.providers.AuthProvider;
@@ -33,6 +35,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
@@ -54,6 +57,7 @@ public class EditProfileActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
     AlertDialog.Builder mBuilderSelector;
     CharSequence[] options;
+    ArrayList<String> mUsernameList, mPhoneList;
     boolean isFirstEditProfile, isFirstEditCover;
 
     @Override
@@ -70,6 +74,8 @@ public class EditProfileActivity extends AppCompatActivity {
         mImageProvider = new ImageProvider();
         mUsersProvider = new UsersProvider();
         mAuthProvider = new AuthProvider();
+        mUsernameList = new ArrayList<>();
+        mPhoneList = new ArrayList<>();
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Editando perfil...");
         progressDialog.setMessage("Por favor, espere un momento");
@@ -80,14 +86,44 @@ public class EditProfileActivity extends AppCompatActivity {
         options = new CharSequence[]{"Seleccionar de la galería", "Tomar fotografía"};
         validateFieldsAsYouType(mTextInputEditTextUsername, "El nombre de usuario es obligatorio");
         validateFieldsAsYouType(mTextInputEditTextPhone, "El número de teléfono es obligatorio");
+        isUserInfoExist(mUsernameList, "teachername");
+        isUserInfoExist(mPhoneList, "phone");
         mCircleImageViewBack.setOnClickListener(v -> finish());
         mCircleImageProfile.setOnClickListener(v -> selectOptionsImage());
         mImageViewCover.setOnClickListener(v -> selectOptionsImage2());
         mButtonEditProfile.setOnClickListener(v -> {
             mUsername = Objects.requireNonNull(mTextInputEditTextUsername.getText()).toString().trim();
             mPhone = Objects.requireNonNull(mTextInputEditTextPhone.getText()).toString().trim();
-            if (!mUsername.isEmpty()) {
-                if (!mPhone.isEmpty()) {
+            if (!TextUtils.isEmpty(mUsername)) {
+                if (!TextUtils.isEmpty(mPhone)) {
+                    if (mUsernameList != null && !mUsernameList.isEmpty()) {
+                        for (int i = 0; i < mUsernameList.size(); i++) {
+                            if (mUsernameList.get(i).equals(mUsername)) {
+                                mUsernameList.remove(i);
+                                break;
+                            }
+                        }
+                        for (String s : mUsernameList) {
+                            if (s.equals(mUsername)) {
+                                Snackbar.make(v, "Ya existe un usuario con ese nombre", Snackbar.LENGTH_SHORT).show();
+                                return;
+                            }
+                        }
+                    }
+                    if (mPhoneList != null && !mPhoneList.isEmpty()) {
+                        for (int i = 0; i < mPhoneList.size(); i++) {
+                            if (mPhoneList.get(i).equals(mPhone)) {
+                                mPhoneList.remove(i);
+                                break;
+                            }
+                        }
+                        for (String s : mPhoneList) {
+                            if (s.equals(mPhone)) {
+                                Snackbar.make(v, "Ya existe un usuario con ese teléfono", Snackbar.LENGTH_SHORT).show();
+                                return;
+                            }
+                        }
+                    }
                     if (mImageFile != null && mImageFile2 != null) {
                         saveImageCoverAndProfile(mImageFile, mImageFile2);
                     } else if (mPhotoFile != null && mPhotoFile2 != null) {
@@ -123,6 +159,23 @@ public class EditProfileActivity extends AppCompatActivity {
         getUser();
     }
 
+    private void isUserInfoExist(ArrayList<String> stringList, String field) {
+        mUsersProvider.getAllUserDocuments().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot snapshot : Objects.requireNonNull(task.getResult())) {
+                    if (snapshot.exists()) {
+                        if (snapshot.contains(field)) {
+                            String allFields = snapshot.getString(field);
+                            stringList.add(allFields);
+                        }
+                    }
+                }
+            } else {
+                Snackbar.make(coordinatorLayout, "Error al obtener la información de los docentes", Snackbar.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void getUser() {
         mUsersProvider.getUser(mAuthProvider.getUid()).addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
@@ -136,26 +189,18 @@ public class EditProfileActivity extends AppCompatActivity {
                 }
                 if (documentSnapshot.contains("image_profile")) {
                     mImageProfile = documentSnapshot.getString("image_profile");
-                    if (mImageProfile != null) {
+                    if (!TextUtils.isEmpty(mImageProfile)) {
                         isFirstEditProfile = false;
-                        if (!mImageProfile.isEmpty()) {
-                            Picasso.get().load(mImageProfile).into(mCircleImageProfile);
-                        } else {
-                            isFirstEditProfile = true;
-                        }
+                        Picasso.get().load(mImageProfile).into(mCircleImageProfile);
                     } else {
                         isFirstEditProfile = true;
                     }
                 }
                 if (documentSnapshot.contains("image_cover")) {
                     mImageCover = documentSnapshot.getString("image_cover");
-                    if (mImageCover != null) {
+                    if (!TextUtils.isEmpty(mImageCover)) {
                         isFirstEditCover = false;
-                        if (!mImageCover.isEmpty()) {
-                            Picasso.get().load(mImageCover).into(mImageViewCover);
-                        } else {
-                            isFirstEditCover = true;
-                        }
+                        Picasso.get().load(mImageCover).into(mImageViewCover);
                     } else {
                         isFirstEditCover = true;
                     }
@@ -177,16 +222,12 @@ public class EditProfileActivity extends AppCompatActivity {
                                 User user = new User();
                                 user.setUsername(mUsername);
                                 user.setPhone(mPhone);
-                                if (mImageProfile != null) {
-                                    if (!mImageProfile.isEmpty()) {
-                                        mImageProvider.deleteFromPath(mImageProfile);
-                                    }
+                                if (!TextUtils.isEmpty(mImageProfile)) {
+                                    mImageProvider.deleteFromPath(mImageProfile);
                                 }
                                 user.setImage_profile(urlProfile);
-                                if (mImageCover != null) {
-                                    if (!mImageCover.isEmpty()) {
-                                        mImageProvider.deleteFromPath(mImageCover);
-                                    }
+                                if (!TextUtils.isEmpty(mImageCover)) {
+                                    mImageProvider.deleteFromPath(mImageCover);
                                 }
                                 user.setImage_cover(urlCover);
                                 user.setId(mAuthProvider.getUid());
@@ -217,18 +258,14 @@ public class EditProfileActivity extends AppCompatActivity {
                         user.setUsername(mUsername);
                         user.setPhone(mPhone);
                         if (isProfileImage) {
-                            if (mImageProfile != null) {
-                                if (!mImageProfile.isEmpty()) {
-                                    mImageProvider.deleteFromPath(mImageProfile);
-                                }
+                            if (!TextUtils.isEmpty(mImageProfile)) {
+                                mImageProvider.deleteFromPath(mImageProfile);
                             }
                             user.setImage_profile(url);
                             user.setImage_cover(mImageCover);
                         } else {
-                            if (mImageCover != null) {
-                                if (!mImageCover.isEmpty()) {
-                                    mImageProvider.deleteFromPath(mImageCover);
-                                }
+                            if (!TextUtils.isEmpty(mImageCover)) {
+                                mImageProvider.deleteFromPath(mImageCover);
                             }
                             user.setImage_cover(url);
                             user.setImage_profile(mImageProfile);

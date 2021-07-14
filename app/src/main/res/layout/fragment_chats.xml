@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="50dp"
+    android:layout_marginBottom="?attr/actionBarSize"
     tools:context=".fragments.ChatsFragment">
 
     <include layout="@layout/action_bar_toolbar" />
@@ -12,7 +12,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="55dp"
+        android:layout_marginTop="?attr/actionBarSize"
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 

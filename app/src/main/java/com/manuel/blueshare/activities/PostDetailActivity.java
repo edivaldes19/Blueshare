@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.InputFilter;
+import android.text.TextUtils;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -188,7 +189,7 @@ public class PostDetailActivity extends AppCompatActivity {
         alert.setView(container);
         alert.setPositiveButton("Comentar", (dialog, which) -> {
             String value = Objects.requireNonNull(textInputEditText.getText()).toString().trim();
-            if (!value.isEmpty()) {
+            if (!TextUtils.isEmpty(value)) {
                 createComment(value);
             } else {
                 Toast.makeText(this, "No es posible comentar textos vacíos", Toast.LENGTH_LONG).show();

@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/itemAcercaDe"
+        android:id="@+id/itemAbout"
         android:title="@string/about"
         app:showAsAction="never" />
     <item
-        android:id="@+id/itemContactanos"
+        android:id="@+id/itemContact"
         android:title="@string/contactMe"
         app:showAsAction="never" />
     <item

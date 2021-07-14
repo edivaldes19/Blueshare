@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -97,9 +98,9 @@ public class PostActivity extends AppCompatActivity {
                 //EDITAR PUBLICACIÓN
                 mTitle = Objects.requireNonNull(mTextInputTitle.getText()).toString().trim();
                 mDescription = Objects.requireNonNull(mTextInputDescription.getText()).toString().trim();
-                if (!mTitle.isEmpty()) {
-                    if (!mDescription.isEmpty()) {
-                        if (!mCategory.isEmpty()) {
+                if (!TextUtils.isEmpty(mTitle)) {
+                    if (!TextUtils.isEmpty(mDescription)) {
+                        if (!TextUtils.isEmpty(mCategory)) {
                             if (mImageFile != null && mImageFile2 != null) {
                                 updateBothImages(mImageFile, mImageFile2);
                             } else if (mPhotoFile != null && mPhotoFile2 != null) {
@@ -140,9 +141,9 @@ public class PostActivity extends AppCompatActivity {
                 //NUEVA PUBLICACIÓN
                 mTitle = Objects.requireNonNull(mTextInputTitle.getText()).toString().trim();
                 mDescription = Objects.requireNonNull(mTextInputDescription.getText()).toString().trim();
-                if (!mTitle.isEmpty()) {
-                    if (!mDescription.isEmpty()) {
-                        if (!mCategory.isEmpty()) {
+                if (!TextUtils.isEmpty(mTitle)) {
+                    if (!TextUtils.isEmpty(mDescription)) {
+                        if (!TextUtils.isEmpty(mCategory)) {
                             if (mImageFile != null && mImageFile2 != null) {
                                 saveBothImages(mImageFile, mImageFile2);
                             } else if (mPhotoFile != null && mPhotoFile2 != null) {
@@ -236,18 +237,14 @@ public class PostActivity extends AppCompatActivity {
             if (documentSnapshot.exists()) {
                 if (documentSnapshot.contains("image1")) {
                     mImage1Update = documentSnapshot.getString("image1");
-                    if (mImage1Update != null) {
-                        if (!mImage1Update.isEmpty()) {
-                            Picasso.get().load(mImage1Update).into(mImageViewPost1);
-                        }
+                    if (!TextUtils.isEmpty(mImage1Update)) {
+                        Picasso.get().load(mImage1Update).into(mImageViewPost1);
                     }
                 }
                 if (documentSnapshot.contains("image2")) {
                     mImage2Update = documentSnapshot.getString("image2");
-                    if (mImage2Update != null) {
-                        if (!mImage2Update.isEmpty()) {
-                            Picasso.get().load(mImage2Update).into(mImageViewPost2);
-                        }
+                    if (!TextUtils.isEmpty(mImage2Update)) {
+                        Picasso.get().load(mImage2Update).into(mImageViewPost2);
                     }
                 }
                 if (documentSnapshot.contains("title")) {
@@ -261,7 +258,7 @@ public class PostActivity extends AppCompatActivity {
                 }
                 if (documentSnapshot.contains("category")) {
                     mCategory = documentSnapshot.getString("category");
-                    if (mCategory != null) {
+                    if (!TextUtils.isEmpty(mCategory)) {
                         switch (mCategory) {
                             case "Cultura":
                                 mTextViewCategory.setTextColor(Color.parseColor("#A25918"));
@@ -451,16 +448,12 @@ public class PostActivity extends AppCompatActivity {
                                 final String url2 = uri2.toString();
                                 Post post = new Post();
                                 post.setId(mExtraPostId);
-                                if (mImage1Update != null) {
-                                    if (!mImage1Update.isEmpty()) {
-                                        mImageProvider.deleteFromPath(mImage1Update);
-                                    }
+                                if (!TextUtils.isEmpty(mImage1Update)) {
+                                    mImageProvider.deleteFromPath(mImage1Update);
                                 }
                                 post.setImage1(url);
-                                if (mImage2Update != null) {
-                                    if (!mImage2Update.isEmpty()) {
-                                        mImageProvider.deleteFromPath(mImage2Update);
-                                    }
+                                if (!TextUtils.isEmpty(mImage2Update)) {
+                                    mImageProvider.deleteFromPath(mImage2Update);
                                 }
                                 post.setImage2(url2);
                                 post.setTitle(mTitle);
@@ -495,18 +488,14 @@ public class PostActivity extends AppCompatActivity {
                     post.setCategory(mCategory);
                     post.setTimestamp(new Date().getTime());
                     if (isOnlyImage) {
-                        if (mImage1Update != null) {
-                            if (!mImage1Update.isEmpty()) {
-                                mImageProvider.deleteFromPath(mImage1Update);
-                            }
+                        if (!TextUtils.isEmpty(mImage1Update)) {
+                            mImageProvider.deleteFromPath(mImage1Update);
                         }
                         post.setImage1(url);
                         post.setImage2(mImage2Update);
                     } else {
-                        if (mImage2Update != null) {
-                            if (!mImage2Update.isEmpty()) {
-                                mImageProvider.deleteFromPath(mImage2Update);
-                            }
+                        if (!TextUtils.isEmpty(mImage2Update)) {
+                            mImageProvider.deleteFromPath(mImage2Update);
                         }
                         post.setImage2(url);
                         post.setImage1(mImage1Update);

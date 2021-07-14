@@ -226,7 +226,8 @@
                 android:text="@string/registerMe"
                 android:textAllCaps="false"
                 android:textColor="@color/colorAccent"
-                app:icon="@drawable/ic_person_add"
+                app:cornerRadius="@dimen/corner_radius_rounded"
+                app:icon="@drawable/ic_playlist_add_check"
                 app:iconTint="@color/colorAccent" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

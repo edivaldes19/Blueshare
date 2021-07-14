@@ -3,6 +3,7 @@ package com.manuel.blueshare.activities;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -35,7 +36,7 @@ public class PhotoActivity extends AppCompatActivity {
         touchImageView = findViewById(R.id.imageViewMyPhoto);
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        if (mExtraUsername != null && !mExtraUsername.isEmpty()) {
+        if (!TextUtils.isEmpty(mExtraUsername)) {
             Objects.requireNonNull(getSupportActionBar()).setTitle(mExtraForeignImageType + mExtraUsername);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             Picasso.get().load(mExtraForeignImagePath).into(touchImageView);
@@ -44,7 +45,7 @@ public class PhotoActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             Picasso.get().load(mExtraMyImagePath).into(touchImageView);
         }
-        if (mExtraUrlImagePost != null && !mExtraUrlImagePost.isEmpty() && title != null && !title.isEmpty()) {
+        if (!TextUtils.isEmpty(mExtraUrlImagePost) && !TextUtils.isEmpty(title)) {
             Objects.requireNonNull(getSupportActionBar()).setTitle(title);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             Picasso.get().load(mExtraUrlImagePost).into(touchImageView);

@@ -4,16 +4,17 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.firestore.ListenerRegistration;
@@ -33,10 +34,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFragment extends Fragment {
     View mView;
-    LinearLayout mLinearLayoutEditProfile;
     ShapeableImageView mImageViewCover;
     CircleImageView mCircleImageProfile;
     MaterialTextView mTextViewUsername, mTextViewEmail, mTextViewPhone, mTextViewPostNumber, mTextViewPostExist;
+    MaterialButton mButtonGoToEditProfile;
     UsersProvider mUsersProvider;
     AuthProvider mAuthProvider;
     PostProvider mPostProvider;
@@ -57,7 +58,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_profile, container, false);
-        mLinearLayoutEditProfile = mView.findViewById(R.id.linearLayoutEditProfile);
+        mButtonGoToEditProfile = mView.findViewById(R.id.btnGoToEditProfile);
         mTextViewUsername = mView.findViewById(R.id.textViewUsername);
         mTextViewEmail = mView.findViewById(R.id.textViewEmail);
         mTextViewPhone = mView.findViewById(R.id.textViewPhone);
@@ -72,7 +73,7 @@ public class ProfileFragment extends Fragment {
         mImageProvider = new ImageProvider();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        mLinearLayoutEditProfile.setOnClickListener(v -> goToEditProfile());
+        mButtonGoToEditProfile.setOnClickListener(v -> goToEditProfile());
         mCircleImageProfile.setOnClickListener(v -> goToMyPhoto(mExtraImagePathProfile, "Mi foto de perfil"));
         mImageViewCover.setOnClickListener(v -> goToMyPhoto(mExtraImagePathCover, "Mi foto de portada"));
         getUser();
@@ -159,22 +160,18 @@ public class ProfileFragment extends Fragment {
                         String phone = documentSnapshot.getString("phone");
                         mTextViewPhone.setText(phone);
                     }
-                    if (documentSnapshot.contains("image_cover")) {
-                        String imageCover = documentSnapshot.getString("image_cover");
-                        if (imageCover != null) {
-                            if (!imageCover.isEmpty()) {
-                                mExtraImagePathCover = imageCover;
-                                Picasso.get().load(imageCover).into(mImageViewCover);
-                            }
-                        }
-                    }
                     if (documentSnapshot.contains("image_profile")) {
                         String imageProfile = documentSnapshot.getString("image_profile");
-                        if (imageProfile != null) {
-                            if (!imageProfile.isEmpty()) {
-                                mExtraImagePathProfile = imageProfile;
-                                Picasso.get().load(imageProfile).into(mCircleImageProfile);
-                            }
+                        if (!TextUtils.isEmpty(imageProfile)) {
+                            mExtraImagePathProfile = imageProfile;
+                            Picasso.get().load(imageProfile).into(mCircleImageProfile);
+                        }
+                    }
+                    if (documentSnapshot.contains("image_cover")) {
+                        String imageCover = documentSnapshot.getString("image_cover");
+                        if (!TextUtils.isEmpty(imageCover)) {
+                            mExtraImagePathCover = imageCover;
+                            Picasso.get().load(imageCover).into(mImageViewCover);
                         }
                     }
                 }

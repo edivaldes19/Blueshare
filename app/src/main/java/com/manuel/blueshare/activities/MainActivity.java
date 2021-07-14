@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.text.TextUtils;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -35,6 +36,7 @@ import com.manuel.blueshare.models.User;
 import com.manuel.blueshare.providers.AuthProvider;
 import com.manuel.blueshare.providers.UsersProvider;
 
+import java.util.Date;
 import java.util.Objects;
 
 import static com.manuel.blueshare.utils.Validations.isEmailValid;
@@ -83,8 +85,8 @@ public class MainActivity extends AppCompatActivity {
         materialButtonLogin.setOnClickListener(v -> {
             String email = Objects.requireNonNull(mTextInputEmail.getText()).toString().trim();
             String password = Objects.requireNonNull(mTextInputPassword.getText()).toString().trim();
-            if (!email.isEmpty()) {
-                if (!password.isEmpty()) {
+            if (!TextUtils.isEmpty(email)) {
+                if (!TextUtils.isEmpty(password)) {
                     if (isEmailValid(email)) {
                         progressDialog.show();
                         mAuthProvider.login(email, password).addOnCompleteListener(task -> {
@@ -142,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
         alert.setView(container);
         alert.setPositiveButton("Enviar correo", (dialog, which) -> {
             String email = Objects.requireNonNull(textInputEditText.getText()).toString().trim();
-            if (!email.isEmpty()) {
+            if (!TextUtils.isEmpty(email)) {
                 if (isEmailValid(email)) {
                     progressDialogResetPassword.setCanceledOnTouchOutside(false);
                     progressDialogResetPassword.show();
@@ -205,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void checkUserExist(final String id) {
+    private void checkUserExist(String id) {
         mUsersProvider.getUser(id).addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
                 progressDialog.dismiss();
@@ -218,6 +220,11 @@ public class MainActivity extends AppCompatActivity {
                 User user = new User();
                 user.setId(id);
                 user.setEmail(email);
+                user.setUsername("");
+                user.setPhone("");
+                user.setImage_profile("");
+                user.setImage_cover("");
+                user.setTimestamp(new Date().getTime());
                 mUsersProvider.create(user).addOnCompleteListener(task -> {
                     progressDialog.dismiss();
                     if (task.isSuccessful()) {
