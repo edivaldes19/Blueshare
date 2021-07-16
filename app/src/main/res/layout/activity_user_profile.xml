@@ -57,52 +57,53 @@
                     app:civ_border_color="@color/colorAccent"
                     app:civ_border_width="5dp"
                     app:civ_circle_background_color="@color/grayLight"
-                    app:layout_constraintBottom_toTopOf="@id/horizontalScroll"
+                    app:layout_constraintBottom_toTopOf="@id/linearLayoutInfoUser"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/guideline" />
 
-                <HorizontalScrollView
-                    android:id="@+id/horizontalScroll"
+                <LinearLayout
+                    android:id="@+id/linearLayoutInfoUser"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:gravity="center"
+                    android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/circleImageProfile">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
                         android:gravity="center"
                         android:orientation="vertical">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/textViewUsername"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="vertical">
+                            android:textColor="@color/black"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
 
-                            <com.google.android.material.textview.MaterialTextView
-                                android:id="@+id/textViewUsername"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/black"
-                                android:textSize="20sp"
-                                android:textStyle="bold" />
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/textViewEmail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+                    </LinearLayout>
 
-                            <com.google.android.material.textview.MaterialTextView
-                                android:id="@+id/textViewEmail"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:textColor="@color/black"
-                                android:textSize="16sp" />
-                        </LinearLayout>
+                    <HorizontalScrollView
+                        android:id="@+id/horizontalScroll"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
 
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:gravity="center"
@@ -183,8 +184,8 @@
                                 app:iconTint="@color/black"
                                 app:strokeColor="@color/black" />
                         </LinearLayout>
-                    </LinearLayout>
-                </HorizontalScrollView>
+                    </HorizontalScrollView>
+                </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.appbar.MaterialToolbar
