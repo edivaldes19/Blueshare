@@ -1,5 +1,10 @@
 package com.manuel.blueshare.activities;
 
+import static com.manuel.blueshare.utils.MyTools.compareDataString;
+import static com.manuel.blueshare.utils.MyTools.deleteCurrentInformation;
+import static com.manuel.blueshare.utils.MyTools.isUserInfoExist;
+import static com.manuel.blueshare.utils.MyTools.validateFieldsAsYouType;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -23,7 +28,6 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.manuel.blueshare.R;
 import com.manuel.blueshare.models.User;
 import com.manuel.blueshare.providers.AuthProvider;
@@ -40,8 +44,6 @@ import java.util.Date;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
-import static com.manuel.blueshare.utils.Validations.validateFieldsAsYouType;
 
 public class EditProfileActivity extends AppCompatActivity {
     CoordinatorLayout coordinatorLayout;
@@ -86,94 +88,55 @@ public class EditProfileActivity extends AppCompatActivity {
         options = new CharSequence[]{"Seleccionar de la galería", "Tomar fotografía"};
         validateFieldsAsYouType(mTextInputEditTextUsername, "El nombre de usuario es obligatorio");
         validateFieldsAsYouType(mTextInputEditTextPhone, "El número de teléfono es obligatorio");
-        isUserInfoExist(mUsernameList, "teachername");
-        isUserInfoExist(mPhoneList, "phone");
+        isUserInfoExist(mUsersProvider, mUsernameList, "username", coordinatorLayout);
+        isUserInfoExist(mUsersProvider, mPhoneList, "phone", coordinatorLayout);
+        getUser();
         mCircleImageViewBack.setOnClickListener(v -> finish());
         mCircleImageProfile.setOnClickListener(v -> selectOptionsImage());
         mImageViewCover.setOnClickListener(v -> selectOptionsImage2());
-        mButtonEditProfile.setOnClickListener(v -> {
-            mUsername = Objects.requireNonNull(mTextInputEditTextUsername.getText()).toString().trim();
-            mPhone = Objects.requireNonNull(mTextInputEditTextPhone.getText()).toString().trim();
-            if (!TextUtils.isEmpty(mUsername)) {
-                if (!TextUtils.isEmpty(mPhone)) {
-                    if (mUsernameList != null && !mUsernameList.isEmpty()) {
-                        for (int i = 0; i < mUsernameList.size(); i++) {
-                            if (mUsernameList.get(i).equals(mUsername)) {
-                                mUsernameList.remove(i);
-                                break;
-                            }
-                        }
-                        for (String s : mUsernameList) {
-                            if (s.equals(mUsername)) {
-                                Snackbar.make(v, "Ya existe un usuario con ese nombre", Snackbar.LENGTH_SHORT).show();
-                                return;
-                            }
-                        }
-                    }
-                    if (mPhoneList != null && !mPhoneList.isEmpty()) {
-                        for (int i = 0; i < mPhoneList.size(); i++) {
-                            if (mPhoneList.get(i).equals(mPhone)) {
-                                mPhoneList.remove(i);
-                                break;
-                            }
-                        }
-                        for (String s : mPhoneList) {
-                            if (s.equals(mPhone)) {
-                                Snackbar.make(v, "Ya existe un usuario con ese teléfono", Snackbar.LENGTH_SHORT).show();
-                                return;
-                            }
-                        }
-                    }
-                    if (mImageFile != null && mImageFile2 != null) {
-                        saveImageCoverAndProfile(mImageFile, mImageFile2);
-                    } else if (mPhotoFile != null && mPhotoFile2 != null) {
-                        saveImageCoverAndProfile(mPhotoFile, mPhotoFile2);
-                    } else if (mImageFile != null && mPhotoFile2 != null) {
-                        saveImageCoverAndProfile(mImageFile, mPhotoFile2);
-                    } else if (mPhotoFile != null && mImageFile2 != null) {
-                        saveImageCoverAndProfile(mPhotoFile, mImageFile2);
-                    } else if (mPhotoFile != null) {
-                        saveImage(mPhotoFile, true);
-                    } else if (mPhotoFile2 != null) {
-                        saveImage(mPhotoFile2, false);
-                    } else if (mImageFile != null) {
-                        saveImage(mImageFile, true);
-                    } else if (mImageFile2 != null) {
-                        saveImage(mImageFile2, false);
-                    } else {
-                        User user = new User();
-                        user.setUsername(mUsername);
-                        user.setPhone(mPhone);
-                        user.setId(mAuthProvider.getUid());
-                        user.setImage_profile(mImageProfile);
-                        user.setImage_cover(mImageCover);
-                        updateInfo(user);
-                    }
-                } else {
-                    Snackbar.make(v, "El número de teléfono es obligatorio", Snackbar.LENGTH_SHORT).show();
-                }
-            } else {
-                Snackbar.make(v, "El nombre de usuario es obligatorio", Snackbar.LENGTH_SHORT).show();
-            }
-        });
-        getUser();
+        mButtonEditProfile.setOnClickListener(v -> editProfile());
     }
 
-    private void isUserInfoExist(ArrayList<String> stringList, String field) {
-        mUsersProvider.getAllUserDocuments().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                for (QueryDocumentSnapshot snapshot : Objects.requireNonNull(task.getResult())) {
-                    if (snapshot.exists()) {
-                        if (snapshot.contains(field)) {
-                            String allFields = snapshot.getString(field);
-                            stringList.add(allFields);
-                        }
-                    }
+    private void editProfile() {
+        mUsername = Objects.requireNonNull(mTextInputEditTextUsername.getText()).toString().trim();
+        mPhone = Objects.requireNonNull(mTextInputEditTextPhone.getText()).toString().trim();
+        if (!TextUtils.isEmpty(mUsername)) {
+            if (!TextUtils.isEmpty(mPhone)) {
+                deleteCurrentInformation(mUsernameList, mUsername);
+                compareDataString(mUsernameList, mUsername, coordinatorLayout, "Ya existe un usuario con ese nombre");
+                deleteCurrentInformation(mPhoneList, mPhone);
+                compareDataString(mPhoneList, mPhone, coordinatorLayout, "Ya existe un usuario con ese teléfono");
+                if (mImageFile != null && mImageFile2 != null) {
+                    saveImageCoverAndProfile(mImageFile, mImageFile2);
+                } else if (mPhotoFile != null && mPhotoFile2 != null) {
+                    saveImageCoverAndProfile(mPhotoFile, mPhotoFile2);
+                } else if (mImageFile != null && mPhotoFile2 != null) {
+                    saveImageCoverAndProfile(mImageFile, mPhotoFile2);
+                } else if (mPhotoFile != null && mImageFile2 != null) {
+                    saveImageCoverAndProfile(mPhotoFile, mImageFile2);
+                } else if (mPhotoFile != null) {
+                    saveImage(mPhotoFile, true);
+                } else if (mPhotoFile2 != null) {
+                    saveImage(mPhotoFile2, false);
+                } else if (mImageFile != null) {
+                    saveImage(mImageFile, true);
+                } else if (mImageFile2 != null) {
+                    saveImage(mImageFile2, false);
+                } else {
+                    User user = new User();
+                    user.setUsername(mUsername);
+                    user.setPhone(mPhone);
+                    user.setId(mAuthProvider.getUid());
+                    user.setImage_profile(mImageProfile);
+                    user.setImage_cover(mImageCover);
+                    updateInfo(user);
                 }
             } else {
-                Snackbar.make(coordinatorLayout, "Error al obtener la información de los docentes", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, "El número de teléfono es obligatorio", Snackbar.LENGTH_SHORT).show();
             }
-        });
+        } else {
+            Snackbar.make(coordinatorLayout, "El nombre de usuario es obligatorio", Snackbar.LENGTH_SHORT).show();
+        }
     }
 
     private void getUser() {

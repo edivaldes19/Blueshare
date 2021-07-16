@@ -1,5 +1,9 @@
 package com.manuel.blueshare.activities;
 
+import static com.manuel.blueshare.utils.MyTools.compareDataString;
+import static com.manuel.blueshare.utils.MyTools.isUserInfoExist;
+import static com.manuel.blueshare.utils.MyTools.validateFieldsAsYouType;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +15,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.manuel.blueshare.R;
 import com.manuel.blueshare.models.User;
 import com.manuel.blueshare.providers.AuthProvider;
@@ -20,8 +23,6 @@ import com.manuel.blueshare.providers.UsersProvider;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
-
-import static com.manuel.blueshare.utils.Validations.validateFieldsAsYouType;
 
 public class CompleteProfileActivity extends AppCompatActivity {
     CoordinatorLayout coordinatorLayout;
@@ -51,54 +52,25 @@ public class CompleteProfileActivity extends AppCompatActivity {
         mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         validateFieldsAsYouType(mTextInputUsername, "El nombre de usuario es obligatorio");
         validateFieldsAsYouType(mTextInputPhone, "El número de teléfono es obligatorio");
-        isUserInfoExist(mUsernameList, "username");
-        isUserInfoExist(mPhoneList, "phone");
-        materialButtonRegister.setOnClickListener(v -> {
-            String username = Objects.requireNonNull(mTextInputUsername.getText()).toString().trim();
-            String phone = Objects.requireNonNull(mTextInputPhone.getText()).toString().trim();
-            if (!TextUtils.isEmpty(username)) {
-                if (!TextUtils.isEmpty(phone)) {
-                    if (mUsernameList != null && !mUsernameList.isEmpty()) {
-                        for (String s : mUsernameList) {
-                            if (s.equals(username)) {
-                                Snackbar.make(v, "Ya existe un usuario con ese nombre", Snackbar.LENGTH_SHORT).show();
-                                return;
-                            }
-                        }
-                    }
-                    if (mPhoneList != null && !mPhoneList.isEmpty()) {
-                        for (String s : mPhoneList) {
-                            if (s.equals(phone)) {
-                                Snackbar.make(v, "Ya existe un usuario con ese teléfono", Snackbar.LENGTH_SHORT).show();
-                                return;
-                            }
-                        }
-                    }
-                    updateUser(username, phone);
-                } else {
-                    Snackbar.make(v, "El número de teléfono es obligatorio", Snackbar.LENGTH_SHORT).show();
-                }
-            } else {
-                Snackbar.make(v, "El nombre de usuario es obligatorio", Snackbar.LENGTH_SHORT).show();
-            }
-        });
+        isUserInfoExist(mUsersProvider, mUsernameList, "username", coordinatorLayout);
+        isUserInfoExist(mUsersProvider, mPhoneList, "phone", coordinatorLayout);
+        materialButtonRegister.setOnClickListener(v -> completeInfo());
     }
 
-    public void isUserInfoExist(ArrayList<String> stringList, String field) {
-        mUsersProvider.getAllUserDocuments().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                for (QueryDocumentSnapshot snapshot : Objects.requireNonNull(task.getResult())) {
-                    if (snapshot.exists()) {
-                        if (snapshot.contains(field)) {
-                            String allFields = snapshot.getString(field);
-                            stringList.add(allFields);
-                        }
-                    }
-                }
+    private void completeInfo() {
+        String username = Objects.requireNonNull(mTextInputUsername.getText()).toString().trim();
+        String phone = Objects.requireNonNull(mTextInputPhone.getText()).toString().trim();
+        if (!TextUtils.isEmpty(username)) {
+            if (!TextUtils.isEmpty(phone)) {
+                compareDataString(mUsernameList, username, coordinatorLayout, "Ya existe un usuario con ese nombre");
+                compareDataString(mPhoneList, phone, coordinatorLayout, "Ya existe un usuario con ese teléfono");
+                updateUser(username, phone);
             } else {
-                Snackbar.make(coordinatorLayout, "Error al obtener la información de los usuarios", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, "El número de teléfono es obligatorio", Snackbar.LENGTH_SHORT).show();
             }
-        });
+        } else {
+            Snackbar.make(coordinatorLayout, "El nombre de usuario es obligatorio", Snackbar.LENGTH_SHORT).show();
+        }
     }
 
     private void updateUser(String username, String phone) {

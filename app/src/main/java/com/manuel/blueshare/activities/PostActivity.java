@@ -1,5 +1,7 @@
 package com.manuel.blueshare.activities;
 
+import static com.manuel.blueshare.utils.MyTools.validateFieldsAsYouType;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -41,8 +43,6 @@ import java.util.Date;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
-import static com.manuel.blueshare.utils.Validations.validateFieldsAsYouType;
 
 public class PostActivity extends AppCompatActivity {
     CoordinatorLayout coordinatorLayout;
@@ -89,98 +89,12 @@ public class PostActivity extends AppCompatActivity {
         options = new CharSequence[]{"Seleccionar de la galería", "Tomar fotografía"};
         validateFieldsAsYouType(mTextInputTitle, "El título de la publicación es obligatorio");
         validateFieldsAsYouType(mTextInputDescription, "La descripción de la publicación es obligatoria");
+        getDataFromAdapter();
         mCircleImageBack.setOnClickListener(v -> finish());
         mImageViewPost1.setOnClickListener(v -> selectOptionsImage());
         mImageViewPost2.setOnClickListener(v -> selectOptionsImage2());
         mExtraPostId = getIntent().getStringExtra("idPostUpdate");
-        mButtonPost.setOnClickListener(v -> {
-            if (getIntent().getBooleanExtra("postSelect", false)) {
-                //EDITAR PUBLICACIÓN
-                mTitle = Objects.requireNonNull(mTextInputTitle.getText()).toString().trim();
-                mDescription = Objects.requireNonNull(mTextInputDescription.getText()).toString().trim();
-                if (!TextUtils.isEmpty(mTitle)) {
-                    if (!TextUtils.isEmpty(mDescription)) {
-                        if (!TextUtils.isEmpty(mCategory)) {
-                            if (mImageFile != null && mImageFile2 != null) {
-                                updateBothImages(mImageFile, mImageFile2);
-                            } else if (mPhotoFile != null && mPhotoFile2 != null) {
-                                updateBothImages(mPhotoFile, mPhotoFile2);
-                            } else if (mImageFile != null && mPhotoFile2 != null) {
-                                updateBothImages(mImageFile, mPhotoFile2);
-                            } else if (mPhotoFile != null && mImageFile2 != null) {
-                                updateBothImages(mPhotoFile, mImageFile2);
-                            } else if (mPhotoFile != null) {
-                                updateOnlyOneImage(mPhotoFile, true);
-                            } else if (mPhotoFile2 != null) {
-                                updateOnlyOneImage(mPhotoFile2, false);
-                            } else if (mImageFile != null) {
-                                updateOnlyOneImage(mImageFile, true);
-                            } else if (mImageFile2 != null) {
-                                updateOnlyOneImage(mImageFile2, false);
-                            } else {
-                                Post post = new Post();
-                                post.setId(mExtraPostId);
-                                post.setImage1(mImage1Update);
-                                post.setImage2(mImage2Update);
-                                post.setTitle(mTitle);
-                                post.setDescription(mDescription);
-                                post.setCategory(mCategory);
-                                post.setTimestamp(new Date().getTime());
-                                updateInfo(post);
-                            }
-                        } else {
-                            Snackbar.make(v, "Debe seleccionar una categoría", Snackbar.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Snackbar.make(v, "La descripción de la publicación es obligatoria", Snackbar.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Snackbar.make(v, "El título de la publicación es obligatorio", Snackbar.LENGTH_SHORT).show();
-                }
-            } else {
-                //NUEVA PUBLICACIÓN
-                mTitle = Objects.requireNonNull(mTextInputTitle.getText()).toString().trim();
-                mDescription = Objects.requireNonNull(mTextInputDescription.getText()).toString().trim();
-                if (!TextUtils.isEmpty(mTitle)) {
-                    if (!TextUtils.isEmpty(mDescription)) {
-                        if (!TextUtils.isEmpty(mCategory)) {
-                            if (mImageFile != null && mImageFile2 != null) {
-                                saveBothImages(mImageFile, mImageFile2);
-                            } else if (mPhotoFile != null && mPhotoFile2 != null) {
-                                saveBothImages(mPhotoFile, mPhotoFile2);
-                            } else if (mImageFile != null && mPhotoFile2 != null) {
-                                saveBothImages(mImageFile, mPhotoFile2);
-                            } else if (mPhotoFile != null && mImageFile2 != null) {
-                                saveBothImages(mPhotoFile, mImageFile2);
-                            } else if (mPhotoFile != null) {
-                                saveOnlyOneImage(mPhotoFile, true);
-                            } else if (mPhotoFile2 != null) {
-                                saveOnlyOneImage(mPhotoFile2, false);
-                            } else if (mImageFile != null) {
-                                saveOnlyOneImage(mImageFile, true);
-                            } else if (mImageFile2 != null) {
-                                saveOnlyOneImage(mImageFile2, false);
-                            } else {
-                                //PUBLICACIÓN SIN IMÁGENES
-                                Post post = new Post();
-                                post.setTitle(mTitle);
-                                post.setDescription(mDescription);
-                                post.setCategory(mCategory);
-                                post.setIdUser(mAuthProvider.getUid());
-                                post.setTimestamp(new Date().getTime());
-                                saveInfo(post);
-                            }
-                        } else {
-                            Snackbar.make(v, "Debe seleccionar una categoría", Snackbar.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Snackbar.make(v, "La descripción de la publicación es obligatoria", Snackbar.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Snackbar.make(v, "El título de la publicación es obligatorio", Snackbar.LENGTH_SHORT).show();
-                }
-            }
-        });
+        mButtonPost.setOnClickListener(v -> toPost());
         mCardViewCulture.setOnClickListener(v -> {
             mCategory = "Cultura";
             mTextViewCategory.setTextColor(Color.parseColor("#A25918"));
@@ -211,7 +125,92 @@ public class PostActivity extends AppCompatActivity {
             mTextViewCategory.setTextColor(Color.parseColor("#008000"));
             mTextViewCategory.setText(mCategory);
         });
-        getDataFromAdapter();
+    }
+
+    private void toPost() {
+        if (getIntent().getBooleanExtra("postSelect", false)) {
+            mTitle = Objects.requireNonNull(mTextInputTitle.getText()).toString().trim();
+            mDescription = Objects.requireNonNull(mTextInputDescription.getText()).toString().trim();
+            if (!TextUtils.isEmpty(mTitle)) {
+                if (!TextUtils.isEmpty(mDescription)) {
+                    if (!TextUtils.isEmpty(mCategory)) {
+                        if (mImageFile != null && mImageFile2 != null) {
+                            updateBothImages(mImageFile, mImageFile2);
+                        } else if (mPhotoFile != null && mPhotoFile2 != null) {
+                            updateBothImages(mPhotoFile, mPhotoFile2);
+                        } else if (mImageFile != null && mPhotoFile2 != null) {
+                            updateBothImages(mImageFile, mPhotoFile2);
+                        } else if (mPhotoFile != null && mImageFile2 != null) {
+                            updateBothImages(mPhotoFile, mImageFile2);
+                        } else if (mPhotoFile != null) {
+                            updateOnlyOneImage(mPhotoFile, true);
+                        } else if (mPhotoFile2 != null) {
+                            updateOnlyOneImage(mPhotoFile2, false);
+                        } else if (mImageFile != null) {
+                            updateOnlyOneImage(mImageFile, true);
+                        } else if (mImageFile2 != null) {
+                            updateOnlyOneImage(mImageFile2, false);
+                        } else {
+                            Post post = new Post();
+                            post.setId(mExtraPostId);
+                            post.setImage1(mImage1Update);
+                            post.setImage2(mImage2Update);
+                            post.setTitle(mTitle);
+                            post.setDescription(mDescription);
+                            post.setCategory(mCategory);
+                            post.setTimestamp(new Date().getTime());
+                            updateInfo(post);
+                        }
+                    } else {
+                        Snackbar.make(coordinatorLayout, "Debe seleccionar una categoría", Snackbar.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Snackbar.make(coordinatorLayout, "La descripción de la publicación es obligatoria", Snackbar.LENGTH_SHORT).show();
+                }
+            } else {
+                Snackbar.make(coordinatorLayout, "El título de la publicación es obligatorio", Snackbar.LENGTH_SHORT).show();
+            }
+        } else {
+            mTitle = Objects.requireNonNull(mTextInputTitle.getText()).toString().trim();
+            mDescription = Objects.requireNonNull(mTextInputDescription.getText()).toString().trim();
+            if (!TextUtils.isEmpty(mTitle)) {
+                if (!TextUtils.isEmpty(mDescription)) {
+                    if (!TextUtils.isEmpty(mCategory)) {
+                        if (mImageFile != null && mImageFile2 != null) {
+                            saveBothImages(mImageFile, mImageFile2);
+                        } else if (mPhotoFile != null && mPhotoFile2 != null) {
+                            saveBothImages(mPhotoFile, mPhotoFile2);
+                        } else if (mImageFile != null && mPhotoFile2 != null) {
+                            saveBothImages(mImageFile, mPhotoFile2);
+                        } else if (mPhotoFile != null && mImageFile2 != null) {
+                            saveBothImages(mPhotoFile, mImageFile2);
+                        } else if (mPhotoFile != null) {
+                            saveOnlyOneImage(mPhotoFile, true);
+                        } else if (mPhotoFile2 != null) {
+                            saveOnlyOneImage(mPhotoFile2, false);
+                        } else if (mImageFile != null) {
+                            saveOnlyOneImage(mImageFile, true);
+                        } else if (mImageFile2 != null) {
+                            saveOnlyOneImage(mImageFile2, false);
+                        } else {
+                            Post post = new Post();
+                            post.setTitle(mTitle);
+                            post.setDescription(mDescription);
+                            post.setCategory(mCategory);
+                            post.setIdUser(mAuthProvider.getUid());
+                            post.setTimestamp(new Date().getTime());
+                            saveInfo(post);
+                        }
+                    } else {
+                        Snackbar.make(coordinatorLayout, "Debe seleccionar una categoría", Snackbar.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Snackbar.make(coordinatorLayout, "La descripción de la publicación es obligatoria", Snackbar.LENGTH_SHORT).show();
+                }
+            } else {
+                Snackbar.make(coordinatorLayout, "El título de la publicación es obligatorio", Snackbar.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private ProgressDialog getProgressDialog(String title) {
@@ -426,7 +425,7 @@ public class PostActivity extends AppCompatActivity {
         mPostProvider.save(post).addOnCompleteListener(task1 -> {
             getProgressDialog(posting).dismiss();
             if (task1.isSuccessful()) {
-                clearForm();
+
                 startActivity(new Intent(PostActivity.this, HomeActivity.class));
                 finish();
                 Toast.makeText(PostActivity.this, "Publicación creada exitosamente", Toast.LENGTH_SHORT).show();
@@ -516,7 +515,6 @@ public class PostActivity extends AppCompatActivity {
         mPostProvider.update(post).addOnCompleteListener(task1 -> {
             getProgressDialog(editing).dismiss();
             if (task1.isSuccessful()) {
-                clearForm();
                 startActivity(new Intent(PostActivity.this, HomeActivity.class));
                 finish();
                 Toast.makeText(PostActivity.this, "Publicación editada exitosamente", Toast.LENGTH_SHORT).show();
@@ -524,19 +522,6 @@ public class PostActivity extends AppCompatActivity {
                 Snackbar.make(coordinatorLayout, "Error al editar información", Snackbar.LENGTH_SHORT).show();
             }
         });
-    }
-
-    private void clearForm() {
-        mTextInputTitle.setText(" ");
-        mTextInputDescription.setText(" ");
-        mTextViewCategory.setText(null);
-        mImageViewPost1.setImageResource(R.drawable.ic_insert_photo);
-        mImageViewPost2.setImageResource(R.drawable.ic_insert_photo);
-        mTitle = "";
-        mDescription = "";
-        mCategory = "";
-        mImageFile = null;
-        mImageFile2 = null;
     }
 
     ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {

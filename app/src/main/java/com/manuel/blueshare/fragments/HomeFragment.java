@@ -1,13 +1,14 @@
 package com.manuel.blueshare.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -74,16 +75,26 @@ public class HomeFragment extends Fragment implements MaterialSearchBar.OnSearch
             return true;
         });
         mFab.setOnClickListener(v -> goToPost());
-        showTooltip();
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy < 0) {
+                    mFab.show();
+                } else if (dy > 0) {
+                    mFab.hide();
+                }
+            }
+        });
         return mView;
     }
 
-    private void showTooltip() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            mFab.setTooltipText("Crear una nueva publicación");
-        }
-    }
-
+    @SuppressLint("NotifyDataSetChanged")
     private void searchByTitle(String title) {
         Query query = mPostProvider.getPostByTitle(title);
         FirestoreRecyclerOptions<Post> options = new FirestoreRecyclerOptions.Builder<Post>().setQuery(query, Post.class).build();
@@ -93,6 +104,7 @@ public class HomeFragment extends Fragment implements MaterialSearchBar.OnSearch
         mPostsAdapterSearch.startListening();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void getAllPost() {
         Query query = mPostProvider.getAll();
         FirestoreRecyclerOptions<Post> options = new FirestoreRecyclerOptions.Builder<Post>().setQuery(query, Post.class).build();

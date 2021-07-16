@@ -1,5 +1,9 @@
 package com.manuel.blueshare.activities;
 
+import static com.manuel.blueshare.utils.MyTools.isEmailValid;
+import static com.manuel.blueshare.utils.MyTools.validateFieldsAsYouType;
+import static com.manuel.blueshare.utils.MyTools.validatePasswordFieldsAsYouType;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -38,10 +42,6 @@ import com.manuel.blueshare.providers.UsersProvider;
 
 import java.util.Date;
 import java.util.Objects;
-
-import static com.manuel.blueshare.utils.Validations.isEmailValid;
-import static com.manuel.blueshare.utils.Validations.validateFieldsAsYouType;
-import static com.manuel.blueshare.utils.Validations.validatePasswordFieldsAsYouType;
 
 public class MainActivity extends AppCompatActivity {
     CoordinatorLayout coordinatorLayout;

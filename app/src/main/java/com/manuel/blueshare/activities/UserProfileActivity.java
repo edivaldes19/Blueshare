@@ -14,6 +14,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,6 +42,7 @@ import java.util.Objects;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserProfileActivity extends AppCompatActivity {
+    CoordinatorLayout coordinatorLayout;
     MaterialToolbar mToolbar;
     ShapeableImageView mImageViewCover;
     CircleImageView mCircleImageProfile;
@@ -60,6 +62,7 @@ public class UserProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
+        coordinatorLayout = findViewById(R.id.coordinatorUserProfile);
         mTextViewUsername = findViewById(R.id.textViewUsername);
         mTextViewEmail = findViewById(R.id.textViewEmail);
         mTextViewPhone = findViewById(R.id.textViewPhone);
@@ -84,32 +87,51 @@ public class UserProfileActivity extends AppCompatActivity {
             mFabChat.setEnabled(false);
             mFabChat.setVisibility(View.GONE);
         }
-        mFabChat.setOnClickListener(v -> goToChatActivity());
-        mCircleImageProfile.setOnClickListener(v -> goToPhotoUser(mExtraImagePathProfile, "Perfil de ", mUsername));
-        mImageViewCover.setOnClickListener(v -> goToPhotoUser(mExtraImagePathCover, "Portada de ", mUsername));
-        mButtonCall.setOnClickListener(v -> {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (requestCallPermission()) {
-                    if (!TextUtils.isEmpty(mPhone)) {
-                        Intent intent = new Intent(Intent.ACTION_CALL);
-                        intent.setData(Uri.parse("tel:" + mPhone));
-                        if (intent.resolveActivity(getPackageManager()) != null) {
-                            startActivity(intent);
-                        }
-                    } else {
-                        Snackbar.make(v, "Error al realizar la llamada, el teléfono está vacío", Snackbar.LENGTH_LONG).show();
-                    }
-                } else {
-                    Snackbar.make(v, "El permiso de teléfono está desactivado, actívelo manualmente", Snackbar.LENGTH_LONG).show();
-                }
-            } else {
-                Snackbar.make(v, "No es posible realizar llamadas porque su versión de Android es menor a 6", Snackbar.LENGTH_LONG).show();
-            }
-        });
         getUser();
         getPostNumber();
         checkIfExistPost();
         requestCallPermission();
+        mFabChat.setOnClickListener(v -> goToChatActivity());
+        mCircleImageProfile.setOnClickListener(v -> goToPhotoUser(mExtraImagePathProfile, "Perfil de ", mUsername));
+        mImageViewCover.setOnClickListener(v -> goToPhotoUser(mExtraImagePathCover, "Portada de ", mUsername));
+        mButtonCall.setOnClickListener(v -> call());
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy < 0) {
+                    mFabChat.show();
+                } else if (dy > 0) {
+                    mFabChat.hide();
+                }
+            }
+        });
+    }
+
+    @SuppressLint("QueryPermissionsNeeded")
+    private void call() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (requestCallPermission()) {
+                if (!TextUtils.isEmpty(mPhone)) {
+                    Intent intent = new Intent(Intent.ACTION_CALL);
+                    intent.setData(Uri.parse("tel:" + mPhone));
+                    if (intent.resolveActivity(getPackageManager()) != null) {
+                        startActivity(intent);
+                    }
+                } else {
+                    Snackbar.make(coordinatorLayout, "Error al realizar la llamada, el teléfono está vacío", Snackbar.LENGTH_LONG).show();
+                }
+            } else {
+                Snackbar.make(coordinatorLayout, "El permiso de teléfono está desactivado, actívelo manualmente", Snackbar.LENGTH_LONG).show();
+            }
+        } else {
+            Snackbar.make(coordinatorLayout, "No es posible realizar llamadas porque su versión de Android es menor a 6", Snackbar.LENGTH_LONG).show();
+        }
     }
 
     public boolean requestCallPermission() {
@@ -207,10 +229,6 @@ public class UserProfileActivity extends AppCompatActivity {
                     if (documentSnapshot.contains("username")) {
                         String username = documentSnapshot.getString("username");
                         mTextViewUsername.setText(username);
-                        mUsername = username;
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            mFabChat.setTooltipText("Iniciar chat con " + username);
-                        }
                     }
                     if (documentSnapshot.contains("email")) {
                         String email = documentSnapshot.getString("email");

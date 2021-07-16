@@ -18,7 +18,7 @@ import java.util.Objects;
 
 public class PhotoActivity extends AppCompatActivity {
     MaterialToolbar mToolbar;
-    TouchImageView touchImageView;
+    TouchImageView mTouchImageView;
     String mExtraMyImagePath, mExtraMyImageType, mExtraForeignImagePath, mExtraForeignImageType, mExtraUsername, mExtraUrlImagePost;
 
     @Override
@@ -33,22 +33,22 @@ public class PhotoActivity extends AppCompatActivity {
         mExtraUrlImagePost = getIntent().getStringExtra("urlImagePost");
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String title = preferences.getString("postTitle", "Imagen");
-        touchImageView = findViewById(R.id.imageViewMyPhoto);
+        mTouchImageView = findViewById(R.id.imageViewMyPhoto);
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         if (!TextUtils.isEmpty(mExtraUsername)) {
             Objects.requireNonNull(getSupportActionBar()).setTitle(mExtraForeignImageType + mExtraUsername);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            Picasso.get().load(mExtraForeignImagePath).into(touchImageView);
+            Picasso.get().load(mExtraForeignImagePath).into(mTouchImageView);
         } else {
             Objects.requireNonNull(getSupportActionBar()).setTitle(mExtraMyImageType);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            Picasso.get().load(mExtraMyImagePath).into(touchImageView);
+            Picasso.get().load(mExtraMyImagePath).into(mTouchImageView);
         }
         if (!TextUtils.isEmpty(mExtraUrlImagePost) && !TextUtils.isEmpty(title)) {
             Objects.requireNonNull(getSupportActionBar()).setTitle(title);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            Picasso.get().load(mExtraUrlImagePost).into(touchImageView);
+            Picasso.get().load(mExtraUrlImagePost).into(mTouchImageView);
         }
     }
 

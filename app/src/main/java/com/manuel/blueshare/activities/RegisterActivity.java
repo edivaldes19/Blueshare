@@ -1,5 +1,11 @@
 package com.manuel.blueshare.activities;
 
+import static com.manuel.blueshare.utils.MyTools.compareDataString;
+import static com.manuel.blueshare.utils.MyTools.isEmailValid;
+import static com.manuel.blueshare.utils.MyTools.isUserInfoExist;
+import static com.manuel.blueshare.utils.MyTools.validateFieldsAsYouType;
+import static com.manuel.blueshare.utils.MyTools.validatePasswordFieldsAsYouType;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +18,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.manuel.blueshare.R;
 import com.manuel.blueshare.models.User;
 import com.manuel.blueshare.providers.AuthProvider;
@@ -23,10 +28,6 @@ import java.util.Date;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
-import static com.manuel.blueshare.utils.Validations.isEmailValid;
-import static com.manuel.blueshare.utils.Validations.validateFieldsAsYouType;
-import static com.manuel.blueshare.utils.Validations.validatePasswordFieldsAsYouType;
 
 public class RegisterActivity extends AppCompatActivity {
     CoordinatorLayout coordinatorLayout;
@@ -64,82 +65,53 @@ public class RegisterActivity extends AppCompatActivity {
         validateFieldsAsYouType(mTextInputPhone, "El número de teléfono es obligatorio");
         validatePasswordFieldsAsYouType(mTextInputPasswordR, "La contraseña es obligatoria");
         validatePasswordFieldsAsYouType(mTextInputConfirmPasswordR, "Debe confirmar su contraseña");
-        isUserInfoExist(mUsernameList, "username");
-        isUserInfoExist(mPhoneList, "phone");
-        materialButtonRegister.setOnClickListener(v -> {
-            String username = Objects.requireNonNull(mTextInputUsername.getText()).toString().trim();
-            String email = Objects.requireNonNull(mTextInputEmailR.getText()).toString().trim();
-            String phone = Objects.requireNonNull(mTextInputPhone.getText()).toString().trim();
-            String password = Objects.requireNonNull(mTextInputPasswordR.getText()).toString().trim();
-            String confirmPassword = Objects.requireNonNull(mTextInputConfirmPasswordR.getText()).toString().trim();
-            if (!TextUtils.isEmpty(username)) {
-                if (!TextUtils.isEmpty(email)) {
-                    if (!TextUtils.isEmpty(phone)) {
-                        if (!TextUtils.isEmpty(password)) {
-                            if (!TextUtils.isEmpty(confirmPassword)) {
-                                if (mUsernameList != null && !mUsernameList.isEmpty()) {
-                                    for (String s : mUsernameList) {
-                                        if (s.equals(username)) {
-                                            Snackbar.make(v, "Ya existe un usuario con ese nombre", Snackbar.LENGTH_SHORT).show();
-                                            return;
-                                        }
-                                    }
-                                }
-                                if (mPhoneList != null && !mPhoneList.isEmpty()) {
-                                    for (String s : mPhoneList) {
-                                        if (s.equals(phone)) {
-                                            Snackbar.make(v, "Ya existe un usuario con ese teléfono", Snackbar.LENGTH_SHORT).show();
-                                            return;
-                                        }
-                                    }
-                                }
-                                if (isEmailValid(email)) {
-                                    if (password.equals(confirmPassword)) {
-                                        if (password.length() >= 6) {
-                                            createUser(username, email, phone, password);
-                                        } else {
-                                            Snackbar.make(v, "La contraseña debe ser mayor o igual a 6 caracteres", Snackbar.LENGTH_SHORT).show();
-                                        }
-                                    } else {
-                                        Snackbar.make(v, "Las contraseñas no coinciden", Snackbar.LENGTH_SHORT).show();
-                                    }
-                                } else {
-                                    Snackbar.make(v, "Formato de correo electrónico inválido", Snackbar.LENGTH_SHORT).show();
-                                }
-                            } else {
-                                Snackbar.make(v, "Debe confirmar su contraseña", Snackbar.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            Snackbar.make(v, "La contraseña es obligatoria", Snackbar.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Snackbar.make(v, "El número de teléfono es obligatorio", Snackbar.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Snackbar.make(v, "El correo electrónico es obligatorio", Snackbar.LENGTH_SHORT).show();
-                }
-            } else {
-                Snackbar.make(v, "El nombre de usuario es obligatorio", Snackbar.LENGTH_SHORT).show();
-            }
-        });
+        isUserInfoExist(mUsersProvider, mUsernameList, "username", coordinatorLayout);
+        isUserInfoExist(mUsersProvider, mPhoneList, "phone", coordinatorLayout);
+        materialButtonRegister.setOnClickListener(v -> normalRegister());
         mCircleImageViewBack.setOnClickListener(v -> finish());
     }
 
-    public void isUserInfoExist(ArrayList<String> stringList, String field) {
-        mUsersProvider.getAllUserDocuments().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                for (QueryDocumentSnapshot snapshot : Objects.requireNonNull(task.getResult())) {
-                    if (snapshot.exists()) {
-                        if (snapshot.contains(field)) {
-                            String allFields = snapshot.getString(field);
-                            stringList.add(allFields);
+    public void normalRegister() {
+        String username = Objects.requireNonNull(mTextInputUsername.getText()).toString().trim();
+        String email = Objects.requireNonNull(mTextInputEmailR.getText()).toString().trim();
+        String phone = Objects.requireNonNull(mTextInputPhone.getText()).toString().trim();
+        String password = Objects.requireNonNull(mTextInputPasswordR.getText()).toString().trim();
+        String confirmPassword = Objects.requireNonNull(mTextInputConfirmPasswordR.getText()).toString().trim();
+        if (!TextUtils.isEmpty(username)) {
+            if (!TextUtils.isEmpty(email)) {
+                if (!TextUtils.isEmpty(phone)) {
+                    if (!TextUtils.isEmpty(password)) {
+                        if (!TextUtils.isEmpty(confirmPassword)) {
+                            compareDataString(mUsernameList, username, coordinatorLayout, "Ya existe un usuario con ese nombre");
+                            compareDataString(mPhoneList, phone, coordinatorLayout, "Ya existe un usuario con ese teléfono");
+                            if (isEmailValid(email)) {
+                                if (password.equals(confirmPassword)) {
+                                    if (password.length() >= 6) {
+                                        createUser(username, email, phone, password);
+                                    } else {
+                                        Snackbar.make(coordinatorLayout, "La contraseña debe ser mayor o igual a 6 caracteres", Snackbar.LENGTH_SHORT).show();
+                                    }
+                                } else {
+                                    Snackbar.make(coordinatorLayout, "Las contraseñas no coinciden", Snackbar.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Snackbar.make(coordinatorLayout, "Formato de correo electrónico inválido", Snackbar.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Snackbar.make(coordinatorLayout, "Debe confirmar su contraseña", Snackbar.LENGTH_SHORT).show();
                         }
+                    } else {
+                        Snackbar.make(coordinatorLayout, "La contraseña es obligatoria", Snackbar.LENGTH_SHORT).show();
                     }
+                } else {
+                    Snackbar.make(coordinatorLayout, "El número de teléfono es obligatorio", Snackbar.LENGTH_SHORT).show();
                 }
             } else {
-                Snackbar.make(coordinatorLayout, "Error al obtener la información de los usuarios", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, "El correo electrónico es obligatorio", Snackbar.LENGTH_SHORT).show();
             }
-        });
+        } else {
+            Snackbar.make(coordinatorLayout, "El nombre de usuario es obligatorio", Snackbar.LENGTH_SHORT).show();
+        }
     }
 
     private void createUser(String username, String email, String phone, String password) {

@@ -37,7 +37,6 @@ public class FileUtil {
             copy(inputStream, out);
             inputStream.close();
         }
-
         if (out != null) {
             out.close();
         }
@@ -52,7 +51,6 @@ public class FileUtil {
             name = fileName.substring(0, i);
             extension = fileName.substring(i);
         }
-
         return new String[]{name, extension};
     }
 

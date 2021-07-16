@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.InputFilter;
@@ -112,17 +111,10 @@ public class PostDetailActivity extends AppCompatActivity {
         mNotificationProvider = new NotificationProvider();
         mTokenProvider = new TokenProvider();
         mExtraPostId = getIntent().getStringExtra("id");
-        mFabComment.setOnClickListener(v -> showDialogComment());
-        mCardViewShowProfile.setOnClickListener(v -> goToShowProfile());
         getPost();
         getNumberLikes();
-        showTooltip();
-    }
-
-    private void showTooltip() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            mFabComment.setTooltipText("Crear un nuevo comentario");
-        }
+        mFabComment.setOnClickListener(v -> showDialogComment());
+        mCardViewShowProfile.setOnClickListener(v -> goToShowProfile());
     }
 
     @SuppressLint("SetTextI18n")
@@ -306,7 +298,7 @@ public class PostDetailActivity extends AppCompatActivity {
                 }
                 if (documentSnapshot.contains("category")) {
                     String category = documentSnapshot.getString("category");
-                    if (category != null) {
+                    if (!TextUtils.isEmpty(category)) {
                         switch (category) {
                             case "Cultura":
                                 mTextViewCategory.setTextColor(Color.parseColor("#A25918"));

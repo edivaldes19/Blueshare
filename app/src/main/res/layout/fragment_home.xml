@@ -48,8 +48,10 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
+        android:layout_gravity="center|bottom"
         android:layout_margin="16dp"
         android:src="@drawable/ic_post_add"
-        tools:ignore="ContentDescription" />
+        android:tooltipText="Crear una nueva publicación"
+        tools:ignore="ContentDescription"
+        tools:targetApi="o" />
 </FrameLayout>
